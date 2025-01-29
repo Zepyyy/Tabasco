@@ -1,7 +1,9 @@
-import "./App.css";
+import GuitarTabCreator from "./guitar-tab-creator";
 
-function App() {
-    return <>Hello</>;
+export default function App() {
+    return (
+        <main className="flex min-h-screen flex-col items-center justify-between p-24">
+            <GuitarTabCreator />
+        </main>
+    );
 }
-
-export default App;

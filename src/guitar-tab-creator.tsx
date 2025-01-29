@@ -1,0 +1,80 @@
+"use client";
+
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
+
+const STRINGS = 6;
+const FRETS = 12;
+
+export default function GuitarTabCreator() {
+    const [tab, setTab] = useState<string[][]>(
+        Array(STRINGS)
+            .fill(null)
+            .map(() => Array(FRETS).fill("-"))
+    );
+
+    const handleCellClick = (string: number, fret: number) => {
+        const newTab = tab.map((row, i) =>
+            row.map((cell, j) =>
+                i === string && j === fret ? (cell === "-" ? "0" : "-") : cell
+            )
+        );
+        setTab(newTab);
+    };
+
+    const incrementFretNumber = (string: number, fret: number) => {
+        const newTab = [...tab];
+        const currentValue = newTab[string][fret];
+        if (currentValue === "-") {
+            newTab[string][fret] = "1";
+        } else {
+            const nextValue = Number.parseInt(currentValue) + 1;
+            newTab[string][fret] = nextValue > 24 ? "-" : nextValue.toString();
+        }
+        setTab(newTab);
+    };
+
+    const clearTab = () => {
+        setTab(
+            Array(STRINGS)
+                .fill(null)
+                .map(() => Array(FRETS).fill("-"))
+        );
+    };
+
+    return (
+        <div className="container mx-auto p-4">
+            <h1 className="text-2xl font-bold mb-4">Guitar Tab Creator</h1>
+            <div className="mb-4">
+                {tab.map((string, i) => (
+                    <div key={i} className="flex">
+                        {string.map((fret, j) => (
+                            <div
+                                key={j}
+                                className="w-8 h-8 border border-gray-300 flex items-center justify-center cursor-grabbing"
+                                onClick={() => handleCellClick(i, j)}
+                                onContextMenu={(e) => {
+                                    e.preventDefault();
+                                    incrementFretNumber(i, j);
+                                }}
+                            >
+                                {fret}
+                            </div>
+                        ))}
+                    </div>
+                ))}
+            </div>
+            <div className="flex justify-between items-center">
+                <div>
+                    <p className="text-sm text-gray-600">
+                        Click to toggle note on/off
+                    </p>
+                    <p className="text-sm text-gray-600">
+                        Right-click to increment fret number
+                    </p>
+                </div>
+                <Button onClick={clearTab}>Clear Tab</Button>
+            </div>
+        </div>
+    );
+}
