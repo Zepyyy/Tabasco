@@ -16,20 +16,35 @@ export default function GuitarTabCreator() {
     const handleCellClick = (string: number, fret: number) => {
         const newTab = tab.map((row, i) =>
             row.map((cell, j) =>
-                i === string && j === fret ? (cell === "-" ? "0" : "-") : cell
+                i === string && j === fret
+                    ? cell === "-"
+                        ? "0"
+                        : cell === "0"
+                        ? "X"
+                        : "-"
+                    : cell
             )
         );
         setTab(newTab);
+        console.log(string);
     };
 
     const incrementFretNumber = (string: number, fret: number) => {
         const newTab = [...tab];
         const currentValue = newTab[string][fret];
-        if (currentValue === "-") {
-            newTab[string][fret] = "1";
-        } else {
-            const nextValue = Number.parseInt(currentValue) + 1;
-            newTab[string][fret] = nextValue > 24 ? "-" : nextValue.toString();
+        switch (true) {
+            case currentValue === "-":
+                newTab[string][fret] = "1";
+                break;
+            case currentValue === "X":
+                newTab[string][fret] = "-";
+                break;
+            default: {
+                const nextValue = Number.parseInt(currentValue) + 1;
+                newTab[string][fret] =
+                    nextValue > 24 ? "-" : nextValue.toString();
+                break;
+            }
         }
         setTab(newTab);
     };
@@ -52,10 +67,10 @@ export default function GuitarTabCreator() {
                             <div
                                 key={j}
                                 className="w-8 h-8 border border-gray-300 flex items-center justify-center cursor-grabbing"
-                                onClick={() => handleCellClick(i, j)}
+                                onClick={() => incrementFretNumber(i, j)}
                                 onContextMenu={(e) => {
                                     e.preventDefault();
-                                    incrementFretNumber(i, j);
+                                    handleCellClick(i, j);
                                 }}
                             >
                                 {fret}
@@ -67,10 +82,10 @@ export default function GuitarTabCreator() {
             <div className="flex justify-between items-center">
                 <div>
                     <p className="text-sm text-gray-600">
-                        Click to toggle note on/off
+                        Click to increment fret number
                     </p>
                     <p className="text-sm text-gray-600">
-                        Right-click to increment fret number
+                        Right-click to switch note open/mute/off
                     </p>
                 </div>
                 <Button onClick={clearTab}>Clear Tab</Button>
