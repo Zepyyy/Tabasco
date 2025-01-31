@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-
 const STRINGS = 6;
 const FRETS = 12;
 
@@ -58,8 +57,7 @@ export default function GuitarTabCreator() {
     };
 
     return (
-        <div className="container mx-auto p-4">
-            <h1 className="text-2xl font-bold mb-4">Guitar Tab Creator</h1>
+        <div className="container p-4">
             <div className="mb-4">
                 {tab.map((string, i) => (
                     <div key={i} className="flex">
@@ -79,17 +77,7 @@ export default function GuitarTabCreator() {
                     </div>
                 ))}
             </div>
-            <div className="flex justify-between items-center">
-                <div>
-                    <p className="text-sm text-gray-600">
-                        Click to increment fret number
-                    </p>
-                    <p className="text-sm text-gray-600">
-                        Right-click to switch note open/mute/off
-                    </p>
-                </div>
-                <Button onClick={clearTab}>Clear Tab</Button>
-            </div>
+            <Button onClick={clearTab}>Clear Tab</Button>
         </div>
     );
 }
