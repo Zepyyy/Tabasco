@@ -8,8 +8,6 @@
     font-weight: 400;
 
     color-scheme: light dark;
-    color: rgba(255, 255, 255, 0.87);
-    background-color: #242424;
 
     font-synthesis: none;
     text-rendering: optimizeLegibility;
@@ -17,22 +15,39 @@
     -moz-osx-font-smoothing: grayscale;
 }
 
+/* 
+
+Light
+Text: #202022 - 240, 3%, 13%
+Background: #EEEDF4 - 249, 24%, 94%
+Primary: #44467F - 238, 30%, 38%
+Primary-foreground: #EEEDF4 - 249, 24%, 94%
+Secondary: #B9B9EE - 240, 61%, 83%
+Secondary-foreground: #202022 - 240, 3%, 13%
+Accent: #F8D461 - 46, 92%, 68%
+Accent-foreground: #202022 - 240, 3%, 13%
+Tab: #363636 - 0, 0%, 21%
+TabSubtle: #d3d2d8 - 250, 7%, 84%
+*/
+
 @layer base {
-  :root {
-        --background: 0 0% 100%;
-        --foreground: 0 0% 3.9%;
+    :root {
+        --background: 249, 24%, 94%;
+        --foreground: 240, 3%, 13%;
         --card: 0 0% 100%;
         --card-foreground: 0 0% 3.9%;
         --popover: 0 0% 100%;
         --popover-foreground: 0 0% 3.9%;
-        --primary: 0 0% 9%;
-        --primary-foreground: 0 0% 98%;
-        --secondary: 0 0% 96.1%;
-        --secondary-foreground: 0 0% 9%;
+        --primary: 238, 30%, 38%;
+        --primary-foreground: 249, 24%, 94%;
+        --secondary: 240, 61%, 83%;
+        --secondary-foreground: 240, 3%, 13%;
         --muted: 0 0% 96.1%;
-        --muted-foreground: 0 0% 45.1%;
-        --accent: 0 0% 96.1%;
-        --accent-foreground: 0 0% 9%;
+        --muted-foreground: 0 0% 21%;
+        --accent: 46, 92%, 68%;
+        --accent-foreground: 232 32% 14%;
+        --tab: 0 0% 21%;
+        --tab-subtle: 250, 7%, 84%;
         --destructive: 0 84.2% 60.2%;
         --destructive-foreground: 0 0% 98%;
         --border: 0 0% 89.8%;
@@ -45,21 +60,35 @@
         --chart-5: 27 87% 67%;
         --radius: 0.5rem;
     }
-  .dark {
-        --background: 0 0% 3.9%;
-        --foreground: 0 0% 98%;
+
+    /* Dark
+Text: #EEEDF4 - 249, 24%, 94%
+Background: #202022 - 240, 3%, 13%
+Primary:  #C2C3F4 - 239, 69%, 86%
+Primary-foreground: #202022 - 240, 3%, 13%
+Secondary: #272A4A - 235, 31%, 22%
+Secondary-foreground: #EEEDF4 - 249, 24%, 94%
+Accent: #F8D461 - 46, 92%, 68%
+Accent-foreground: #221B02 - 47, 89%, 7%
+Tab: #C7C7C7 - 0, 0%, 78%
+TabSubtle: #39393b - 240, 2%, 23% */
+    .dark {
+        --background: 240, 3%, 13%;
+        --foreground: 249, 24%, 94%;
         --card: 0 0% 3.9%;
         --card-foreground: 0 0% 98%;
         --popover: 0 0% 3.9%;
         --popover-foreground: 0 0% 98%;
-        --primary: 0 0% 98%;
-        --primary-foreground: 0 0% 9%;
-        --secondary: 0 0% 14.9%;
-        --secondary-foreground: 0 0% 98%;
-        --muted: 0 0% 14.9%;
-        --muted-foreground: 0 0% 63.9%;
-        --accent: 0 0% 14.9%;
-        --accent-foreground: 0 0% 98%;
+        --primary: 239, 69%, 86%;
+        --primary-foreground: 240, 3%, 13%;
+        --secondary: 235, 31%, 22%;
+        --secondary-foreground: 249, 24%, 94%;
+        --muted: 236 27% 24%;
+        --muted-foreground: 0 0% 78%;
+        --accent: 47, 89%, 7%;
+        --accent-foreground: 46, 92%, 68%;
+        --tab: 0 0% 78%;
+        --tab-subtle: 240, 2%, 23%;
         --destructive: 0 62.8% 30.6%;
         --destructive-foreground: 0 0% 98%;
         --border: 0 0% 14.9%;
@@ -72,12 +101,30 @@
         --chart-5: 340 75% 55%;
     }
 }
-
 @layer base {
-  * {
-    @apply border-border;
+    * {
+        @apply border-border;
     }
-  body {
-    @apply bg-background text-foreground;
+    body {
+        @apply bg-background text-foreground;
     }
+}
+
+#note {
+    position: relative;
+}
+
+#note:before {
+    content: "";
+    position: absolute;
+    width: 50%;
+    height: 50%;
+    border-radius: 0.3rem;
+    z-index: -1;
+    opacity: 0;
+}
+
+/* Only show background for non-dash values */
+#note:not([data-value="-"]):before {
+    opacity: 1;
 }
