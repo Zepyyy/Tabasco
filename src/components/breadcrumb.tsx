@@ -16,7 +16,7 @@ import {
 
 export default function BreadCrumbs() {
 	return (
-		<Breadcrumb className="w-full absolute top-0 left-0 p-12">
+		<Breadcrumb className="w-full absolute top-0 left-0 pt-12 pl-12">
 			<BreadcrumbList>
 				<BreadcrumbItem>
 					<BreadcrumbLink href="/">Home</BreadcrumbLink>

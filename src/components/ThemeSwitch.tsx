@@ -1,10 +1,13 @@
-import { useState } from "react";
+import { useContext } from "react";
 import { Button } from "@/components/ui/button";
 import { Moon, SunMedium } from "lucide-react";
+import { ThemeContext } from "@/contexts/ThemeContext";
 
 export default function ThemeSwitch() {
-	const [theme, setTheme] = useState<string>("light");
+	const { theme, setTheme } = useContext(ThemeContext);
 	document.documentElement.classList.toggle("dark", theme === "dark");
+	localStorage.setItem("theme", theme);
+
 	return (
 		<Button
 			variant={"outline"}
