@@ -12,7 +12,7 @@ export default function ThemeSwitch() {
 		<Button
 			variant={"outline"}
 			size="icon"
-			className="[&_svg]:size-8 border-none w-min h-min hover:text-primary hover:bg-primary-foreground absolute top-4 right-4 shadow-none focus-visible:outline-none focus:bg-background"
+			className="[&_svg]:size-8 border-none w-min h-min hover:text-primary hover:bg-primary-foreground absolute top-4 right-4 shadow-none focus-visible:outline-none focus:bg-background z-50"
 			onClick={() => setTheme(theme === "light" ? "dark" : "light")}
 		>
 			{theme === "light" ? <Moon /> : <SunMedium />}
