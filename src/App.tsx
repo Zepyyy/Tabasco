@@ -1,17 +1,18 @@
 import { Input } from "./components/ui/input";
 import GuitarTabCreator from "./guitar-tab-creator";
-import { useState } from "react";
 import { ThemeContext } from "./contexts/ThemeContext";
-import { Button } from "./components/ui/button";
-import { MoonStar, SunMedium } from "lucide-react";
+
+import BreadCrumbs from "./components/breadcrumb";
+import { useContext } from "react";
+import ThemeSwitch from "./components/ThemeSwitch";
 
 export default function App() {
-	const [theme, setTheme] = useState<string>("light");
-	document.documentElement.classList.toggle("dark", theme === "dark");
+	const theme = useContext(ThemeContext);
 
 	return (
 		<ThemeContext.Provider value={theme}>
-			<main className="flex min-h-screen bg-background text-foreground selection:bg-primary selection:text-primary-foreground">
+			<main className="flex min-h-screen bg-background text-foreground selection:bg-primary selection:text-primary-foreground transition ease-out">
+				<BreadCrumbs />
 				<div className="flex flex-col justify-start w-full p-24">
 					<Input
 						type="text"
@@ -30,16 +31,7 @@ export default function App() {
 							</p>
 						</div>
 					</div>
-					<Button
-						variant={"outline"}
-						size="icon"
-						className="[&_svg]:size-8 border-none w-min h-min hover:text-primary hover:bg-primary-foreground absolute top-4 right-4"
-						onClick={() =>
-							setTheme(theme === "light" ? "dark" : "light")
-						}
-					>
-						{theme === "light" ? <MoonStar /> : <SunMedium />}
-					</Button>
+					<ThemeSwitch />
 				</div>
 			</main>
 		</ThemeContext.Provider>

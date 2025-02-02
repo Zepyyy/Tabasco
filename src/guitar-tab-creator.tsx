@@ -122,15 +122,6 @@ export default function GuitarTabCreator() {
 				>
 					Clear Tab
 				</Button>
-				<Button
-					variant={"secondary"}
-					className="hover:opacity-50 hover:bg-secondary hover:text-secondary-foreground"
-					onClick={() => {
-						console.log("Yo export?");
-					}}
-				>
-					Export?
-				</Button>
 			</div>
 		</div>
 	);

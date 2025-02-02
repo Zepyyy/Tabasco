@@ -3,16 +3,16 @@
 @tailwind utilities;
 
 :root {
-    font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
-    line-height: 1.5;
-    font-weight: 400;
+	font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+	line-height: 1.5;
+	font-weight: 400;
 
-    color-scheme: light dark;
+	color-scheme: light dark;
 
-    font-synthesis: none;
-    text-rendering: optimizeLegibility;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
+	font-synthesis: none;
+	text-rendering: optimizeLegibility;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
 }
 
 /* 
@@ -31,37 +31,37 @@ TabSubtle: #d3d2d8 - 250, 7%, 84%
 */
 
 @layer base {
-    :root {
-        --background: 249, 24%, 94%;
-        --foreground: 240, 3%, 13%;
-        --card: 0 0% 100%;
-        --card-foreground: 0 0% 3.9%;
-        --popover: 0 0% 100%;
-        --popover-foreground: 0 0% 3.9%;
-        --primary: 238, 30%, 38%;
-        --primary-foreground: 249, 24%, 94%;
-        --secondary: 240, 61%, 83%;
-        --secondary-foreground: 240, 3%, 13%;
-        --muted: 0 0% 96.1%;
-        --muted-foreground: 0 0% 21%;
-        --accent: 46, 92%, 68%;
-        --accent-foreground: 232 32% 14%;
-        --tab: 0 0% 21%;
-        --tab-subtle: 250, 7%, 84%;
-        --destructive: 0 84.2% 60.2%;
-        --destructive-foreground: 0 0% 98%;
-        --border: 0 0% 89.8%;
-        --input: 0 0% 89.8%;
-        --ring: 0 0% 3.9%;
-        --chart-1: 12 76% 61%;
-        --chart-2: 173 58% 39%;
-        --chart-3: 197 37% 24%;
-        --chart-4: 43 74% 66%;
-        --chart-5: 27 87% 67%;
-        --radius: 0.5rem;
-    }
+	:root {
+		--background: 249, 24%, 94%;
+		--foreground: 240, 3%, 13%;
+		--card: 0 0% 100%;
+		--card-foreground: 0 0% 3.9%;
+		--popover: 0 0% 100%;
+		--popover-foreground: 0 0% 3.9%;
+		--primary: 238, 30%, 38%;
+		--primary-foreground: 249, 24%, 94%;
+		--secondary: 240, 61%, 83%;
+		--secondary-foreground: 240, 3%, 13%;
+		--muted: 0 0% 96.1%;
+		--muted-foreground: 0 0% 21%;
+		--accent: 46, 92%, 68%;
+		--accent-foreground: 232 32% 14%;
+		--tab: 0 0% 21%;
+		--tab-subtle: 250, 7%, 84%;
+		--destructive: 0 84.2% 60.2%;
+		--destructive-foreground: 0 0% 98%;
+		--border: 0 0% 89.8%;
+		--input: 0 0% 89.8%;
+		--ring: 0 0% 3.9%;
+		--chart-1: 12 76% 61%;
+		--chart-2: 173 58% 39%;
+		--chart-3: 197 37% 24%;
+		--chart-4: 43 74% 66%;
+		--chart-5: 27 87% 67%;
+		--radius: 0.5rem;
+	}
 
-    /* Dark
+	/* Dark
 Text: #EEEDF4 - 249, 24%, 94%
 Background: #202022 - 240, 3%, 13%
 Primary:  #C2C3F4 - 239, 69%, 86%
@@ -72,61 +72,61 @@ Accent: #F8D461 - 46, 92%, 68%
 Accent-foreground: #221B02 - 47, 89%, 7%
 Tab: #C7C7C7 - 0, 0%, 78%
 TabSubtle: #39393b - 240, 2%, 23% */
-    .dark {
-        --background: 240, 3%, 13%;
-        --foreground: 249, 24%, 94%;
-        --card: 0 0% 3.9%;
-        --card-foreground: 0 0% 98%;
-        --popover: 0 0% 3.9%;
-        --popover-foreground: 0 0% 98%;
-        --primary: 239, 69%, 86%;
-        --primary-hover: 100, 69%, 86%;
-        --primary-foreground: 240, 3%, 13%;
-        --primary-foreground-hover: 100, 3%, 13%;
-        --secondary: 235, 31%, 22%;
-        --secondary-foreground: 249, 24%, 94%;
-        --muted: 236 27% 24%;
-        --muted-foreground: 0 0% 78%;
-        --accent: 47, 89%, 7%;
-        --accent-foreground: 46, 92%, 68%;
-        --tab: 0 0% 78%;
-        --tab-subtle: 240, 2%, 23%;
-        --destructive: 0 62.8% 30.6%;
-        --destructive-foreground: 0 0% 98%;
-        --border: 0 0% 14.9%;
-        --input: 0 0% 14.9%;
-        --ring: 0 0% 83.1%;
-        --chart-1: 220 70% 50%;
-        --chart-2: 160 60% 45%;
-        --chart-3: 30 80% 55%;
-        --chart-4: 280 65% 60%;
-        --chart-5: 340 75% 55%;
-    }
+	.dark {
+		--background: 240, 3%, 13%;
+		--foreground: 249, 24%, 94%;
+		--card: 0 0% 3.9%;
+		--card-foreground: 0 0% 98%;
+		--popover: 0 0% 3.9%;
+		--popover-foreground: 0 0% 98%;
+		--primary: 239, 69%, 86%;
+		--primary-hover: 100, 69%, 86%;
+		--primary-foreground: 240, 3%, 13%;
+		--primary-foreground-hover: 100, 3%, 13%;
+		--secondary: 235, 31%, 22%;
+		--secondary-foreground: 249, 24%, 94%;
+		--muted: 236 27% 24%;
+		--muted-foreground: 0 0% 78%;
+		--accent: 47, 89%, 7%;
+		--accent-foreground: 46, 92%, 68%;
+		--tab: 0 0% 78%;
+		--tab-subtle: 240, 2%, 23%;
+		--destructive: 0 62.8% 30.6%;
+		--destructive-foreground: 0 0% 98%;
+		--border: 0 0% 14.9%;
+		--input: 0 0% 14.9%;
+		--ring: 0 0% 83.1%;
+		--chart-1: 220 70% 50%;
+		--chart-2: 160 60% 45%;
+		--chart-3: 30 80% 55%;
+		--chart-4: 280 65% 60%;
+		--chart-5: 340 75% 55%;
+	}
 }
 @layer base {
-    * {
-        @apply border-border;
-    }
-    body {
-        @apply bg-background text-foreground;
-    }
+	* {
+		@apply border-border;
+	}
+	body {
+		@apply bg-background text-foreground;
+	}
 }
 
 #note {
-    position: relative;
+	position: relative;
 }
 
 #note:before {
-    content: "";
-    position: absolute;
-    width: 50%;
-    height: 50%;
-    border-radius: 0.3rem;
-    z-index: -1;
-    opacity: 0;
+	content: "";
+	position: absolute;
+	width: 50%;
+	height: 50%;
+	border-radius: 0.3rem;
+	z-index: -1;
+	opacity: 0;
 }
 
 /* Only show background for non-dash values */
 #note:not([data-value="-"]):before {
-    opacity: 1;
+	opacity: 1;
 }
