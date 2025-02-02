@@ -24,6 +24,8 @@ interface Sheet {
 	position: number;
 }
 
+// [{"tabName":"Second","position":1},{"tabName":"First","position":0},{"tabName":"Third","position":2}]
+
 const defaultSheets = [
 	{ tabName: "First", position: 0 },
 	{ tabName: "Second", position: 1 },
@@ -59,9 +61,11 @@ const RenameInput = ({
 const SheetActionsMenu = ({
 	// sheet,
 	onRename,
+	onMoveDown,
 }: {
 	sheet: Sheet;
 	onRename: () => void;
+	onMoveDown: () => void;
 }) => (
 	<DropdownMenuContent
 		side="right"
@@ -83,7 +87,7 @@ const SheetActionsMenu = ({
 		</DropdownMenuItem>
 		<DropdownMenuItem
 			className="px-3 py-1.5 cursor-pointer hover:bg-primary/10 hover:text-primary rounded-sm transition-colors"
-			onClick={() => console.log("Move Down")}
+			onClick={onMoveDown}
 		>
 			Move Down
 		</DropdownMenuItem>
@@ -118,6 +122,26 @@ export default function BreadCrumbs() {
 			setSheets(updatedSheets);
 		}
 		setEditingName(null);
+	};
+
+	const handleMoveSubmit = (oldPosition: number) => {
+		const newPosition = oldPosition + 1;
+
+		// Check if the new position is valid (i.e., it exists in the sheets array)
+		if (newPosition >= sheets.length) return; // Prevent moving beyond the last sheet
+
+		const updatedSheets = sheets.map((sheet: Sheet) => {
+			if (sheet.position === oldPosition) {
+				return { ...sheet, position: newPosition };
+			}
+			if (sheet.position === newPosition) {
+				return { ...sheet, position: oldPosition };
+			}
+			return sheet;
+		});
+
+		localStorage.setItem("sheets", JSON.stringify(updatedSheets));
+		setSheets(updatedSheets);
 	};
 
 	const sortedSheets = sheets.sort(
@@ -175,6 +199,11 @@ export default function BreadCrumbs() {
 													onRename={() =>
 														setEditingName(
 															sheet.tabName
+														)
+													}
+													onMoveDown={() =>
+														handleMoveSubmit(
+															sheet.position
 														)
 													}
 												/>
