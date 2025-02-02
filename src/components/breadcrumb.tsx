@@ -13,8 +13,11 @@ import {
 	DropdownMenuItem,
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { NameContext } from "@/contexts/NameContext";
+import { useContext } from "react";
 
 export default function BreadCrumbs() {
+	const name = useContext(NameContext).tabName;
 	return (
 		<Breadcrumb className="w-full absolute top-0 left-0 pt-12 pl-12">
 			<BreadcrumbList>
@@ -25,7 +28,7 @@ export default function BreadCrumbs() {
 				<BreadcrumbItem>
 					<DropdownMenu>
 						<DropdownMenuTrigger className="flex items-center gap-1">
-							Components
+							{name ? name : "Unnamed"}
 							<ChevronDownIcon />
 						</DropdownMenuTrigger>
 						<DropdownMenuContent align="start">
