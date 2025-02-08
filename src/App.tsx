@@ -44,8 +44,7 @@ export default function App() {
 									Right-click to switch note open/mute/off
 								</p>
 							</div>
-							// TODO: modify the outline button colors, primary
-							always
+							{/* TODO: modify the outline button colors, primary always */}
 							<Button
 								variant="outline"
 								className="w-fit mt-10"
