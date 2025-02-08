@@ -7,6 +7,7 @@
 	line-height: 1.5;
 	font-weight: 400;
 
+	background-color: var(--background);
 	color-scheme: light dark;
 
 	font-synthesis: none;
@@ -16,41 +17,34 @@
 	pointer-events: auto !important;
 }
 
-/* 
+/* For light mode */
+:root[data-mantine-color-scheme="light"] body {
+	--mantine-color-body: hsl(249, 24%, 94%);
+}
 
-Light
-Text: #202022 - 240, 3%, 13%
-Background: #EEEDF4 - 249, 24%, 94%
-Primary: #44467F - 238, 30%, 38%
-Primary-foreground: #EEEDF4 - 249, 24%, 94%
-Secondary: #B9B9EE - 240, 61%, 83%
-Secondary-foreground: #202022 - 240, 3%, 13%
-Accent: #F8D461 - 46, 92%, 68%
-Accent-foreground: #202022 - 240, 3%, 13%
-Tab: #363636 - 0, 0%, 21%
-TabSubtle: #d3d2d8 - 250, 7%, 84%
-Destructive: #FFBDBD - 0, 100%, 87%
-Desctructive-foreground: #430F0F - 0, 63%, 16%
-*/
+/* For dark mode */
+:root[data-mantine-color-scheme="dark"] body {
+	--mantine-color-body: hsl(240, 3%, 13%);
+}
 
 @layer base {
 	:root {
-		--background: 249, 24%, 94%;
-		--foreground: 240, 3%, 13%;
+		--background: 249 24% 94%;
+		--foreground: 240 3% 13%;
 		--card: 0 0% 100%;
 		--card-foreground: 0 0% 3.9%;
 		--popover: 0 0% 100%;
 		--popover-foreground: 0 0% 3.9%;
-		--primary: 238, 30%, 38%;
-		--primary-foreground: 249, 24%, 94%;
-		--secondary: 240, 61%, 83%;
-		--secondary-foreground: 240, 3%, 13%;
+		--primary: 238 30% 39%;
+		--primary-foreground: 249 24% 94%;
+		--secondary: 239 69% 86%;
+		--secondary-foreground: 240 3% 13%;
 		--muted: 0 0% 96.1%;
 		--muted-foreground: 0 0% 21%;
-		--accent: 46, 92%, 68%;
+		--accent: 46 92% 68%;
 		--accent-foreground: 232 32% 14%;
 		--tab: 0 0% 21%;
-		--tab-subtle: 250, 7%, 84%;
+		--tab-subtle: 250 7% 84%;
 		--destructive: 0 100% 87%;
 		--destructive-foreground: 0 63% 16%;
 		--border: 0 0% 89.8%;
@@ -63,40 +57,23 @@ Desctructive-foreground: #430F0F - 0, 63%, 16%
 		--chart-5: 27 87% 67%;
 		--radius: 0.5rem;
 	}
-
-	/* Dark
-Text: #EEEDF4 - 249, 24%, 94%
-Background: #202022 - 240, 3%, 13%
-Primary:  #C2C3F4 - 239, 69%, 86%
-Primary-foreground: #202022 - 240, 3%, 13%
-Secondary: #272A4A - 235, 31%, 22%
-Secondary-foreground: #EEEDF4 - 249, 24%, 94%
-Accent: #F8D461 - 46, 92%, 68%
-Accent-foreground: #221B02 - 47, 89%, 7%
-Tab: #C7C7C7 - 0, 0%, 78%
-TabSubtle: #39393b - 240, 2%, 23% 
-Desctructive: #430F0F - 0, 63%, 16%
-Destructive-foreground: #FFBDBD - 0, 100%, 87%
-*/
 	.dark {
-		--background: 240, 3%, 13%;
-		--foreground: 249, 24%, 94%;
+		--background: 240 3% 13%;
+		--foreground: 249 24% 94%;
 		--card: 0 0% 3.9%;
 		--card-foreground: 0 0% 98%;
 		--popover: 0 0% 3.9%;
 		--popover-foreground: 0 0% 98%;
-		--primary: 239, 69%, 86%;
-		--primary-hover: 100, 69%, 86%;
-		--primary-foreground: 240, 3%, 13%;
-		--primary-foreground-hover: 100, 3%, 13%;
-		--secondary: 235, 31%, 22%;
-		--secondary-foreground: 249, 24%, 94%;
+		--primary: 239 69% 86%;
+		--primary-foreground: 240 3% 13%;
+		--secondary: 238 30% 39%;
+		--secondary-foreground: 249 24% 94%;
 		--muted: 236 27% 24%;
 		--muted-foreground: 0 0% 78%;
-		--accent: 47, 89%, 7%;
-		--accent-foreground: 46, 92%, 68%;
+		--accent: 47 89% 7%;
+		--accent-foreground: 46 92% 68%;
 		--tab: 0 0% 78%;
-		--tab-subtle: 240, 2%, 23%;
+		--tab-subtle: 240 2% 23%;
 		--destructive: 0 63% 16%;
 		--destructive-foreground: 0 100% 87%;
 		--border: 0 0% 14.9%;

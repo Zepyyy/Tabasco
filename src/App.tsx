@@ -4,12 +4,14 @@ import { useState } from "react";
 import ThemeSwitch from "./components/ThemeSwitch";
 import TabName from "./components/TabName";
 import { NameContext } from "@/contexts/NameContext";
+import "@mantine/core/styles.css";
+import { Button, MantineProvider } from "@mantine/core";
+import { theme as mantineTheme } from "@/theme";
 import { ThemeContext } from "./contexts/ThemeContext";
-import { Button } from "./components/ui/button";
+
 export default function App() {
-	// const theme = useContext(ThemeContext);
-	const [theme, setTheme] = useState("dark");
 	const [tabName, setTabName] = useState("");
+	const [theme, setTheme] = useState("light");
 
 	const handleLocalStorageCall = () => {
 		const defaultSheets = [
@@ -25,33 +27,36 @@ export default function App() {
 	};
 
 	return (
-		<NameContext.Provider value={{ tabName, setTabName }}>
+		<MantineProvider theme={mantineTheme} defaultColorScheme="dark">
 			<ThemeContext.Provider value={{ theme, setTheme }}>
-				<main className="flex min-h-screen bg-background text-foreground selection:bg-primary selection:text-primary-foreground transition ease-out !pointer-events-auto">
-					<ThemeSwitch />
-					<BreadCrumbs />
-					<div className="flex flex-col justify-start w-full p-24">
-						<TabName />
-						<GuitarTabCreator />
-
-						<div className="flex flex-col justify-between gap-1 mt-4">
-							<p className="text-sm text-tab">
-								Click to increment fret number
-							</p>
-							<p className="text-sm text-tab">
-								Right-click to switch note open/mute/off
-							</p>
+				<NameContext.Provider value={{ tabName, setTabName }}>
+					<main className="flex min-h-screen transition ease-out !pointer-events-auto">
+						<ThemeSwitch />
+						<BreadCrumbs />
+						<div className="flex flex-col justify-start w-full p-24">
+							<TabName />
+							<GuitarTabCreator />
+							<div className="flex flex-col justify-between gap-1 mt-4">
+								<p className="text-sm text-tab">
+									Click to increment fret number
+								</p>
+								<p className="text-sm text-tab">
+									Right-click to switch note open/mute/off
+								</p>
+							</div>
+							// TODO: modify the outline button colors, primary
+							always
+							<Button
+								variant="outline"
+								className="w-fit mt-10"
+								onClick={handleLocalStorageCall}
+							>
+								Reset Local Storage
+							</Button>
 						</div>
-						<Button
-							variant="default"
-							onClick={handleLocalStorageCall}
-							className="hover:bg-primary hover:text-primary-foreground w-fit mt-10"
-						>
-							Reset Local Storage
-						</Button>
-					</div>
-				</main>
+					</main>
+				</NameContext.Provider>
 			</ThemeContext.Provider>
-		</NameContext.Provider>
+		</MantineProvider>
 	);
 }

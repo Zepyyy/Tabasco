@@ -105,18 +105,14 @@ export default function BreadCrumbs() {
 	// const tabName = useContext(NameContext);
 	const [editingName, setEditingName] = useState<string | null>(null);
 	const [sheets, setSheets] = useState(() =>
-		JSON.parse(
-			localStorage.getItem("sheets") || JSON.stringify(defaultSheets)
-		)
+		JSON.parse(localStorage.getItem("sheets") || JSON.stringify(defaultSheets)),
 	);
 	const { tabName: tabName } = useContext(NameContext);
 
 	const handleRenameSubmit = (oldName: string, newName: string) => {
 		if (newName && newName !== oldName) {
 			const updatedSheets = sheets.map((sheet: Sheet) =>
-				sheet.tabName === oldName
-					? { ...sheet, tabName: newName }
-					: sheet
+				sheet.tabName === oldName ? { ...sheet, tabName: newName } : sheet,
 			);
 			localStorage.setItem("sheets", JSON.stringify(updatedSheets));
 			setSheets(updatedSheets);
@@ -146,7 +142,7 @@ export default function BreadCrumbs() {
 
 	const sortedSheets = sheets.sort(
 		(a: { position: number }, b: { position: number }) =>
-			a.position - b.position
+			a.position - b.position,
 	);
 
 	return (
@@ -160,9 +156,7 @@ export default function BreadCrumbs() {
 					{editingName ? (
 						<RenameInput
 							initialValue={editingName}
-							onRename={(newName) =>
-								handleRenameSubmit(editingName, newName)
-							}
+							onRename={(newName) => handleRenameSubmit(editingName, newName)}
 							onCancel={() => setEditingName(null)}
 						/>
 					) : (
@@ -176,14 +170,10 @@ export default function BreadCrumbs() {
 								className="bg-background border border-tab rounded-md"
 							>
 								<div className="flex justify-between w-full relative items-center gap-2 rounded-sm px-2 py-1.5 text-sm focus:bg-accent focus:text-accent-foreground">
-									<p className="text-tab">
-										{tabName || "Unnamed"}
-									</p>
+									<p className="text-tab">{tabName || "Unnamed"}</p>
 									<Plus
 										className="w-4 h-4 text-tab cursor-pointer"
-										onClick={() =>
-											console.log("Create new")
-										}
+										onClick={() => console.log("Create new")}
 									/>
 								</div>
 								<DropdownMenuSeparator className="bg-tab" />
@@ -196,16 +186,8 @@ export default function BreadCrumbs() {
 												<DropdownMenuSubTrigger />
 												<SheetActionsMenu
 													sheet={sheet}
-													onRename={() =>
-														setEditingName(
-															sheet.tabName
-														)
-													}
-													onMoveDown={() =>
-														handleMoveSubmit(
-															sheet.position
-														)
-													}
+													onRename={() => setEditingName(sheet.tabName)}
+													onMoveDown={() => handleMoveSubmit(sheet.position)}
 												/>
 											</DropdownMenuSub>
 										</div>

@@ -1,21 +1,27 @@
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { Moon, SunMedium } from "lucide-react";
+import { Moon, Sun } from "lucide-react";
 import { ThemeContext } from "@/contexts/ThemeContext";
+import { useMantineColorScheme } from "@mantine/core";
 
 export default function ThemeSwitch() {
 	const { theme, setTheme } = useContext(ThemeContext);
-	document.documentElement.classList.toggle("dark", theme === "dark");
-	localStorage.setItem("theme", theme);
+	const { setColorScheme } = useMantineColorScheme();
+
+	useEffect(() => {
+		document.documentElement.classList.toggle("dark", theme === "dark");
+		localStorage.setItem("theme", theme);
+		setColorScheme(theme === "dark" ? "dark" : "light"); // Update Mantine's color scheme
+	}, [theme, setColorScheme]);
 
 	return (
 		<Button
-			variant={"outline"}
+			variant={"transparent"}
+			className="absolute top-4 right-4 z-50 [&_svg]:size-6 h-fit w-fit "
 			size="icon"
-			className="[&_svg]:size-8 border-none w-min h-min hover:text-primary hover:bg-primary-foreground absolute top-4 right-4 shadow-none focus-visible:outline-none focus:bg-background z-50"
 			onClick={() => setTheme(theme === "light" ? "dark" : "light")}
 		>
-			{theme === "light" ? <Moon /> : <SunMedium />}
+			{theme === "light" ? <Moon /> : <Sun />}
 		</Button>
 	);
 }

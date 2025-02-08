@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Button } from "@/components/ui/button";
+import { Button } from "./components/ui/button";
 const STRINGS = 6;
 const DEFAULT_NOTE = "-";
 const OPEN_STRING = "0";
@@ -14,7 +14,7 @@ export default function GuitarTabCreator() {
 	const [tab, setTab] = useState<string[][]>(
 		Array(STRINGS)
 			.fill(null)
-			.map(() => Array(NOTES).fill(DEFAULT_NOTE))
+			.map(() => Array(NOTES).fill(DEFAULT_NOTE)),
 	);
 
 	const handleCellClick = (string: number, note: number) => {
@@ -24,10 +24,10 @@ export default function GuitarTabCreator() {
 					? cell === DEFAULT_NOTE
 						? OPEN_STRING
 						: cell === OPEN_STRING
-						? MUTED_STRING
-						: DEFAULT_NOTE
-					: cell
-			)
+							? MUTED_STRING
+							: DEFAULT_NOTE
+					: cell,
+			),
 		);
 		setTab(newTab);
 		console.log(string);
@@ -57,7 +57,7 @@ export default function GuitarTabCreator() {
 		setTab(
 			Array(STRINGS)
 				.fill(null)
-				.map(() => Array(NOTES).fill(DEFAULT_NOTE))
+				.map(() => Array(NOTES).fill(DEFAULT_NOTE)),
 		);
 	};
 
@@ -104,22 +104,18 @@ export default function GuitarTabCreator() {
 					))}
 				</div>
 				<Button
-					variant={"default"}
+					variant={"deep"}
 					onClick={(e) => {
 						e.preventDefault();
 						handleAddNotesClick(6);
 					}}
-					className="w-8 h-full ml-2 py-12 hover:bg-primary hover:tesxt-primary-foreground"
+					className="w-8 h-full ml-2 py-12"
 				>
 					+
 				</Button>
 			</div>
 			<div className="flex gap-4">
-				<Button
-					variant={"default"}
-					onClick={clearTab}
-					className="hover:opacity-50 hover:bg-primary hover:text-primary-foreground"
-				>
+				<Button onClick={clearTab} variant={"deep"}>
 					Clear Tab
 				</Button>
 			</div>
