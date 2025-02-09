@@ -30,17 +30,17 @@ export default function App() {
 		<MantineProvider theme={mantineTheme} defaultColorScheme="dark">
 			<ThemeContext.Provider value={{ theme, setTheme }}>
 				<NameContext.Provider value={{ tabName, setTabName }}>
-					<main className="flex min-h-screen transition ease-out !pointer-events-auto">
+					<main className="flex min-h-screen transition ease-out !pointer-events-auto text-base">
 						<ThemeSwitch />
 						<BreadCrumbs />
 						<div className="flex flex-col justify-start w-full p-24">
 							<TabName />
 							<GuitarTabCreator />
 							<div className="flex flex-col justify-between gap-1 mt-4">
-								<p className="text-sm text-tab">
+								<p className="text-base text-tab font-serifText">
 									Click to increment fret number
 								</p>
-								<p className="text-sm text-tab">
+								<p className="text-base text-tab font-serifText">
 									Right-click to switch note open/mute/off
 								</p>
 							</div>

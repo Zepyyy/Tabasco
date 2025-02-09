@@ -3,9 +3,13 @@
 @tailwind utilities;
 
 :root {
-	font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+	font-family: "Philosopher", -apple-system, BlinkMacSystemFont, "Segoe UI",
+		Roboto, "Helvetica Neue", Arial, sans-serif;
+	font-optical-sizing: auto;
+	font-weight: 500;
+	font-style: normal;
 	line-height: 1.5;
-	font-weight: 400;
+	/* letter-spacing: 0.5px; */
 
 	background-color: var(--background);
 	color-scheme: light dark;
@@ -14,7 +18,6 @@
 	text-rendering: optimizeLegibility;
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
-	pointer-events: auto !important;
 }
 
 /* For light mode */
@@ -45,8 +48,8 @@
 		--accent-foreground: 232 32% 14%;
 		--tab: 0 0% 21%;
 		--tab-subtle: 250 7% 84%;
-		--destructive: 0 100% 87%;
-		--destructive-foreground: 0 63% 16%;
+		--destructive: 0 84% 60%;
+		--destructive-foreground: 0 84% 60%;
 		--border: 0 0% 89.8%;
 		--input: 0 0% 89.8%;
 		--ring: 0 0% 3.9%;
@@ -74,8 +77,8 @@
 		--accent-foreground: 46 92% 68%;
 		--tab: 0 0% 78%;
 		--tab-subtle: 240 2% 23%;
-		--destructive: 0 63% 16%;
-		--destructive-foreground: 0 100% 87%;
+		--destructive: 0 84% 60%;
+		--destructive-foreground: 0 84% 60%;
 		--border: 0 0% 14.9%;
 		--input: 0 0% 14.9%;
 		--ring: 0 0% 83.1%;

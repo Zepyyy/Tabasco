@@ -109,13 +109,17 @@ export default function GuitarTabCreator() {
 						e.preventDefault();
 						handleAddNotesClick(6);
 					}}
-					className="w-8 h-full ml-2 py-12"
+					className="w-8 h-full ml-2 py-12 text-base font-serifText"
 				>
 					+
 				</Button>
 			</div>
 			<div className="flex gap-4">
-				<Button onClick={clearTab} variant={"deep"}>
+				<Button
+					onClick={clearTab}
+					variant={"deep"}
+					className="text-base font-medium font-serifText"
+				>
 					Clear Tab
 				</Button>
 			</div>

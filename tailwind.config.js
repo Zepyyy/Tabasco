@@ -3,6 +3,11 @@ export default {
 	darkMode: ["selector"],
 	content: ["./index.html", "./src/**/*.{ts,tsx,js,jsx}"],
 	theme: {
+		fontFamily: {
+			serifTitle: ['"Philosopher"', 'serif'],
+			serifText: ['"Crimson Pro"', 'serif'],
+			sans: ['"Inter"', 'sans-serif'],
+		},
 		extend: {
 			borderRadius: {
 				lg: 'var(--radius)',

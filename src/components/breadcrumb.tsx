@@ -1,23 +1,14 @@
-import { ChevronDownIcon, Plus } from "lucide-react";
+import { DropdownMenu } from "radix-ui";
+import { ChevronDownIcon, Ellipsis, Plus } from "lucide-react";
+import { useContext, useState } from "react";
+import { NameContext } from "@/contexts/NameContext";
 import {
 	Breadcrumb,
 	BreadcrumbItem,
 	BreadcrumbLink,
 	BreadcrumbList,
 	BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb";
-
-import {
-	DropdownMenu,
-	DropdownMenuContent,
-	DropdownMenuItem,
-	DropdownMenuSeparator,
-	DropdownMenuSub,
-	DropdownMenuSubTrigger,
-	DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { NameContext } from "@/contexts/NameContext";
-import { useContext, useState } from "react";
+} from "./ui/breadcrumb";
 
 interface Sheet {
 	tabName: string;
@@ -67,42 +58,36 @@ const SheetActionsMenu = ({
 	onRename: () => void;
 	onMoveDown: () => void;
 }) => (
-	<DropdownMenuContent
-		side="right"
-		sideOffset={2}
-		alignOffset={-5}
-		className="min-w-[160px] bg-background border border-tab/20 rounded-md shadow-lg p-1 text-sm"
-	>
-		<DropdownMenuItem
-			className="px-3 py-1.5 cursor-pointer hover:bg-primary/10 hover:text-primary rounded-sm transition-colors"
+	<>
+		<DropdownMenu.Item
+			className="group relative flex h-7 select-none items-center pl-3 pr-4 leading-none text-tab outline-none data-[disabled]:pointer-events-none data-[highlighted]:bg-foreground/10"
 			onClick={onRename}
 		>
 			Rename
-		</DropdownMenuItem>
-		<DropdownMenuItem
-			className="px-3 py-1.5 cursor-pointer hover:bg-primary/10 hover:text-primary rounded-sm transition-colors"
+		</DropdownMenu.Item>
+		<DropdownMenu.Item
+			className="group relative flex h-7 select-none items-center pl-3 pr-4 leading-none text-tab outline-none data-[disabled]:pointer-events-none data-[highlighted]:bg-foreground/10"
 			onClick={() => console.log("Duplicate")}
 		>
 			Duplicate
-		</DropdownMenuItem>
-		<DropdownMenuItem
-			className="px-3 py-1.5 cursor-pointer hover:bg-primary/10 hover:text-primary rounded-sm transition-colors"
+		</DropdownMenu.Item>
+		<DropdownMenu.Item
+			className="group relative flex h-7 select-none items-center pl-3 pr-4 leading-none text-tab outline-none data-[disabled]:pointer-events-none data-[highlighted]:bg-foreground/10"
 			onClick={onMoveDown}
 		>
 			Move Down
-		</DropdownMenuItem>
-		<DropdownMenuSeparator className="my-1 h-px bg-tab/10" />
-		<DropdownMenuItem
-			className="px-3 py-1.5 cursor-pointer hover:bg-destructive/10 hover:text-destructive rounded-sm transition-colors"
+		</DropdownMenu.Item>
+		<DropdownMenu.Separator className="h-[0.5px] bg-tab" />
+		<DropdownMenu.Item
+			className="group relative flex h-6 select-none items-center pl-3 pr-4 leading-none text-destructive-foreground outline-none data-[disabled]:pointer-events-none data-[highlighted]:bg-destructive/10"
 			onClick={() => console.log("Delete")}
 		>
 			Delete
-		</DropdownMenuItem>
-	</DropdownMenuContent>
+		</DropdownMenu.Item>
+	</>
 );
 
 export default function BreadCrumbs() {
-	// const tabName = useContext(NameContext);
 	const [editingName, setEditingName] = useState<string | null>(null);
 	const [sheets, setSheets] = useState(() =>
 		JSON.parse(localStorage.getItem("sheets") || JSON.stringify(defaultSheets)),
@@ -146,12 +131,16 @@ export default function BreadCrumbs() {
 	);
 
 	return (
-		<Breadcrumb className="w-full absolute top-0 left-0 pt-12 pl-12 z-20">
+		<Breadcrumb className="w-full absolute top-0 left-0 pt-12 pl-12 z-20 text-xl font-serifTitle">
 			<BreadcrumbList>
 				<BreadcrumbItem>
-					<BreadcrumbLink href="/">...</BreadcrumbLink>
+					<BreadcrumbLink href="/">
+						<p className="text-xl font-serifTitle">...</p>
+					</BreadcrumbLink>
 				</BreadcrumbItem>
-				<BreadcrumbSeparator />
+				<BreadcrumbSeparator>
+					<p className="text-xl font-serifTitle">/</p>
+				</BreadcrumbSeparator>
 				<BreadcrumbItem>
 					{editingName ? (
 						<RenameInput
@@ -160,41 +149,61 @@ export default function BreadCrumbs() {
 							onCancel={() => setEditingName(null)}
 						/>
 					) : (
-						<DropdownMenu>
-							<DropdownMenuTrigger className="flex items-center gap-1 z-40 ">
-								{tabName || "Unnamed"}
-								<ChevronDownIcon />
-							</DropdownMenuTrigger>
-							<DropdownMenuContent
-								align="end"
-								className="bg-background border border-tab rounded-md"
-							>
-								<div className="flex justify-between w-full relative items-center gap-2 rounded-sm px-2 py-1.5 text-sm focus:bg-accent focus:text-accent-foreground">
-									<p className="text-tab">{tabName || "Unnamed"}</p>
-									<Plus
-										className="w-4 h-4 text-tab cursor-pointer"
-										onClick={() => console.log("Create new")}
-									/>
-								</div>
-								<DropdownMenuSeparator className="bg-tab" />
+						<DropdownMenu.Root>
+							<DropdownMenu.Trigger asChild>
+								<button
+									className="appearance-none green-400 border-none inline-flex items-center justify-center rounded-md text-tab transition-all text-xl font-serifTitle gap-2"
+									aria-label="Customise options"
+								>
+									{tabName || "Unnamed"}
+									<ChevronDownIcon size={24} />
+								</button>
+							</DropdownMenu.Trigger>
 
-								{sortedSheets.map((sheet: Sheet) => (
-									<DropdownMenuItem key={sheet.position}>
-										<div className="flex justify-between w-full ">
-											<div>{sheet.tabName}</div>
-											<DropdownMenuSub>
-												<DropdownMenuSubTrigger />
-												<SheetActionsMenu
-													sheet={sheet}
-													onRename={() => setEditingName(sheet.tabName)}
-													onMoveDown={() => handleMoveSubmit(sheet.position)}
-												/>
-											</DropdownMenuSub>
+							<DropdownMenu.Portal>
+								<DropdownMenu.Content
+									className="ml-10 bg-background border border-tab rounded-md shadow-[0px_10px_38px_-10px_rgba(22,_23,_24,_0.35),_0px_10px_20px_-15px_rgba(22,_23,_24,_0.2)] will-change-[opacity,transform] data-[side=bottom]:animate-slideUpAndFade data-[side=left]:animate-slideRightAndFade data-[side=right]:animate-slideLeftAndFade data-[side=top]:animate-slideDownAndFade z-40 text-lg font-serifText"
+									sideOffset={4}
+								>
+									<DropdownMenu.Item className="group relative flex h-7 select-none items-center leading-none text-tab min-w-44 outline-none data-[disabled]:pointer-events-none data-[highlighted]:bg-foreground/10">
+										<div className="flex justify-between w-full relative items-center pl-2 pr-2 rounded-sm text-tab gap-9">
+											{tabName || "Unnamed"}
+											<Plus
+												className="w-4 h-4 cursor-pointer"
+												onClick={() => console.log("Create new")}
+											/>
 										</div>
-									</DropdownMenuItem>
-								))}
-							</DropdownMenuContent>
-						</DropdownMenu>
+									</DropdownMenu.Item>
+									<DropdownMenu.Separator className="h-[0.5px] bg-tab" />
+									{sortedSheets.map((sheet: Sheet) => (
+										<DropdownMenu.Sub>
+											<DropdownMenu.SubTrigger
+												key={sheet.position}
+												className="group relative flex h-6 select-none items-center pl-2 pr-2 leading-none text-tab outline-none data-[disabled]:pointer-events-none data-[highlighted]:bg-foreground/10 my-1 gap-9"
+												// sideOffset={5}
+											>
+												{sheet.tabName}
+												<div className="ml-auto group-data-[highlighted]:text-tab/50">
+													<Ellipsis size={20} />
+												</div>
+											</DropdownMenu.SubTrigger>
+											<DropdownMenu.Portal>
+												<DropdownMenu.SubContent
+													className="bg-background border border-tab rounded-md shadow-[0px_10px_38px_-10px_rgba(22,_23,_24,_0.35),_0px_10px_20px_-15px_rgba(22,_23,_24,_0.2)] z-40 will-change-[opacity,transform] data-[side=bottom]:animate-slideUpAndFade data-[side=left]:animate-slideRightAndFade data-[side=right]:animate-slideLeftAndFade data-[side=top]:animate-slideDownAndFade text-lg font-serifText"
+													sideOffset={6}
+												>
+													<SheetActionsMenu
+														sheet={sheet}
+														onRename={() => setEditingName(sheet.tabName)}
+														onMoveDown={() => handleMoveSubmit(sheet.position)}
+													/>
+												</DropdownMenu.SubContent>
+											</DropdownMenu.Portal>
+										</DropdownMenu.Sub>
+									))}
+								</DropdownMenu.Content>
+							</DropdownMenu.Portal>
+						</DropdownMenu.Root>
 					)}
 				</BreadcrumbItem>
 			</BreadcrumbList>
