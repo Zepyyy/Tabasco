@@ -5,9 +5,10 @@ import ThemeSwitch from "./components/ThemeSwitch";
 import TabName from "./components/TabName";
 import { NameContext } from "@/contexts/NameContext";
 import "@mantine/core/styles.css";
-import { Button, MantineProvider } from "@mantine/core";
+import { MantineProvider } from "@mantine/core";
 import { theme as mantineTheme } from "@/theme";
 import { ThemeContext } from "./contexts/ThemeContext";
+import { Button } from "./components/ui/button";
 
 export default function App() {
 	const [tabName, setTabName] = useState("");
@@ -44,7 +45,6 @@ export default function App() {
 									Right-click to switch note open/mute/off
 								</p>
 							</div>
-							{/* TODO: modify the outline button colors, primary always */}
 							<Button
 								variant="outline"
 								className="w-fit mt-10"

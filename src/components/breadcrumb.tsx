@@ -50,37 +50,43 @@ const RenameInput = ({
 
 // Reusable component for sheet actions menu
 const SheetActionsMenu = ({
-	// sheet,
+	sheet,
 	onRename,
 	onMoveDown,
+	onDelete,
 }: {
 	sheet: Sheet;
 	onRename: () => void;
 	onMoveDown: () => void;
+	onDelete: () => void;
 }) => (
 	<>
 		<DropdownMenu.Item
 			className="group relative flex h-7 select-none items-center pl-3 pr-4 leading-none text-tab outline-none data-[disabled]:pointer-events-none data-[highlighted]:bg-foreground/10"
 			onClick={onRename}
+			key={`Rename-${sheet.position}`}
 		>
 			Rename
 		</DropdownMenu.Item>
 		<DropdownMenu.Item
 			className="group relative flex h-7 select-none items-center pl-3 pr-4 leading-none text-tab outline-none data-[disabled]:pointer-events-none data-[highlighted]:bg-foreground/10"
 			onClick={() => console.log("Duplicate")}
+			key={`Duplicate-${sheet.position}`}
 		>
 			Duplicate
 		</DropdownMenu.Item>
 		<DropdownMenu.Item
 			className="group relative flex h-7 select-none items-center pl-3 pr-4 leading-none text-tab outline-none data-[disabled]:pointer-events-none data-[highlighted]:bg-foreground/10"
 			onClick={onMoveDown}
+			key={`Move-${sheet.position}`}
 		>
 			Move Down
 		</DropdownMenu.Item>
 		<DropdownMenu.Separator className="h-[0.5px] bg-tab" />
 		<DropdownMenu.Item
 			className="group relative flex h-6 select-none items-center pl-3 pr-4 leading-none text-destructive-foreground outline-none data-[disabled]:pointer-events-none data-[highlighted]:bg-destructive/10"
-			onClick={() => console.log("Delete")}
+			onClick={onDelete}
+			key={`Delete-${sheet.position}`}
 		>
 			Delete
 		</DropdownMenu.Item>
@@ -121,6 +127,28 @@ export default function BreadCrumbs() {
 			return sheet;
 		});
 
+		localStorage.setItem("sheets", JSON.stringify(updatedSheets));
+		setSheets(updatedSheets);
+	};
+
+	const handleDelete = (position: number) => {
+		const updatedSheets = sheets
+			.filter((sheet: Sheet) => sheet.position !== position)
+			.map((sheet: Sheet, index: number) => ({
+				...sheet,
+				position: index,
+			}));
+
+		localStorage.setItem("sheets", JSON.stringify(updatedSheets));
+		setSheets(updatedSheets);
+	};
+
+	const handleAddSheet = () => {
+		const newSheet = {
+			tabName: `Sheet ${sheets.length + 1}`,
+			position: sheets.length,
+		};
+		const updatedSheets = [...sheets, newSheet];
 		localStorage.setItem("sheets", JSON.stringify(updatedSheets));
 		setSheets(updatedSheets);
 	};
@@ -170,18 +198,14 @@ export default function BreadCrumbs() {
 											{tabName || "Unnamed"}
 											<Plus
 												className="w-4 h-4 cursor-pointer"
-												onClick={() => console.log("Create new")}
+												onClick={handleAddSheet}
 											/>
 										</div>
 									</DropdownMenu.Item>
 									<DropdownMenu.Separator className="h-[0.5px] bg-tab" />
 									{sortedSheets.map((sheet: Sheet) => (
-										<DropdownMenu.Sub>
-											<DropdownMenu.SubTrigger
-												key={sheet.position}
-												className="group relative flex h-6 select-none items-center pl-2 pr-2 leading-none text-tab outline-none data-[disabled]:pointer-events-none data-[highlighted]:bg-foreground/10 my-1 gap-9"
-												// sideOffset={5}
-											>
+										<DropdownMenu.Sub key={sheet.position}>
+											<DropdownMenu.SubTrigger className="group relative flex h-6 select-none items-center pl-2 pr-2 leading-none text-tab outline-none data-[disabled]:pointer-events-none data-[highlighted]:bg-foreground/10 my-1 last:my-0 gap-9">
 												{sheet.tabName}
 												<div className="ml-auto group-data-[highlighted]:text-tab/50">
 													<Ellipsis size={20} />
@@ -191,11 +215,13 @@ export default function BreadCrumbs() {
 												<DropdownMenu.SubContent
 													className="bg-background border border-tab rounded-md shadow-[0px_10px_38px_-10px_rgba(22,_23,_24,_0.35),_0px_10px_20px_-15px_rgba(22,_23,_24,_0.2)] z-40 will-change-[opacity,transform] data-[side=bottom]:animate-slideUpAndFade data-[side=left]:animate-slideRightAndFade data-[side=right]:animate-slideLeftAndFade data-[side=top]:animate-slideDownAndFade text-lg font-serifText"
 													sideOffset={6}
+													key={sheet.position}
 												>
 													<SheetActionsMenu
 														sheet={sheet}
 														onRename={() => setEditingName(sheet.tabName)}
 														onMoveDown={() => handleMoveSubmit(sheet.position)}
+														onDelete={() => handleDelete(sheet.position)}
 													/>
 												</DropdownMenu.SubContent>
 											</DropdownMenu.Portal>

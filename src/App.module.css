@@ -20,6 +20,17 @@ button {
 			background-color: var(--mantine-color-lacouleur-8);
 		}
 	}
+
+	&[data-variant="outline"] {
+		@mixin dark {
+			color: var(--mantine-color-lacouleur-2);
+			border: 1px solid var(--mantine-color-lacouleur-2);
+		}
+		@mixin light {
+			color: var(--mantine-color-lacouleur-8);
+			border: 1px solid var(--mantine-color-lacouleur-8);
+		}
+	}
 	&[data-variant="gradient"] {
 		color: var(--mantine-color-body);
 
