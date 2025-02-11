@@ -16,7 +16,7 @@ export default function TabName() {
 			onChange={(e) => handleInputChange(e)}
 			maxLength={60}
 			placeholder="Enter tab name"
-			className="font-normal mb-4 border-none shadow-none focus-visible:ring-0 md:text-4xl py-0 h-fit w-full text-3xl font-serifTitle antialiased"
+			className="font-normal mt-12 mb-4 border-none shadow-none focus-visible:ring-0 md:text-4xl py-0 h-fit w-full text-4xl font-serifTitle antialiased"
 		/>
 	);
 }

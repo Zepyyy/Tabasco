@@ -9,12 +9,12 @@ const MUTED_STRING = "X";
 const MAX_COLS = 48;
 
 export default function GuitarTabCreator() {
-	const [NOTES, setNOTES] = useState(24);
+	const [NOTES, setNOTES] = useState(48);
 
 	const [tab, setTab] = useState<string[][]>(
 		Array(STRINGS)
 			.fill(null)
-			.map(() => Array(NOTES).fill(DEFAULT_NOTE)),
+			.map(() => Array(NOTES).fill(DEFAULT_NOTE))
 	);
 
 	const handleCellClick = (string: number, note: number) => {
@@ -24,10 +24,10 @@ export default function GuitarTabCreator() {
 					? cell === DEFAULT_NOTE
 						? OPEN_STRING
 						: cell === OPEN_STRING
-							? MUTED_STRING
-							: DEFAULT_NOTE
-					: cell,
-			),
+						? MUTED_STRING
+						: DEFAULT_NOTE
+					: cell
+			)
 		);
 		setTab(newTab);
 		console.log(string);
@@ -57,7 +57,7 @@ export default function GuitarTabCreator() {
 		setTab(
 			Array(STRINGS)
 				.fill(null)
-				.map(() => Array(NOTES).fill(DEFAULT_NOTE)),
+				.map(() => Array(NOTES).fill(DEFAULT_NOTE))
 		);
 	};
 
@@ -84,11 +84,11 @@ export default function GuitarTabCreator() {
 			<div className="mb-4 flex flex-row items-center">
 				<div className="rounded-md">
 					{tab.map((string, i) => (
-						<div key={i} className="flex" id="row">
+						<div key={i} id="row" className="flex">
 							{string.map((note, j) => (
 								<div
 									key={j}
-									className="border-r-2 last:border-none [&:nth-child(6n)]:border-tab border-tabsubtle w-8 h-8 flex items-center justify-center cursor-grabbing text-foreground z-10"
+									className={`border-r-2 last:border-none w-8 h-8 flex items-center justify-center cursor-grabbing text-foreground z-10 text-lg font-serifText [&:nth-child(6n)]:border-tab border-tabsubtle`}
 									onClick={() => incrementNotesNumber(i, j)}
 									onContextMenu={(e) => {
 										e.preventDefault();
@@ -104,10 +104,10 @@ export default function GuitarTabCreator() {
 					))}
 				</div>
 				<Button
-					variant={"deep"}
+					variant={"outline"}
 					onClick={(e) => {
 						e.preventDefault();
-						handleAddNotesClick(6);
+						handleAddNotesClick(12);
 					}}
 					className="w-8 h-full ml-2 py-12 text-base font-serifText"
 				>
@@ -118,7 +118,7 @@ export default function GuitarTabCreator() {
 				<Button
 					onClick={clearTab}
 					variant={"deep"}
-					className="text-base font-medium font-serifText"
+					className="text-xl font-normal font-serifText py-6 px-4"
 				>
 					Clear Tab
 				</Button>
