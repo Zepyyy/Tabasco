@@ -14,12 +14,10 @@ export default async function addTab({
 	tabName,
 	tabs,
 	position,
-	current,
 }: {
 	tabName?: string;
 	tabs?: string[][];
 	position?: string;
-	current?: boolean;
 }) {
 	try {
 		console.log("this is triggered");
@@ -39,7 +37,6 @@ export default async function addTab({
 					.fill(null)
 					.map(() => Array(48).fill("-")),
 			position: position ? position : maxPosition.toString(), // Increment the position
-			current: current ? current : false,
 		});
 		console.log("this is added");
 	} catch (error) {
