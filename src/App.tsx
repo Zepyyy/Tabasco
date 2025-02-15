@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import GuitarTabCreator from "./components/guitar-tab-creator";
 import BreadCrumbs from "./components/breadcrumb";
 import { useState } from "react";
@@ -14,7 +13,7 @@ import { useLiveQuery } from "dexie-react-hooks";
 import { TabsContext } from "./contexts/TabsContext";
 import { NameContext } from "./contexts/NameContext";
 import { PositionContext } from "./contexts/PositionContext";
-import { Analytics } from "@vercel/analytics/next";
+import { Analytics } from "@vercel/analytics/react";
 
 export default function App() {
 	const [tabName, setTabName] = useState("");
