@@ -2,8 +2,11 @@ import { DropdownMenu } from "radix-ui";
 import { ChevronDownIcon, Ellipsis, Plus } from "lucide-react";
 import { useContext, useState } from "react";
 import { NameContext } from "@/contexts/NameContext";
+import addTab from "@/db/crud/AddTab";
+import UpdateTabById from "@/db/crud/UpdateTab";
+import deleteTabById from "@/db/crud/DeleteTab";
 
-interface Sheet {
+interface Sheets {
 	tabName: string;
 	position: number;
 	tabs: string[][]; // This is a placeholder for the actual tab data
@@ -35,7 +38,9 @@ const RenameInput = ({
 		onKeyDown={(e) => {
 			e.stopPropagation();
 			if (e.key === "Enter") onRename(e.currentTarget.value);
-			if (e.key === "Escape") onCancel();
+			if (e.key === "Escape") {
+				onCancel();
+			}
 		}}
 	/>
 );
@@ -50,7 +55,7 @@ const SheetActionsMenu = ({
 	onMoveDown,
 	onDelete,
 }: {
-	sheet: Sheet;
+	sheet: Sheets;
 	onRename: () => void;
 	onMoveDown: () => void;
 	onDelete: () => void;
@@ -91,6 +96,7 @@ const SheetActionsMenu = ({
 export default function Dropdownmenu() {
 	const { tabName: tabName } = useContext(NameContext);
 
+	const [id, setId] = useState("");
 	const [editingName, setEditingName] = useState<string | null>(null);
 	const [sheets, setSheets] = useState(() =>
 		JSON.parse(
@@ -100,14 +106,9 @@ export default function Dropdownmenu() {
 
 	const handleRenameSubmit = (oldName: string, newName: string) => {
 		if (newName && newName !== oldName) {
-			const updatedSheets = sheets.map((sheet: Sheet) =>
-				sheet.tabName === oldName
-					? { ...sheet, tabName: newName }
-					: sheet
-			);
-			localStorage.setItem("sheets", JSON.stringify(updatedSheets));
-			setSheets(updatedSheets);
+			UpdateTabById(id, newName);
 		}
+		setId("");
 		setEditingName(null);
 	};
 
@@ -117,7 +118,7 @@ export default function Dropdownmenu() {
 		// Check if the new position is valid (i.e., it exists in the sheets array)
 		if (newPosition >= sheets.length) return; // Prevent moving beyond the last sheet
 
-		const updatedSheets = sheets.map((sheet: Sheet) => {
+		const updatedSheets = sheets.map((sheet: Sheets) => {
 			if (sheet.position === oldPosition) {
 				return { ...sheet, position: newPosition };
 			}
@@ -131,27 +132,6 @@ export default function Dropdownmenu() {
 		setSheets(updatedSheets);
 	};
 
-	const handleDelete = (position: number) => {
-		const updatedSheets = sheets
-			.filter((sheet: Sheet) => sheet.position !== position)
-			.map((sheet: Sheet, index: number) => ({
-				...sheet,
-				position: index,
-			}));
-
-		localStorage.setItem("sheets", JSON.stringify(updatedSheets));
-		setSheets(updatedSheets);
-	};
-
-	const handleAddSheet = () => {
-		const newSheet = {
-			tabName: `Sheet ${sheets.length + 1}`,
-			position: sheets.length,
-		};
-		const updatedSheets = [...sheets, newSheet];
-		localStorage.setItem("sheets", JSON.stringify(updatedSheets));
-		setSheets(updatedSheets);
-	};
 	const sortedSheets = sheets.sort(
 		(a: { position: number }, b: { position: number }) =>
 			a.position - b.position
@@ -171,13 +151,14 @@ export default function Dropdownmenu() {
 				<DropdownMenu.Root>
 					<DropdownMenu.Trigger asChild>
 						<button
-							className="appearance-none green-400 border-none inline-flex items-center justify-center rounded-md text-tab transition-all text-xl font-serifTitle gap-2"
+							className="appearance-none green-400 border-none inline-flex items-center justify-center rounded-md text-tab transition-all text-xl font-serifText gap-2"
 							aria-label="Customise options"
 						>
 							{tabName || "Unnamed"}
 							<ChevronDownIcon size={24} />
 						</button>
 					</DropdownMenu.Trigger>
+					<div>qsd: {id}</div>
 
 					<DropdownMenu.Portal>
 						<DropdownMenu.Content
@@ -189,12 +170,12 @@ export default function Dropdownmenu() {
 									{tabName || "Unnamed"}
 									<Plus
 										className="w-4 h-4 cursor-pointer"
-										onClick={handleAddSheet}
+										onClick={() => addTab()}
 									/>
 								</div>
 							</DropdownMenu.Item>
 							<DropdownMenu.Separator className="h-[0.5px] bg-tab" />
-							{sortedSheets.map((sheet: Sheet) => (
+							{sortedSheets.map((sheet: Sheets) => (
 								<DropdownMenu.Sub key={sheet.position}>
 									<DropdownMenu.SubTrigger className="group relative flex h-6 select-none items-center pl-2 pr-2 leading-none text-tab outline-none data-[disabled]:pointer-events-none data-[highlighted]:bg-foreground/10 my-1 last:my-0 gap-9">
 										{sheet.tabName}
@@ -210,18 +191,23 @@ export default function Dropdownmenu() {
 										>
 											<SheetActionsMenu
 												sheet={sheet}
-												onRename={() =>
+												onRename={() => {
+													setId(
+														sheet.position.toString()
+													);
 													setEditingName(
 														sheet.tabName
-													)
-												}
+													);
+												}}
 												onMoveDown={() =>
 													handleMoveSubmit(
 														sheet.position
 													)
 												}
 												onDelete={() =>
-													handleDelete(sheet.position)
+													deleteTabById(
+														sheet.position.toString()
+													)
 												}
 											/>
 										</DropdownMenu.SubContent>

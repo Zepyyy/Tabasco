@@ -4,7 +4,7 @@ export default {
 	content: ["./index.html", "./src/**/*.{ts,tsx,js,jsx}"],
 	theme: {
 		fontFamily: {
-			serifTitle: ['"Philosopher"', 'serif'],
+			// serifTitle: ['"Philosopher"', 'serif'],
 			serifText: ['"Crimson Pro"', 'serif'],
 			sans: ['"Inter"', 'sans-serif'],
 		},

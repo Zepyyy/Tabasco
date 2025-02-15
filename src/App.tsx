@@ -9,10 +9,13 @@ import { MantineProvider } from "@mantine/core";
 import { theme as mantineTheme } from "@/theme";
 import { ThemeContext } from "./contexts/ThemeContext";
 import { Button } from "./components/ui/button";
+import useTabs from "./db/crud/ListTabs";
 
 export default function App() {
 	const [tabName, setTabName] = useState("");
 	const [theme, setTheme] = useState("light");
+	const tabs = useTabs();
+	// const [logTabs, setLogTabs] = useState(false);
 
 	const handleLocalStorageCall = () => {
 		const defaultSheets = [
@@ -51,6 +54,14 @@ export default function App() {
 								onClick={handleLocalStorageCall}
 							>
 								Reset Local Storage
+							</Button>
+							{/* TODO: Make that work */}
+							<Button
+								variant="outline"
+								className="w-fit mt-10"
+								onClick={() => console.log("tabs", tabs)}
+							>
+								log trabs
 							</Button>
 						</div>
 					</main>
