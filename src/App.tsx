@@ -14,6 +14,7 @@ import { useLiveQuery } from "dexie-react-hooks";
 import { TabsContext } from "./contexts/TabsContext";
 import { NameContext } from "./contexts/NameContext";
 import { PositionContext } from "./contexts/PositionContext";
+import { Analytics } from "@vercel/analytics/next";
 
 export default function App() {
 	const [tabName, setTabName] = useState("");
@@ -51,6 +52,7 @@ export default function App() {
 									</Button>
 								</div>
 							</main>
+							<Analytics />
 						</NameContext.Provider>
 					</TabsContext.Provider>
 				</PositionContext.Provider>
