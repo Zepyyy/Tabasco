@@ -11,7 +11,7 @@ function getLastTabPosition() {
 export default async function addTab(
 	tabName?: string,
 	tabs?: string[][],
-	position?: string
+	position?: string,
 ) {
 	try {
 		// Get the current tabs, so we can determine the position of the new tab
@@ -29,8 +29,6 @@ export default async function addTab(
 					.map(() => Array(48).fill("-")),
 			position: position ? position : maxPosition.toString(), // Increment the position
 		});
-
-		console.log(tabs);
 	} catch (error) {
 		console.log(error);
 	}

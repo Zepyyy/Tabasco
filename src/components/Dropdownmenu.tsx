@@ -3,20 +3,16 @@ import { ChevronDownIcon, Ellipsis, Plus } from "lucide-react";
 import { useContext, useState } from "react";
 import { NameContext } from "@/contexts/NameContext";
 import addTab from "@/db/crud/AddTab";
-import UpdateTabById from "@/db/crud/UpdateTab";
+import UpdateTabById, { updateTabPositionById } from "@/db/crud/UpdateTab";
 import deleteTabById from "@/db/crud/DeleteTab";
+import { TabsContext } from "@/contexts/TabsContext";
+import { TabInfo } from "@/db/db";
 
-interface Sheets {
-	tabName: string;
-	position: number;
-	tabs: string[][]; // This is a placeholder for the actual tab data
-}
-
-const defaultSheets = [
-	{ tabName: "Powfu - Coffee for your head", position: 0, tabs: [[]] },
-	{ tabName: "Naruto - Sadness and Sorrow", position: 1, tabs: [[]] },
-	{ tabName: "Minecraft - Sweden", position: 2, tabs: [[]] },
-];
+// const defaultSheets = [
+// 	{ tabName: "Powfu - Coffee for your head", position: 0, tabs: [[]] },
+// 	{ tabName: "Naruto - Sadness and Sorrow", position: 1, tabs: [[]] },
+// 	{ tabName: "Minecraft - Sweden", position: 2, tabs: [[]] },
+// ];
 
 // Reusable component for the rename input
 const RenameInput = ({
@@ -50,12 +46,12 @@ const RenameInput = ({
 
 // Reusable component for sheet actions menu
 const SheetActionsMenu = ({
-	sheet,
+	tab,
 	onRename,
 	onMoveDown,
 	onDelete,
 }: {
-	sheet: Sheets;
+	tab: TabInfo;
 	onRename: () => void;
 	onMoveDown: () => void;
 	onDelete: () => void;
@@ -64,21 +60,21 @@ const SheetActionsMenu = ({
 		<DropdownMenu.Item
 			className="group relative flex h-7 select-none items-center pl-3 pr-4 leading-none text-tab outline-none data-[disabled]:pointer-events-none data-[highlighted]:bg-foreground/10"
 			onClick={onRename}
-			key={`Rename-${sheet.position}`}
+			key={`Rename-${tab.position}`}
 		>
 			Rename
 		</DropdownMenu.Item>
 		<DropdownMenu.Item
 			className="group relative flex h-7 select-none items-center pl-3 pr-4 leading-none text-tab outline-none data-[disabled]:pointer-events-none data-[highlighted]:bg-foreground/10"
 			onClick={() => console.log("Duplicate")}
-			key={`Duplicate-${sheet.position}`}
+			key={`Duplicate-${tab.position}`}
 		>
 			Duplicate
 		</DropdownMenu.Item>
 		<DropdownMenu.Item
 			className="group relative flex h-7 select-none items-center pl-3 pr-4 leading-none text-tab outline-none data-[disabled]:pointer-events-none data-[highlighted]:bg-foreground/10"
 			onClick={onMoveDown}
-			key={`Move-${sheet.position}`}
+			key={`Move-${tab.position}`}
 		>
 			Move Down
 		</DropdownMenu.Item>
@@ -86,7 +82,7 @@ const SheetActionsMenu = ({
 		<DropdownMenu.Item
 			className="group relative flex h-6 select-none items-center pl-3 pr-4 leading-none text-destructive-foreground outline-none data-[disabled]:pointer-events-none data-[highlighted]:bg-destructive/10"
 			onClick={onDelete}
-			key={`Delete-${sheet.position}`}
+			key={`Delete-${tab.position}`}
 		>
 			Delete
 		</DropdownMenu.Item>
@@ -95,14 +91,9 @@ const SheetActionsMenu = ({
 
 export default function Dropdownmenu() {
 	const { tabName: tabName } = useContext(NameContext);
-
+	const tabs = useContext(TabsContext);
 	const [id, setId] = useState("");
 	const [editingName, setEditingName] = useState<string | null>(null);
-	const [sheets, setSheets] = useState(() =>
-		JSON.parse(
-			localStorage.getItem("sheets") || JSON.stringify(defaultSheets)
-		)
-	);
 
 	const handleRenameSubmit = (oldName: string, newName: string) => {
 		if (newName && newName !== oldName) {
@@ -112,39 +103,28 @@ export default function Dropdownmenu() {
 		setEditingName(null);
 	};
 
-	const handleMoveSubmit = (oldPosition: number) => {
-		const newPosition = oldPosition + 1;
+	const handleMoveSubmit = (oldPosition: string) => {
+		const newPosition = parseInt(oldPosition) + 1;
+		// Check if the new position is valid (i.e., it exists in the tabs array)
+		if (newPosition >= tabs.length) return; // Prevent moving beyond the last tab
 
-		// Check if the new position is valid (i.e., it exists in the sheets array)
-		if (newPosition >= sheets.length) return; // Prevent moving beyond the last sheet
-
-		const updatedSheets = sheets.map((sheet: Sheets) => {
-			if (sheet.position === oldPosition) {
-				return { ...sheet, position: newPosition };
+		tabs.map((tab: TabInfo) => {
+			if (tab.position === oldPosition) {
+				updateTabPositionById(oldPosition, newPosition.toString());
 			}
-			if (sheet.position === newPosition) {
-				return { ...sheet, position: oldPosition };
+			if (tab.position === newPosition.toString()) {
+				updateTabPositionById(newPosition.toString(), oldPosition);
 			}
-			return sheet;
+			return;
 		});
-
-		localStorage.setItem("sheets", JSON.stringify(updatedSheets));
-		setSheets(updatedSheets);
 	};
-
-	const sortedSheets = sheets.sort(
-		(a: { position: number }, b: { position: number }) =>
-			a.position - b.position
-	);
 
 	return (
 		<>
 			{editingName ? (
 				<RenameInput
 					initialValue={editingName}
-					onRename={(newName) =>
-						handleRenameSubmit(editingName, newName)
-					}
+					onRename={(newName) => handleRenameSubmit(editingName, newName)}
 					onCancel={() => setEditingName(null)}
 				/>
 			) : (
@@ -175,10 +155,10 @@ export default function Dropdownmenu() {
 								</div>
 							</DropdownMenu.Item>
 							<DropdownMenu.Separator className="h-[0.5px] bg-tab" />
-							{sortedSheets.map((sheet: Sheets) => (
-								<DropdownMenu.Sub key={sheet.position}>
+							{tabs.map((tab: TabInfo) => (
+								<DropdownMenu.Sub key={tab.position}>
 									<DropdownMenu.SubTrigger className="group relative flex h-6 select-none items-center pl-2 pr-2 leading-none text-tab outline-none data-[disabled]:pointer-events-none data-[highlighted]:bg-foreground/10 my-1 last:my-0 gap-9">
-										{sheet.tabName}
+										{tab.tabName}
 										<div className="ml-auto group-data-[highlighted]:text-tab/50">
 											<Ellipsis size={20} />
 										</div>
@@ -187,28 +167,16 @@ export default function Dropdownmenu() {
 										<DropdownMenu.SubContent
 											className="bg-background border border-tab rounded-md shadow-[0px_10px_38px_-10px_rgba(22,_23,_24,_0.35),_0px_10px_20px_-15px_rgba(22,_23,_24,_0.2)] z-40 will-change-[opacity,transform] data-[side=bottom]:animate-slideUpAndFade data-[side=left]:animate-slideRightAndFade data-[side=right]:animate-slideLeftAndFade data-[side=top]:animate-slideDownAndFade text-lg font-serifText"
 											sideOffset={6}
-											key={sheet.position}
+											key={tab.position}
 										>
 											<SheetActionsMenu
-												sheet={sheet}
+												tab={tab}
 												onRename={() => {
-													setId(
-														sheet.position.toString()
-													);
-													setEditingName(
-														sheet.tabName
-													);
+													setId(tab.position);
+													setEditingName(tab.tabName);
 												}}
-												onMoveDown={() =>
-													handleMoveSubmit(
-														sheet.position
-													)
-												}
-												onDelete={() =>
-													deleteTabById(
-														sheet.position.toString()
-													)
-												}
+												onMoveDown={() => handleMoveSubmit(tab.position)}
+												onDelete={() => deleteTabById(tab.position)}
 											/>
 										</DropdownMenu.SubContent>
 									</DropdownMenu.Portal>

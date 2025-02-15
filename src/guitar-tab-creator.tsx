@@ -14,7 +14,7 @@ export default function GuitarTabCreator() {
 	const [tab, setTab] = useState(
 		Array(STRINGS)
 			.fill(null)
-			.map(() => Array(NOTES).fill(DEFAULT_NOTE)) as string[][]
+			.map(() => Array(NOTES).fill(DEFAULT_NOTE)) as string[][],
 	);
 	// const StoredTabs = useLiveQuery(async () => {
 	// 	return await db.TabInfo.toArray();
@@ -44,10 +44,10 @@ export default function GuitarTabCreator() {
 					? cell === DEFAULT_NOTE
 						? OPEN_STRING
 						: cell === OPEN_STRING
-						? MUTED_STRING
-						: DEFAULT_NOTE
-					: cell
-			)
+							? MUTED_STRING
+							: DEFAULT_NOTE
+					: cell,
+			),
 		);
 		setTab(newTab);
 		console.log(string);
@@ -77,7 +77,7 @@ export default function GuitarTabCreator() {
 		setTab(
 			Array(STRINGS)
 				.fill(null)
-				.map(() => Array(NOTES).fill(DEFAULT_NOTE))
+				.map(() => Array(NOTES).fill(DEFAULT_NOTE)),
 		);
 	};
 
