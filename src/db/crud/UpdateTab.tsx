@@ -14,6 +14,14 @@ export default async function updateTabNameById(id: string, newName: string) {
 		console.log(`Failed to update tab: ${error}`);
 	}
 }
+export async function updateCurrentTabs(tabs: string[][], position: string) {
+	try {
+		await db.TabInfo.where("position").equals(position).modify({ tabs: tabs });
+		console.log(`Updated tab (Tabbed): "${position}"`);
+	} catch (error) {
+		console.log(`Failed to update tab: ${error}`);
+	}
+}
 
 export async function updateTabPositionById(id: string, position: string) {
 	try {

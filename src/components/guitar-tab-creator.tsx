@@ -1,7 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { Button } from "@/components/ui/button";
+import { updateCurrentTabs } from "@/db/crud/UpdateTab";
+import { PositionContext } from "@/contexts/PositionContext";
 
 const STRINGS = 6;
 const DEFAULT_NOTE = "-";
@@ -10,6 +12,8 @@ const MUTED_STRING = "X";
 const MAX_COLS = 48;
 
 export default function GuitarTabCreator() {
+	const { position } = useContext(PositionContext);
+
 	const [NOTES, setNOTES] = useState(48);
 	const [tab, setTab] = useState(
 		Array(STRINGS)
@@ -50,6 +54,7 @@ export default function GuitarTabCreator() {
 			),
 		);
 		setTab(newTab);
+		updateCurrentTabs(newTab, position);
 		console.log(string);
 	};
 

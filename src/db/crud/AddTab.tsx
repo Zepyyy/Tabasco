@@ -5,19 +5,30 @@ import { db } from "../db";
 // }
 
 function getLastTabPosition() {
-	return db.TabInfo.orderBy("position").last();
+	return db.TabInfo.orderBy("position")
+		.last()
+		.then((tab) => tab);
 }
 
-export default async function addTab(
-	tabName?: string,
-	tabs?: string[][],
-	position?: string,
-) {
+export default async function addTab({
+	tabName,
+	tabs,
+	position,
+	current,
+}: {
+	tabName?: string;
+	tabs?: string[][];
+	position?: string;
+	current?: boolean;
+}) {
 	try {
+		console.log("this is triggered");
 		// Get the current tabs, so we can determine the position of the new tab
 		// const currentTabs = await getTabs();
 		const lastTab = await getLastTabPosition();
+		console.log(lastTab);
 		const maxPosition = lastTab ? parseInt(lastTab.position) + 1 : 0;
+		console.log(maxPosition);
 
 		// Add the new value!
 		await db.TabInfo.add({
@@ -28,8 +39,9 @@ export default async function addTab(
 					.fill(null)
 					.map(() => Array(48).fill("-")),
 			position: position ? position : maxPosition.toString(), // Increment the position
-			current: false,
+			current: current ? current : false,
 		});
+		console.log("this is added");
 	} catch (error) {
 		console.log(error);
 	}

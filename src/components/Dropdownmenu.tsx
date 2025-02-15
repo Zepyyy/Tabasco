@@ -150,7 +150,7 @@ export default function Dropdownmenu() {
 									{tabName || "Unnamed"}
 									<Plus
 										className="w-4 h-4 cursor-pointer"
-										onClick={() => addTab()}
+										onClick={() => addTab({})}
 									/>
 								</div>
 							</DropdownMenu.Item>
