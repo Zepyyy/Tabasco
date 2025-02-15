@@ -1,13 +1,8 @@
 import { db } from "../db";
 
-// function getTabs() {
-// 	return db.TabInfo.toArray();
-// }
-
-function getLastTabPosition() {
-	return db.TabInfo.orderBy("position")
-		.last()
-		.then((tab) => tab);
+async function getLastTabPosition() {
+	const tab = await db.TabInfo.orderBy("position").last();
+	return tab;
 }
 
 export default async function addTab({

@@ -20,26 +20,6 @@ export default function GuitarTabCreator() {
 			.fill(null)
 			.map(() => Array(NOTES).fill(DEFAULT_NOTE)) as string[][],
 	);
-	// const StoredTabs = useLiveQuery(async () => {
-	// 	return await db.TabInfo.toArray();
-	// });
-	// console.log(StoredTabs);
-
-	// if (!StoredTabs) {
-	// 	try {
-	// 		const id = db.TabInfo.add({
-	// 			// id: Date.now(),
-	// 			tabName: "alezd",
-	// 			tabs: Array(STRINGS)
-	// 				.fill(null)
-	// 				.map(() => Array(MAX_COLS).fill(DEFAULT_NOTE)),
-	// 			position: "0",
-	// 		});
-	// 		console.log(id);
-	// 	} catch (error) {
-	// 		console.log(`Failed to add Unnamed: ${error}`);
-	// 	}
-	// }
 
 	const handleCellClick = (string: number, note: number) => {
 		const newTab = tab.map((row, i) =>

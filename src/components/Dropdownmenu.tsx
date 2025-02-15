@@ -8,12 +8,6 @@ import deleteTabById from "@/db/crud/DeleteTab";
 import { TabsContext } from "@/contexts/TabsContext";
 import { TabInfo } from "@/db/db";
 
-// const defaultSheets = [
-// 	{ tabName: "Powfu - Coffee for your head", position: 0, tabs: [[]] },
-// 	{ tabName: "Naruto - Sadness and Sorrow", position: 1, tabs: [[]] },
-// 	{ tabName: "Minecraft - Sweden", position: 2, tabs: [[]] },
-// ];
-
 // Reusable component for the rename input
 const RenameInput = ({
 	initialValue,
@@ -42,7 +36,6 @@ const RenameInput = ({
 );
 
 // [{"tabName":"Second","position":1},{"tabName":"First","position":0},{"tabName":"Third","position":2}]
-// sheets:"[{"tabName":"Powfu - Coffee for your head","position":0},{"tabName":"Naruto - Sadness and Sorrow","position":1},{"tabName":"Minecraft - Sweden","position":2}]"
 
 // Reusable component for sheet actions menu
 const SheetActionsMenu = ({
@@ -111,10 +104,6 @@ export default function Dropdownmenu() {
 			if (tab.position === oldPosition) {
 				updateTabPositionById(oldPosition, newPosition.toString());
 			}
-			// if (tab.position === newPosition.toString()) {
-			// 	console.log("tab.position matched newPosition");
-			// 	updateTabPositionById(newPosition.toString(), oldPosition);
-			// }
 			return;
 		});
 	};
@@ -138,8 +127,6 @@ export default function Dropdownmenu() {
 							<ChevronDownIcon size={24} />
 						</button>
 					</DropdownMenu.Trigger>
-					<div>qsd: {id}</div>
-
 					<DropdownMenu.Portal>
 						<DropdownMenu.Content
 							className="ml-10 bg-background border border-tab rounded-md shadow-[0px_10px_38px_-10px_rgba(22,_23,_24,_0.35),_0px_10px_20px_-15px_rgba(22,_23,_24,_0.2)] will-change-[opacity,transform] data-[side=bottom]:animate-slideUpAndFade data-[side=left]:animate-slideRightAndFade data-[side=right]:animate-slideLeftAndFade data-[side=top]:animate-slideDownAndFade z-40 text-lg font-serifText"
