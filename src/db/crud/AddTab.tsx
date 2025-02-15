@@ -28,6 +28,7 @@ export default async function addTab(
 					.fill(null)
 					.map(() => Array(48).fill("-")),
 			position: position ? position : maxPosition.toString(), // Increment the position
+			current: false,
 		});
 	} catch (error) {
 		console.log(error);

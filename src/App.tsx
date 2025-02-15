@@ -16,7 +16,8 @@ import { TabsContext } from "./contexts/TabsContext";
 export default function App() {
 	const [tabName, setTabName] = useState("");
 	const [theme, setTheme] = useState("light");
-	const tabs = useLiveQuery(() => db.TabInfo.toArray()) || [];
+	const tabs =
+		useLiveQuery(() => db.TabInfo.orderBy("position").toArray()) || [];
 
 	const handleLocalStorageCall = () => {
 		const defaultSheets = [

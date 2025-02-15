@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { TabInfo } from "@/db/db";
 import { createContext } from "react";
 

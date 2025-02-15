@@ -46,12 +46,12 @@ const RenameInput = ({
 
 // Reusable component for sheet actions menu
 const SheetActionsMenu = ({
-	tab,
+	position,
 	onRename,
 	onMoveDown,
 	onDelete,
 }: {
-	tab: TabInfo;
+	position: string;
 	onRename: () => void;
 	onMoveDown: () => void;
 	onDelete: () => void;
@@ -60,21 +60,21 @@ const SheetActionsMenu = ({
 		<DropdownMenu.Item
 			className="group relative flex h-7 select-none items-center pl-3 pr-4 leading-none text-tab outline-none data-[disabled]:pointer-events-none data-[highlighted]:bg-foreground/10"
 			onClick={onRename}
-			key={`Rename-${tab.position}`}
+			key={`Rename-${position}`}
 		>
 			Rename
 		</DropdownMenu.Item>
 		<DropdownMenu.Item
 			className="group relative flex h-7 select-none items-center pl-3 pr-4 leading-none text-tab outline-none data-[disabled]:pointer-events-none data-[highlighted]:bg-foreground/10"
 			onClick={() => console.log("Duplicate")}
-			key={`Duplicate-${tab.position}`}
+			key={`Duplicate-${position}`}
 		>
 			Duplicate
 		</DropdownMenu.Item>
 		<DropdownMenu.Item
 			className="group relative flex h-7 select-none items-center pl-3 pr-4 leading-none text-tab outline-none data-[disabled]:pointer-events-none data-[highlighted]:bg-foreground/10"
 			onClick={onMoveDown}
-			key={`Move-${tab.position}`}
+			key={`Move-${position}`}
 		>
 			Move Down
 		</DropdownMenu.Item>
@@ -82,9 +82,9 @@ const SheetActionsMenu = ({
 		<DropdownMenu.Item
 			className="group relative flex h-6 select-none items-center pl-3 pr-4 leading-none text-destructive-foreground outline-none data-[disabled]:pointer-events-none data-[highlighted]:bg-destructive/10"
 			onClick={onDelete}
-			key={`Delete-${tab.position}`}
+			key={`Delete-${position}`}
 		>
-			Delete
+			Deleteqsdqsdqsdqzdqsdqzdqsd
 		</DropdownMenu.Item>
 	</>
 );
@@ -107,14 +107,14 @@ export default function Dropdownmenu() {
 		const newPosition = parseInt(oldPosition) + 1;
 		// Check if the new position is valid (i.e., it exists in the tabs array)
 		if (newPosition >= tabs.length) return; // Prevent moving beyond the last tab
-
 		tabs.map((tab: TabInfo) => {
 			if (tab.position === oldPosition) {
 				updateTabPositionById(oldPosition, newPosition.toString());
 			}
-			if (tab.position === newPosition.toString()) {
-				updateTabPositionById(newPosition.toString(), oldPosition);
-			}
+			// if (tab.position === newPosition.toString()) {
+			// 	console.log("tab.position matched newPosition");
+			// 	updateTabPositionById(newPosition.toString(), oldPosition);
+			// }
 			return;
 		});
 	};
@@ -170,7 +170,7 @@ export default function Dropdownmenu() {
 											key={tab.position}
 										>
 											<SheetActionsMenu
-												tab={tab}
+												position={tab.position}
 												onRename={() => {
 													setId(tab.position);
 													setEditingName(tab.tabName);
