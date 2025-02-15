@@ -1,4 +1,4 @@
-import GuitarTabCreator from "./guitar-tab-creator";
+import GuitarTabCreator from "./components/guitar-tab-creator";
 import BreadCrumbs from "./components/breadcrumb";
 import { useState } from "react";
 import ThemeSwitch from "./components/ThemeSwitch";
@@ -15,22 +15,9 @@ import { TabsContext } from "./contexts/TabsContext";
 
 export default function App() {
 	const [tabName, setTabName] = useState("");
-	const [theme, setTheme] = useState("light");
+	const [theme, setTheme] = useState("dark");
 	const tabs =
 		useLiveQuery(() => db.TabInfo.orderBy("position").toArray()) || [];
-
-	const handleLocalStorageCall = () => {
-		const defaultSheets = [
-			{ tabName: "Second", position: 1 },
-			{ tabName: "First", position: 0 },
-			{ tabName: "Third", position: 2 },
-		];
-
-		localStorage.removeItem("sheets");
-
-		localStorage.setItem("sheets", JSON.stringify(defaultSheets));
-		console.log("Local Storage Reset");
-	};
 
 	return (
 		<MantineProvider theme={mantineTheme} defaultColorScheme="dark">
@@ -51,13 +38,6 @@ export default function App() {
 										Right-click to switch note open/mute/off
 									</p>
 								</div>
-								<Button
-									variant="outline"
-									className="w-fit mt-10"
-									onClick={handleLocalStorageCall}
-								>
-									Reset Local Storage
-								</Button>
 								<Button
 									variant="outline"
 									className="w-fit mt-10"
