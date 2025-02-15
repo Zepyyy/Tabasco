@@ -84,7 +84,7 @@ const SheetActionsMenu = ({
 			onClick={onDelete}
 			key={`Delete-${position}`}
 		>
-			Deleteqsdqsdqsdqzdqsdqzdqsd
+			Delete
 		</DropdownMenu.Item>
 	</>
 );
