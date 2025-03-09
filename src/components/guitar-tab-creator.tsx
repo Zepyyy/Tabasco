@@ -1,9 +1,9 @@
 "use client";
 
-import { useContext, useState } from "react";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { updateCurrentTabs } from "@/db/crud/UpdateTab";
-import { PositionContext } from "@/contexts/PositionContext";
+import { useParams } from "react-router";
 
 const STRINGS = 6;
 const DEFAULT_NOTE = "-";
@@ -12,18 +12,17 @@ const MUTED_STRING = "X";
 const MAX_COLS = 48;
 
 export default function GuitarTabCreator() {
-	const { position } = useContext(PositionContext);
+	const { tabId } = useParams<{ tabId: string }>();
 
 	const [NOTES, setNOTES] = useState(48);
 	const [tab, setTab] = useState(
 		Array(STRINGS)
 			.fill(null)
-			.map(() => Array(NOTES).fill(DEFAULT_NOTE)) as string[][],
+			.map(() => Array(NOTES).fill(DEFAULT_NOTE)),
 	);
-
-	const handleCellClick = (string: number, note: number) => {
-		const newTab = tab.map((row, i) =>
-			row.map((cell, j) =>
+	const handleCellClick = async (string: number, note: number) => {
+		const newTab = tab.map((row: string[], i: number) =>
+			row.map((cell: string, j: number) =>
 				i === string && j === note
 					? cell === DEFAULT_NOTE
 						? OPEN_STRING
@@ -34,7 +33,7 @@ export default function GuitarTabCreator() {
 			),
 		);
 		setTab(newTab);
-		updateCurrentTabs(newTab, position);
+		updateCurrentTabs(newTab, tabId || "0");
 		console.log(string);
 	};
 
@@ -128,6 +127,7 @@ export default function GuitarTabCreator() {
 					Clear Tab
 				</Button>
 			</div>
+			<div className="flex gap-4">activeTab: {tabId}</div>
 		</div>
 	);
 }

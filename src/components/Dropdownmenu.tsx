@@ -7,6 +7,7 @@ import UpdateTabById, { updateTabPositionById } from "@/db/crud/UpdateTab";
 import deleteTabById from "@/db/crud/DeleteTab";
 import { TabsContext } from "@/contexts/TabsContext";
 import { TabInfo } from "@/db/db";
+import { Link } from "react-router";
 
 // Reusable component for the rename input
 const RenameInput = ({
@@ -113,7 +114,9 @@ export default function Dropdownmenu() {
 			{editingName ? (
 				<RenameInput
 					initialValue={editingName}
-					onRename={(newName) => handleRenameSubmit(editingName, newName)}
+					onRename={(newName) =>
+						handleRenameSubmit(editingName, newName)
+					}
 					onCancel={() => setEditingName(null)}
 				/>
 			) : (
@@ -143,31 +146,46 @@ export default function Dropdownmenu() {
 							</DropdownMenu.Item>
 							<DropdownMenu.Separator className="h-[0.5px] bg-tab" />
 							{tabs.map((tab: TabInfo) => (
-								<DropdownMenu.Sub key={tab.position}>
-									<DropdownMenu.SubTrigger className="group relative flex h-6 select-none items-center pl-2 pr-2 leading-none text-tab outline-none data-[disabled]:pointer-events-none data-[highlighted]:bg-foreground/10 my-1 last:my-0 gap-9">
-										{tab.tabName}
-										<div className="ml-auto group-data-[highlighted]:text-tab/50">
-											<Ellipsis size={20} />
-										</div>
-									</DropdownMenu.SubTrigger>
-									<DropdownMenu.Portal>
-										<DropdownMenu.SubContent
-											className="bg-background border border-tab rounded-md shadow-[0px_10px_38px_-10px_rgba(22,_23,_24,_0.35),_0px_10px_20px_-15px_rgba(22,_23,_24,_0.2)] z-40 will-change-[opacity,transform] data-[side=bottom]:animate-slideUpAndFade data-[side=left]:animate-slideRightAndFade data-[side=right]:animate-slideLeftAndFade data-[side=top]:animate-slideDownAndFade text-lg font-serifText"
-											sideOffset={6}
-											key={tab.position}
-										>
-											<SheetActionsMenu
-												position={tab.position}
-												onRename={() => {
-													setId(tab.position);
-													setEditingName(tab.tabName);
-												}}
-												onMoveDown={() => handleMoveSubmit(tab.position)}
-												onDelete={() => deleteTabById(tab.position)}
-											/>
-										</DropdownMenu.SubContent>
-									</DropdownMenu.Portal>
-								</DropdownMenu.Sub>
+								<Link
+									to={`/sheet/${tab.position}`}
+									key={tab.position}
+								>
+									<DropdownMenu.Sub key={tab.position}>
+										<DropdownMenu.SubTrigger className="group relative flex h-6 select-none items-center pl-2 pr-2 leading-none text-tab outline-none data-[disabled]:pointer-events-none data-[highlighted]:bg-foreground/10 my-1 last:my-0 gap-9">
+											{tab.tabName}
+											<div className="ml-auto group-data-[highlighted]:text-tab/50">
+												<Ellipsis size={20} />
+											</div>
+										</DropdownMenu.SubTrigger>
+										<DropdownMenu.Portal>
+											<DropdownMenu.SubContent
+												className="bg-background border border-tab rounded-md shadow-[0px_10px_38px_-10px_rgba(22,_23,_24,_0.35),_0px_10px_20px_-15px_rgba(22,_23,_24,_0.2)] z-40 will-change-[opacity,transform] data-[side=bottom]:animate-slideUpAndFade data-[side=left]:animate-slideRightAndFade data-[side=right]:animate-slideLeftAndFade data-[side=top]:animate-slideDownAndFade text-lg font-serifText"
+												sideOffset={6}
+												key={tab.position}
+											>
+												<SheetActionsMenu
+													position={tab.position}
+													onRename={() => {
+														setId(tab.position);
+														setEditingName(
+															tab.tabName
+														);
+													}}
+													onMoveDown={() =>
+														handleMoveSubmit(
+															tab.position
+														)
+													}
+													onDelete={() =>
+														deleteTabById(
+															tab.position
+														)
+													}
+												/>
+											</DropdownMenu.SubContent>
+										</DropdownMenu.Portal>
+									</DropdownMenu.Sub>
+								</Link>
 							))}
 						</DropdownMenu.Content>
 					</DropdownMenu.Portal>

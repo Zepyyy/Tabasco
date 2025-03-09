@@ -14,10 +14,11 @@ export default async function updateTabNameById(id: string, newName: string) {
 		console.log(`Failed to update tab: ${error}`);
 	}
 }
-export async function updateCurrentTabs(tabs: string[][], position: string) {
+export async function updateCurrentTabs(tabs: string[][], activeTab: string) {
+	activeTab = activeTab ? activeTab : "0";
 	try {
-		await db.TabInfo.where("position").equals(position).modify({ tabs: tabs });
-		console.log(`Updated tab (Tabbed): "${position}"`);
+		await db.TabInfo.where("position").equals(activeTab).modify({ tabs: tabs });
+		console.log(`Updated tab (Tabbed): "${activeTab}"`);
 	} catch (error) {
 		console.log(`Failed to update tab: ${error}`);
 	}
@@ -39,7 +40,9 @@ export async function updateTabPositionById(id: string, position: string) {
 				return; // Exit the transaction if a tab is not found
 			}
 
-			await db.TabInfo.where({ id: tab1.id }).modify({ position: position });
+			await db.TabInfo.where({ id: tab1.id }).modify({
+				position: position,
+			});
 			await db.TabInfo.where({ id: tab2.id }).modify({ position: id });
 
 			console.log(`Updated tabs (Positions): ${id} and ${position}`);
