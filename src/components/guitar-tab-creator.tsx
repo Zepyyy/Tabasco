@@ -1,9 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { updateCurrentTabs } from "@/db/crud/UpdateTab";
 import { useParams } from "react-router";
+import { getTabsById } from "@/db/crud/getTab";
 
 const STRINGS = 6;
 const DEFAULT_NOTE = "-";
@@ -55,6 +56,7 @@ export default function GuitarTabCreator() {
 			}
 		}
 		setTab(newTab);
+		updateCurrentTabs(newTab, tabId || "0");
 	};
 
 	const clearTab = () => {
@@ -82,6 +84,16 @@ export default function GuitarTabCreator() {
 			]);
 		});
 	};
+
+	useEffect(() => {
+		if (tabId) {
+			getTabsById(tabId).then((tabs) => {
+				if (tabs) {
+					setTab(tabs);
+				}
+			});
+		}
+	}, [setTab, tabId]);
 
 	return (
 		<div className="container p-4">

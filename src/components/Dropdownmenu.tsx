@@ -114,9 +114,7 @@ export default function Dropdownmenu() {
 			{editingName ? (
 				<RenameInput
 					initialValue={editingName}
-					onRename={(newName) =>
-						handleRenameSubmit(editingName, newName)
-					}
+					onRename={(newName) => handleRenameSubmit(editingName, newName)}
 					onCancel={() => setEditingName(null)}
 				/>
 			) : (
@@ -146,10 +144,7 @@ export default function Dropdownmenu() {
 							</DropdownMenu.Item>
 							<DropdownMenu.Separator className="h-[0.5px] bg-tab" />
 							{tabs.map((tab: TabInfo) => (
-								<Link
-									to={`/sheet/${tab.position}`}
-									key={tab.position}
-								>
+								<Link to={`/sheet/${tab.position}`} key={tab.position}>
 									<DropdownMenu.Sub key={tab.position}>
 										<DropdownMenu.SubTrigger className="group relative flex h-6 select-none items-center pl-2 pr-2 leading-none text-tab outline-none data-[disabled]:pointer-events-none data-[highlighted]:bg-foreground/10 my-1 last:my-0 gap-9">
 											{tab.tabName}
@@ -167,20 +162,10 @@ export default function Dropdownmenu() {
 													position={tab.position}
 													onRename={() => {
 														setId(tab.position);
-														setEditingName(
-															tab.tabName
-														);
+														setEditingName(tab.tabName);
 													}}
-													onMoveDown={() =>
-														handleMoveSubmit(
-															tab.position
-														)
-													}
-													onDelete={() =>
-														deleteTabById(
-															tab.position
-														)
-													}
+													onMoveDown={() => handleMoveSubmit(tab.position)}
+													onDelete={() => deleteTabById(tab.position)}
 												/>
 											</DropdownMenu.SubContent>
 										</DropdownMenu.Portal>
