@@ -3,7 +3,7 @@ import { Input } from "@/components/ui/input";
 import { NameContext } from "@/contexts/NameContext";
 import updateTabNameById from "@/db/crud/UpdateTab";
 import { useParams } from "react-router";
-import getTabNameById from "@/db/crud/getTab";
+import getTabNameById from "@/db/crud/GetTab";
 
 export default function TabName() {
 	const { tabName, setTabName } = useContext(NameContext);

@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { updateCurrentTabs } from "@/db/crud/UpdateTab";
 import { useParams } from "react-router";
-import { getTabsById } from "@/db/crud/getTab";
+import { getTabsById } from "@/db/crud/GetTab";
 
 const STRINGS = 6;
 const DEFAULT_NOTE = "-";
