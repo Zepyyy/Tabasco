@@ -135,7 +135,7 @@ export default function Dropdownmenu() {
 						>
 							<DropdownMenu.Item className="group relative flex h-7 select-none items-center leading-none text-tab min-w-44 outline-none data-[disabled]:pointer-events-none data-[highlighted]:bg-foreground/10">
 								<div className="flex justify-between w-full relative items-center pl-2 pr-2 rounded-sm text-tab gap-9">
-									"Your tabs"
+									Your tabs
 									<Plus
 										className="w-4 h-4 cursor-pointer"
 										onClick={() => addTab({})}
