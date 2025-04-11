@@ -25,23 +25,24 @@ export default function App() {
 			<ThemeContext.Provider value={{ theme, setTheme }}>
 				<TabsContext.Provider value={tabs}>
 					<NameContext.Provider value={{ tabName, setTabName }}>
-						<main className="flex min-h-screen transition ease-out !pointer-events-auto text-base">
+						<main className="flex min-h-screen transition ease-out !pointer-events-auto text-xl">
 							<ThemeSwitch />
 							<BreadCrumbs />
 							<div className="flex flex-col justify-start w-full p-24">
 								<TabName />
 								<GuitarTabCreator />
 								<div className="flex flex-col justify-between gap-1 mt-4">
-									<p className="text-lg text-tab font-serifText">
+									<p className="text-xl text-tab font-serifText">
 										Click to increment fret number
 									</p>
-									<p className="text-lg text-tab font-serifText">
+									<p className="text-xl text-tab font-serifText">
 										Right-click to switch note open/mute/off
 									</p>
 								</div>
 								<Button
 									variant="outline"
 									className="w-fit mt-10"
+									id="debug"
 									onClick={() => console.log("tabs", tabs)}
 								>
 									log trabs

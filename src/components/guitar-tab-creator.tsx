@@ -19,7 +19,7 @@ export default function GuitarTabCreator() {
 	const [tab, setTab] = useState(
 		Array(STRINGS)
 			.fill(null)
-			.map(() => Array(NOTES).fill(DEFAULT_NOTE)),
+			.map(() => Array(NOTES).fill(DEFAULT_NOTE))
 	);
 	const handleCellClick = async (string: number, note: number) => {
 		const newTab = tab.map((row: string[], i: number) =>
@@ -28,10 +28,10 @@ export default function GuitarTabCreator() {
 					? cell === DEFAULT_NOTE
 						? OPEN_STRING
 						: cell === OPEN_STRING
-							? MUTED_STRING
-							: DEFAULT_NOTE
-					: cell,
-			),
+						? MUTED_STRING
+						: DEFAULT_NOTE
+					: cell
+			)
 		);
 		setTab(newTab);
 		updateCurrentTabs(newTab, tabId || "0");
@@ -60,11 +60,11 @@ export default function GuitarTabCreator() {
 	};
 
 	const clearTab = () => {
-		setTab(
-			Array(STRINGS)
-				.fill(null)
-				.map(() => Array(NOTES).fill(DEFAULT_NOTE)),
-		);
+		const newTab = Array(STRINGS)
+			.fill(null)
+			.map(() => Array(NOTES).fill(DEFAULT_NOTE));
+		setTab(newTab);
+		updateCurrentTabs(newTab, tabId || "0");
 	};
 
 	const handleAddNotesClick = (amount: number = 1) => {
@@ -104,7 +104,7 @@ export default function GuitarTabCreator() {
 							{string.map((note, j) => (
 								<div
 									key={j}
-									className={`border-r-2 last:border-none w-8 h-8 flex items-center justify-center cursor-grabbing text-foreground z-10 text-lg font-serifText [&:nth-child(6n)]:border-tab border-tabsubtle`}
+									className={`border-r-2 last:border-none w-8 h-8 flex items-center justify-center cursor-grabbing font-bold text-foreground z-10 text-xl font-serifText [&:nth-child(6n)]:border-tab border-tabsubtle`}
 									onClick={() => incrementNotesNumber(i, j)}
 									onContextMenu={(e) => {
 										e.preventDefault();
@@ -125,7 +125,7 @@ export default function GuitarTabCreator() {
 						e.preventDefault();
 						handleAddNotesClick(12);
 					}}
-					className="w-8 h-full ml-2 py-12 text-base font-serifText"
+					className="w-8 h-full ml-2 py-12 text-xl font-serifText"
 				>
 					+
 				</Button>
@@ -134,12 +134,14 @@ export default function GuitarTabCreator() {
 				<Button
 					onClick={clearTab}
 					variant={"deep"}
-					className="text-xl font-normal font-serifText py-6 px-4"
+					className="text-2xl font-normal font-serifText py-5 px-3"
 				>
 					Clear Tab
 				</Button>
 			</div>
-			<div className="flex gap-4">activeTab: {tabId}</div>
+			<div className="flex gap-4" id="debug">
+				activeTab: {tabId}
+			</div>
 		</div>
 	);
 }

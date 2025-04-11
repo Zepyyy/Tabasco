@@ -1,10 +1,10 @@
 import "@mantine/core/styles.css";
 import {
 	defaultVariantColorsResolver,
-	VariantColorsResolver,
+	type VariantColorsResolver,
 	createTheme,
-	DefaultMantineColor,
-	MantineColorsTuple,
+	type DefaultMantineColor,
+	type MantineColorsTuple,
 } from "@mantine/core";
 
 import "./App.module.css";
