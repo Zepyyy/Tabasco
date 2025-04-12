@@ -97,28 +97,26 @@ export default function GuitarTabCreator() {
 
 	return (
 		<div className="container p-4">
-			<div className="mb-4 flex flex-row items-center">
-				<div className="rounded-md">
-					{tab.map((string, i) => (
-						<div key={i} id="row" className="flex">
-							{string.map((note, j) => (
-								<div
-									key={j}
-									className={`border-r-2 last:border-none w-8 h-8 flex items-center justify-center cursor-grabbing font-bold text-foreground z-10 text-xl font-serifText [&:nth-child(6n)]:border-tab border-tabsubtle data-[value="-"]:text-tab/30 data-[value="X"]:text-tab/50`}
-									onClick={() => incrementNotesNumber(i, j)}
-									onContextMenu={(e) => {
-										e.preventDefault();
-										handleCellClick(i, j);
-									}}
-									id="note"
-									data-value={note}
-								>
-									{note}
-								</div>
-							))}
-						</div>
-					))}
-				</div>
+			<div className="mb-4 flex flex-col items-center rounded-md">
+				{tab.map((string, i) => (
+					<div key={i} id="row" className="flex">
+						{string.map((note, j) => (
+							<div
+								key={j}
+								className={`border-r-2 last:border-none w-8 h-8 flex items-center justify-center cursor-grabbing font-bold text-foreground z-10 text-xl font-serifText [&:nth-child(6n)]:border-tab border-tabsubtle data-[value="-"]:text-tab/30 data-[value="X"]:text-tab/50`}
+								onClick={() => incrementNotesNumber(i, j)}
+								onContextMenu={(e) => {
+									e.preventDefault();
+									handleCellClick(i, j);
+								}}
+								id="note"
+								data-value={note}
+							>
+								{note}
+							</div>
+						))}
+					</div>
+				))}
 			</div>
 			<div className="flex gap-4">
 				<Button

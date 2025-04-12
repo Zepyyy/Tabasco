@@ -18,7 +18,7 @@ export default function GUIDropdownMenu() {
 
 	useEffect(() => {
 		document.documentElement.classList.toggle("dark", theme === "dark");
-		localStorage.setItem("theme", theme);
+		// localStorage.setItem("theme", theme);
 		setColorScheme(theme === "dark" ? "dark" : "light"); // Update Mantine's color scheme
 	}, [theme, setColorScheme]);
 
