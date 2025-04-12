@@ -1,3 +1,4 @@
+import TabsDropdownMenu from "./TabsDropdownMenu";
 import {
 	Breadcrumb,
 	BreadcrumbItem,
@@ -5,7 +6,6 @@ import {
 	BreadcrumbList,
 	BreadcrumbSeparator,
 } from "./ui/breadcrumb";
-import Dropdownmenu from "./Dropdownmenu";
 
 export default function BreadCrumbs() {
 	return (
@@ -20,7 +20,7 @@ export default function BreadCrumbs() {
 					<p className="text-2xl font-serifText">/</p>
 				</BreadcrumbSeparator>
 				<BreadcrumbItem>
-					<Dropdownmenu />
+					<TabsDropdownMenu />
 				</BreadcrumbItem>
 			</BreadcrumbList>
 		</Breadcrumb>

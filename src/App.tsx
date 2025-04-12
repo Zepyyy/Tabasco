@@ -1,18 +1,17 @@
 import GuitarTabCreator from "./components/guitar-tab-creator";
 import BreadCrumbs from "./components/breadcrumb";
 import { useState } from "react";
-import ThemeSwitch from "./components/ThemeSwitch";
 import TabName from "./components/TabName";
 import "@mantine/core/styles.css";
 import { MantineProvider } from "@mantine/core";
 import { theme as mantineTheme } from "@/theme";
 import { ThemeContext } from "./contexts/ThemeContext";
-import { Button } from "./components/ui/button";
 import { db } from "./db/db";
 import { useLiveQuery } from "dexie-react-hooks";
 import { TabsContext } from "./contexts/TabsContext";
 import { NameContext } from "./contexts/NameContext";
 import { Analytics } from "@vercel/analytics/react";
+import GUI from "./components/GUI-menu";
 
 export default function App() {
 	const [tabName, setTabName] = useState("");
@@ -26,7 +25,6 @@ export default function App() {
 				<TabsContext.Provider value={tabs}>
 					<NameContext.Provider value={{ tabName, setTabName }}>
 						<main className="flex min-h-screen transition ease-out !pointer-events-auto text-xl">
-							<ThemeSwitch />
 							<BreadCrumbs />
 							<div className="flex flex-col justify-start w-full p-24">
 								<TabName />
@@ -39,14 +37,9 @@ export default function App() {
 										Right-click to switch note open/mute/off
 									</p>
 								</div>
-								<Button
-									variant="outline"
-									className="w-fit mt-10"
-									id="debug"
-									onClick={() => console.log("tabs", tabs)}
-								>
-									log trabs
-								</Button>
+							</div>
+							<div className="absolute bottom-0 left-0 w-full flex flex-col items-center justify-end gap-4 p-4 z-10">
+								<GUI />
 							</div>
 						</main>
 						<Analytics />

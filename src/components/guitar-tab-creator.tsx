@@ -10,12 +10,12 @@ const STRINGS = 6;
 const DEFAULT_NOTE = "-";
 const OPEN_STRING = "0";
 const MUTED_STRING = "X";
-const MAX_COLS = 48;
+// const MAX_COLS = 48;
 
 export default function GuitarTabCreator() {
 	const { tabId } = useParams<{ tabId: string }>();
 
-	const [NOTES, setNOTES] = useState(48);
+	const [NOTES] = useState(48);
 	const [tab, setTab] = useState(
 		Array(STRINGS)
 			.fill(null)
@@ -67,23 +67,23 @@ export default function GuitarTabCreator() {
 		updateCurrentTabs(newTab, tabId || "0");
 	};
 
-	const handleAddNotesClick = (amount: number = 1) => {
-		switch (true) {
-			case NOTES + amount > MAX_COLS:
-				amount = MAX_COLS - NOTES;
-				break;
-			case NOTES + amount < 1:
-				amount = 1;
-				break;
-		}
-		setNOTES(NOTES + amount);
-		setTab((prevTab) => {
-			return prevTab.map((row) => [
-				...row,
-				...Array(amount).fill(DEFAULT_NOTE),
-			]);
-		});
-	};
+	// const handleAddNotesClick = (amount: number = 1) => {
+	// 	switch (true) {
+	// 		case NOTES + amount > MAX_COLS:
+	// 			amount = MAX_COLS - NOTES;
+	// 			break;
+	// 		case NOTES + amount < 1:
+	// 			amount = 1;
+	// 			break;
+	// 	}
+	// 	setNOTES(NOTES + amount);
+	// 	setTab((prevTab) => {
+	// 		return prevTab.map((row) => [
+	// 			...row,
+	// 			...Array(amount).fill(DEFAULT_NOTE),
+	// 		]);
+	// 	});
+	// };
 
 	useEffect(() => {
 		if (tabId) {
@@ -104,7 +104,7 @@ export default function GuitarTabCreator() {
 							{string.map((note, j) => (
 								<div
 									key={j}
-									className={`border-r-2 last:border-none w-8 h-8 flex items-center justify-center cursor-grabbing font-bold text-foreground z-10 text-xl font-serifText [&:nth-child(6n)]:border-tab border-tabsubtle`}
+									className={`border-r-2 last:border-none w-8 h-8 flex items-center justify-center cursor-grabbing font-bold text-foreground z-10 text-xl font-serifText [&:nth-child(6n)]:border-tab border-tabsubtle data-[value="-"]:text-tabsubtle data-[value="X"]:text-tab/50`}
 									onClick={() => incrementNotesNumber(i, j)}
 									onContextMenu={(e) => {
 										e.preventDefault();
@@ -119,16 +119,6 @@ export default function GuitarTabCreator() {
 						</div>
 					))}
 				</div>
-				<Button
-					variant={"outline"}
-					onClick={(e) => {
-						e.preventDefault();
-						handleAddNotesClick(12);
-					}}
-					className="w-8 h-full ml-2 py-12 text-xl font-serifText"
-				>
-					+
-				</Button>
 			</div>
 			<div className="flex gap-4">
 				<Button
@@ -138,9 +128,6 @@ export default function GuitarTabCreator() {
 				>
 					Clear Tab
 				</Button>
-			</div>
-			<div className="flex gap-4" id="debug">
-				activeTab: {tabId}
 			</div>
 		</div>
 	);
