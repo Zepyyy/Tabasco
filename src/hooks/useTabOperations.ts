@@ -8,17 +8,17 @@ import { TabInfo } from "@/db/db";
 export const useTabOperations = () => {
 	const tabs = useContext(TabsContext);
 
-	const handleRename = (newName: string) => {
-		UpdateTabById(tabs[0]?.position || "0", newName);
+	const handleRename = (position: string, newName: string) => {
+		UpdateTabById(position, newName);
 	};
 
-	const handleMove = (oldPosition: string) => {
-		const newPosition = parseInt(oldPosition) + 1;
+	const handleMove = (currentPosition: string) => {
+		const newPosition = parseInt(currentPosition) + 1;
 		if (newPosition >= tabs.length) return;
 
 		tabs.forEach((tab: TabInfo) => {
-			if (tab.position === oldPosition) {
-				updateTabPositionById(oldPosition, newPosition.toString());
+			if (tab.position === currentPosition) {
+				updateTabPositionById(currentPosition, newPosition.toString());
 			}
 		});
 	};

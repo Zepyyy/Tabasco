@@ -93,25 +93,38 @@ const SheetActionsMenu = ({
 export default function TabsDropdownMenu() {
 	const { tabName, setTabName } = useContext(NameContext);
 	const tabs = useContext(TabsContext);
-	const [editingName, setEditingName] = useState<string | null>(null);
+	const [editingTab, setEditingTab] = useState<{
+		name: string;
+		position: string;
+	} | null>(null);
 	const { handleAddTab, handleRename, handleMove, handleDelete } =
 		useTabOperations();
 
-	const handleRenameSubmit = (oldName: string, newName: string) => {
+	const handleRenameSubmit = (
+		position: string,
+		oldName: string,
+		newName: string
+	) => {
 		if (newName && newName !== oldName) {
-			handleRename(newName);
+			handleRename(position, newName);
 		}
-		setEditingName(null);
+		setEditingTab(null);
 		setTabName(newName);
 	};
 
 	return (
 		<>
-			{editingName ? (
+			{editingTab ? (
 				<RenameInput
-					initialValue={editingName}
-					onRename={(newName) => handleRenameSubmit(editingName, newName)}
-					onCancel={() => setEditingName(null)}
+					initialValue={editingTab.name}
+					onRename={(newName) =>
+						handleRenameSubmit(
+							editingTab.position,
+							editingTab.name,
+							newName
+						)
+					}
+					onCancel={() => setEditingTab(null)}
 				/>
 			) : (
 				<DropdownMenu>
@@ -139,7 +152,10 @@ export default function TabsDropdownMenu() {
 							</DropdownMenuLabel>
 							<DropdownMenuSeparator className="h-[0.5px] bg-tab" />
 							{tabs.map((tab: TabInfo) => (
-								<Link to={`/sheet/${tab.position}`} key={tab.position}>
+								<Link
+									to={`/sheet/${tab.position}`}
+									key={tab.position}
+								>
 									<DropdownMenuSub key={tab.position}>
 										<DropdownMenuSubTrigger className="group relative flex h-6 select-none items-center pl-2 pr-2 outline-none data-[disabled]:pointer-events-none my-1 last:my-0 gap-9 text-xl data-[state=open]:bg-foreground/10 text-tab bg-background focus:bg-foreground/10 focus:text-tab">
 											{tab.tabName}
@@ -154,10 +170,20 @@ export default function TabsDropdownMenu() {
 												<SheetActionsMenu
 													position={tab.position}
 													onRename={() => {
-														setEditingName(tab.tabName);
+														setEditingTab({
+															name: tab.tabName,
+															position:
+																tab.position,
+														});
 													}}
-													onMoveDown={() => handleMove(tab.position)}
-													onDelete={() => handleDelete(tab.position)}
+													onMoveDown={() =>
+														handleMove(tab.position)
+													}
+													onDelete={() =>
+														handleDelete(
+															tab.position
+														)
+													}
 												/>
 											</DropdownMenuSubContent>
 										</DropdownMenuPortal>

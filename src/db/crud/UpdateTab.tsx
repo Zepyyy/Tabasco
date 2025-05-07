@@ -8,7 +8,7 @@ export default async function updateTabNameById(id: string, newName: string) {
 		if (updatedCount === 0) {
 			console.log(`No tab found at position: ${id}`);
 		} else {
-			console.log(`Updated tab (Renamed): ${id}`);
+			console.log(`Updated tab (Renamed): ${id}, "${newName}"`);
 		}
 	} catch (error) {
 		console.log(`Failed to update tab: ${error}`);
@@ -18,7 +18,7 @@ export async function updateCurrentTabs(tabs: string[][], activeTab: string) {
 	activeTab = activeTab ? activeTab : "0";
 	try {
 		await db.TabInfo.where("position").equals(activeTab).modify({ tabs: tabs });
-		console.log(`Updated tab (Tabbed): "${activeTab}"`);
+		console.log(`Updated tab (Tabbed): "${activeTab}", ${tabs}`);
 	} catch (error) {
 		console.log(`Failed to update tab: ${error}`);
 	}

@@ -1,12 +1,14 @@
 import { db } from "../db";
 
 export default async function getTabNameById(id: string) {
-	console.log("get anem by id: ", id);
 	try {
 		const tab = await db.TabInfo.where({ position: id }).first();
 		if (!tab) {
 			console.log(`No tab found at position: ${id}`);
 			return "";
+		} else {
+			console.log(`Got tab: ${id} by ID`);
+			console.log(`+ Tab name: ${tab.tabName}`);
 		}
 		return tab.tabName;
 	} catch (error) {
@@ -15,12 +17,13 @@ export default async function getTabNameById(id: string) {
 	}
 }
 export async function getTabsById(id: string) {
-	console.log("get tabsd by id: ", id);
 	try {
 		const tab = await db.TabInfo.where({ position: id }).first();
 		if (!tab) {
 			console.log(`No tab found at position: ${id}`);
 			return "";
+		} else {
+			console.log(`Got tabs.`);
 		}
 		return tab.tabs;
 	} catch (error) {
