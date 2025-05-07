@@ -10,15 +10,19 @@ import {
 import { useContext, useEffect } from "react";
 import { ThemeContext } from "@/contexts/ThemeContext";
 import { useMantineColorScheme } from "@mantine/core";
+import { useParams } from "react-router";
+import { clearTab } from "@/db/crud/ClearTab";
+import { useNavigate } from "react-router";
 
 // Reusable component for the rename input
 export default function GUIDropdownMenu() {
 	const { theme, setTheme } = useContext(ThemeContext);
 	const { setColorScheme } = useMantineColorScheme();
+	const { tabId } = useParams<{ tabId: string }>();
+	const navigate = useNavigate();
 
 	useEffect(() => {
 		document.documentElement.classList.toggle("dark", theme === "dark");
-		// localStorage.setItem("theme", theme);
 		setColorScheme(theme === "dark" ? "dark" : "light"); // Update Mantine's color scheme
 	}, [theme, setColorScheme]);
 
@@ -37,9 +41,10 @@ export default function GUIDropdownMenu() {
 				<DropdownMenuContent className="flex flex-col p-0 m-0 bg-background/80 rounded-lg shadow-lg ml-10 z-40 font-serifText text-xl">
 					<DropdownMenuItem
 						className="[&_svg]:size-6 cursor-pointer bg-background text-destructive focus:bg-foreground/10 focus:text-destructive outline-none text-xl"
-						onClick={() => {
-							// This is a placeholder for the actual clear tab function
-							console.log("Clear tab clicked");
+						onClick={async () => {
+							await clearTab(tabId);
+							// Force a re-render by navigating to the same route
+							navigate(`/sheet/${tabId}`);
 						}}
 					>
 						<div className="flex flex-row items-center w-full gap-2">

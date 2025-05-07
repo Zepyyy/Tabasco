@@ -1,15 +1,10 @@
 import { Plus } from "lucide-react";
 import { useContext, useState } from "react";
-
-import addTab from "@/db/crud/AddTab";
-import UpdateTabById, { updateTabPositionById } from "@/db/crud/UpdateTab";
-import deleteTabById from "@/db/crud/DeleteTab";
-
+import { Link } from "react-router";
+import { useTabOperations } from "@/hooks/useTabOperations";
 import { TabsContext } from "@/contexts/TabsContext";
 import { NameContext } from "@/contexts/NameContext";
-
 import { TabInfo } from "@/db/db";
-import { Link } from "react-router";
 import {
 	DropdownMenu,
 	DropdownMenuContent,
@@ -96,29 +91,18 @@ const SheetActionsMenu = ({
 );
 
 export default function TabsDropdownMenu() {
-	const { tabName: tabName } = useContext(NameContext);
+	const { tabName, setTabName } = useContext(NameContext);
 	const tabs = useContext(TabsContext);
-	const [id, setId] = useState("");
 	const [editingName, setEditingName] = useState<string | null>(null);
+	const { handleAddTab, handleRename, handleMove, handleDelete } =
+		useTabOperations();
 
 	const handleRenameSubmit = (oldName: string, newName: string) => {
 		if (newName && newName !== oldName) {
-			UpdateTabById(id, newName);
+			handleRename(newName);
 		}
-		setId("");
 		setEditingName(null);
-	};
-
-	const handleMoveSubmit = (oldPosition: string) => {
-		const newPosition = parseInt(oldPosition) + 1;
-		// Check if the new position is valid (i.e., it exists in the tabs array)
-		if (newPosition >= tabs.length) return; // Prevent moving beyond the last tab
-		tabs.map((tab: TabInfo) => {
-			if (tab.position === oldPosition) {
-				updateTabPositionById(oldPosition, newPosition.toString());
-			}
-			return;
-		});
+		setTabName(newName);
 	};
 
 	return (
@@ -133,7 +117,10 @@ export default function TabsDropdownMenu() {
 				/>
 			) : (
 				<DropdownMenu>
-					<DropdownMenuTrigger className="appearance-none border-none inline-flex items-center justify-center rounded-md text-tab transition-all text-xl font-serifText gap-2">
+					<DropdownMenuTrigger
+						asChild
+						className="appearance-none border-none inline-flex items-center justify-center rounded-md text-tab transition-all text-xl font-serifText gap-2"
+					>
 						<button aria-label="Customise options">
 							{tabName || "Unnamed"}
 						</button>
@@ -148,7 +135,7 @@ export default function TabsDropdownMenu() {
 									Your tabs
 									<Plus
 										className="w-4 h-4 cursor-pointer"
-										onClick={() => addTab({})}
+										onClick={() => handleAddTab()}
 									/>
 								</div>
 							</DropdownMenuLabel>
@@ -172,18 +159,15 @@ export default function TabsDropdownMenu() {
 												<SheetActionsMenu
 													position={tab.position}
 													onRename={() => {
-														setId(tab.position);
 														setEditingName(
 															tab.tabName
 														);
 													}}
 													onMoveDown={() =>
-														handleMoveSubmit(
-															tab.position
-														)
+														handleMove(tab.position)
 													}
 													onDelete={() =>
-														deleteTabById(
+														handleDelete(
 															tab.position
 														)
 													}

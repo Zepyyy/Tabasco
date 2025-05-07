@@ -1,131 +1,89 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { Button } from "@/components/ui/button";
-import { updateCurrentTabs } from "@/db/crud/UpdateTab";
-import { useParams } from "react-router";
-import { getTabsById } from "@/db/crud/GetTab";
+import { useGuitarTab } from "@/hooks/useGuitarTab";
+import { NoteCellProps, StringRowProps } from "@/types/guitar-tab";
 
-const STRINGS = 6;
-const DEFAULT_NOTE = "-";
-const OPEN_STRING = "0";
-const MUTED_STRING = "X";
-// const MAX_COLS = 48;
+// Reusable component for a single note cell
+const NoteCell = ({
+	note,
+	stringIndex,
+	noteIndex,
+	onIncrement,
+	onToggle,
+}: NoteCellProps) => (
+	<div
+		className={`border-r-2 last:border-none w-8 h-8 flex items-center justify-center cursor-grabbing font-bold text-foreground z-10 text-xl font-serifText [&:nth-child(6n)]:border-tab border-tabsubtle data-[value="-"]:text-tab/30 data-[value="X"]:text-tab/50`}
+		onClick={() => onIncrement(stringIndex, noteIndex)}
+		onContextMenu={(e) => {
+			e.preventDefault();
+			onToggle(stringIndex, noteIndex);
+		}}
+		id="note"
+		data-value={note}
+	>
+		{note}
+	</div>
+);
+
+// Reusable component for a string of notes
+const StringRow = ({
+	string,
+	stringIndex,
+	onIncrement,
+	onToggle,
+}: StringRowProps) => (
+	<div key={stringIndex} id="row" className="flex">
+		{string.map((note, noteIndex) => (
+			<NoteCell
+				key={noteIndex}
+				note={note}
+				stringIndex={stringIndex}
+				noteIndex={noteIndex}
+				onIncrement={onIncrement}
+				onToggle={onToggle}
+			/>
+		))}
+	</div>
+);
+
+// Loading state component
+const LoadingState = () => (
+	<div className="flex items-center justify-center p-8">
+		<div className="animate-spin rounded-full h-8 w-8 border-b-2 border-tab"></div>
+	</div>
+);
+
+// Error state component
+const ErrorState = ({ error }: { error: Error }) => (
+	<div className="flex items-center justify-center p-8 text-destructive">
+		<p>Error: {error.message}</p>
+	</div>
+);
 
 export default function GuitarTabCreator() {
-	const { tabId } = useParams<{ tabId: string }>();
+	const { tab, isLoading, error, handleCellClick, incrementNotesNumber } =
+		useGuitarTab();
 
-	const [NOTES] = useState(48);
-	const [tab, setTab] = useState(
-		Array(STRINGS)
-			.fill(null)
-			.map(() => Array(NOTES).fill(DEFAULT_NOTE))
-	);
-	const handleCellClick = async (string: number, note: number) => {
-		const newTab = tab.map((row: string[], i: number) =>
-			row.map((cell: string, j: number) =>
-				i === string && j === note
-					? cell === DEFAULT_NOTE
-						? OPEN_STRING
-						: cell === OPEN_STRING
-						? MUTED_STRING
-						: DEFAULT_NOTE
-					: cell
-			)
-		);
-		setTab(newTab);
-		updateCurrentTabs(newTab, tabId || "0");
-		console.log(string);
-	};
+	if (isLoading) {
+		return <LoadingState />;
+	}
 
-	const incrementNotesNumber = (string: number, note: number) => {
-		const newTab = [...tab];
-		const currentValue = newTab[string][note];
-		switch (true) {
-			case currentValue === DEFAULT_NOTE:
-				newTab[string][note] = "1";
-				break;
-			case currentValue === MUTED_STRING:
-				newTab[string][note] = DEFAULT_NOTE;
-				break;
-			default: {
-				const nextValue = Number.parseInt(currentValue) + 1;
-				newTab[string][note] =
-					nextValue > 24 ? DEFAULT_NOTE : nextValue.toString();
-				break;
-			}
-		}
-		setTab(newTab);
-		updateCurrentTabs(newTab, tabId || "0");
-	};
-
-	const clearTab = () => {
-		const newTab = Array(STRINGS)
-			.fill(null)
-			.map(() => Array(NOTES).fill(DEFAULT_NOTE));
-		setTab(newTab);
-		updateCurrentTabs(newTab, tabId || "0");
-	};
-
-	// const handleAddNotesClick = (amount: number = 1) => {
-	// 	switch (true) {
-	// 		case NOTES + amount > MAX_COLS:
-	// 			amount = MAX_COLS - NOTES;
-	// 			break;
-	// 		case NOTES + amount < 1:
-	// 			amount = 1;
-	// 			break;
-	// 	}
-	// 	setNOTES(NOTES + amount);
-	// 	setTab((prevTab) => {
-	// 		return prevTab.map((row) => [
-	// 			...row,
-	// 			...Array(amount).fill(DEFAULT_NOTE),
-	// 		]);
-	// 	});
-	// };
-
-	useEffect(() => {
-		if (tabId) {
-			getTabsById(tabId).then((tabs) => {
-				if (tabs) {
-					setTab(tabs);
-				}
-			});
-		}
-	}, [setTab, tabId]);
+	if (error) {
+		return <ErrorState error={error} />;
+	}
 
 	return (
 		<div className="container p-4">
 			<div className="mb-4 flex flex-col items-center rounded-md">
-				{tab.map((string, i) => (
-					<div key={i} id="row" className="flex">
-						{string.map((note, j) => (
-							<div
-								key={j}
-								className={`border-r-2 last:border-none w-8 h-8 flex items-center justify-center cursor-grabbing font-bold text-foreground z-10 text-xl font-serifText [&:nth-child(6n)]:border-tab border-tabsubtle data-[value="-"]:text-tab/30 data-[value="X"]:text-tab/50`}
-								onClick={() => incrementNotesNumber(i, j)}
-								onContextMenu={(e) => {
-									e.preventDefault();
-									handleCellClick(i, j);
-								}}
-								id="note"
-								data-value={note}
-							>
-								{note}
-							</div>
-						))}
-					</div>
+				{tab.map((string, stringIndex) => (
+					<StringRow
+						key={stringIndex}
+						string={string}
+						stringIndex={stringIndex}
+						onIncrement={incrementNotesNumber}
+						onToggle={handleCellClick}
+					/>
 				))}
-			</div>
-			<div className="flex gap-4">
-				<Button
-					onClick={clearTab}
-					variant={"deep"}
-					className="text-2xl font-normal font-serifText py-5 px-3"
-				>
-					Clear Tab
-				</Button>
 			</div>
 		</div>
 	);
