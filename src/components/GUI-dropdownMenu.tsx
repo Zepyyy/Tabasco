@@ -54,9 +54,7 @@ export default function GUIDropdownMenu() {
 					</DropdownMenuItem>
 					<DropdownMenuItem
 						className="[&_svg]:size-6 cursor-pointer bg-background text-tab focus:bg-foreground/10 focus:text-tab outline-none text-xl"
-						onClick={() =>
-							setTheme(theme === "light" ? "dark" : "light")
-						}
+						onClick={() => setTheme(theme === "light" ? "dark" : "light")}
 					>
 						<div className="flex flex-row items-center w-full gap-2">
 							{theme === "light" ? <Moon /> : <Sun />}

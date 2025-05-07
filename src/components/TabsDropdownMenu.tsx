@@ -110,9 +110,7 @@ export default function TabsDropdownMenu() {
 			{editingName ? (
 				<RenameInput
 					initialValue={editingName}
-					onRename={(newName) =>
-						handleRenameSubmit(editingName, newName)
-					}
+					onRename={(newName) => handleRenameSubmit(editingName, newName)}
 					onCancel={() => setEditingName(null)}
 				/>
 			) : (
@@ -141,10 +139,7 @@ export default function TabsDropdownMenu() {
 							</DropdownMenuLabel>
 							<DropdownMenuSeparator className="h-[0.5px] bg-tab" />
 							{tabs.map((tab: TabInfo) => (
-								<Link
-									to={`/sheet/${tab.position}`}
-									key={tab.position}
-								>
+								<Link to={`/sheet/${tab.position}`} key={tab.position}>
 									<DropdownMenuSub key={tab.position}>
 										<DropdownMenuSubTrigger className="group relative flex h-6 select-none items-center pl-2 pr-2 outline-none data-[disabled]:pointer-events-none my-1 last:my-0 gap-9 text-xl data-[state=open]:bg-foreground/10 text-tab bg-background focus:bg-foreground/10 focus:text-tab">
 											{tab.tabName}
@@ -159,18 +154,10 @@ export default function TabsDropdownMenu() {
 												<SheetActionsMenu
 													position={tab.position}
 													onRename={() => {
-														setEditingName(
-															tab.tabName
-														);
+														setEditingName(tab.tabName);
 													}}
-													onMoveDown={() =>
-														handleMove(tab.position)
-													}
-													onDelete={() =>
-														handleDelete(
-															tab.position
-														)
-													}
+													onMoveDown={() => handleMove(tab.position)}
+													onDelete={() => handleDelete(tab.position)}
 												/>
 											</DropdownMenuSubContent>
 										</DropdownMenuPortal>

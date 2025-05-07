@@ -10,15 +10,12 @@ if (rootElement) {
 		<StrictMode>
 			<BrowserRouter>
 				<Routes>
-					<Route
-						path="*"
-						element={<Navigate to="/sheet/0" replace />}
-					/>
+					<Route path="*" element={<Navigate to="/sheet/0" replace />} />
 					<Route path="/sheet">
 						<Route path="/sheet/:tabId" element={<App />} />
 					</Route>
 				</Routes>
 			</BrowserRouter>
-		</StrictMode>
+		</StrictMode>,
 	);
 }

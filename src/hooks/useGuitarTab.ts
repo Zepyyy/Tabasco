@@ -20,14 +20,14 @@ export const useGuitarTab = (): TabState & TabOperations => {
 	const [tab, setTab] = useState<Tab>(
 		Array(STRINGS)
 			.fill(null)
-			.map(() => Array(NOTES).fill(DEFAULT_NOTE))
+			.map(() => Array(NOTES).fill(DEFAULT_NOTE)),
 	);
 	const [isLoading, setIsLoading] = useState(false);
 	const [error, setError] = useState<Error | null>(null);
 
 	const handleCellClick = async (
 		string: number,
-		note: number
+		note: number,
 	): Promise<void> => {
 		try {
 			const newTab = tab.map((row: string[], i: number) =>
@@ -36,17 +36,15 @@ export const useGuitarTab = (): TabState & TabOperations => {
 						? cell === DEFAULT_NOTE
 							? OPEN_STRING
 							: cell === OPEN_STRING
-							? MUTED_STRING
-							: DEFAULT_NOTE
-						: cell
-				)
+								? MUTED_STRING
+								: DEFAULT_NOTE
+						: cell,
+				),
 			);
 			setTab(newTab);
 			await updateCurrentTabs(newTab, tabId || "0");
 		} catch (err) {
-			setError(
-				err instanceof Error ? err : new Error("Failed to update tab")
-			);
+			setError(err instanceof Error ? err : new Error("Failed to update tab"));
 		}
 	};
 
@@ -64,9 +62,7 @@ export const useGuitarTab = (): TabState & TabOperations => {
 				default: {
 					const nextValue = Number.parseInt(currentValue) + 1;
 					newTab[string][note] =
-						nextValue > MAX_FRET
-							? DEFAULT_NOTE
-							: nextValue.toString();
+						nextValue > MAX_FRET ? DEFAULT_NOTE : nextValue.toString();
 					break;
 				}
 			}
@@ -74,9 +70,7 @@ export const useGuitarTab = (): TabState & TabOperations => {
 			updateCurrentTabs(newTab, tabId || "0");
 		} catch (err) {
 			setError(
-				err instanceof Error
-					? err
-					: new Error("Failed to increment note")
+				err instanceof Error ? err : new Error("Failed to increment note"),
 			);
 		}
 	};
@@ -94,11 +88,7 @@ export const useGuitarTab = (): TabState & TabOperations => {
 					setTab(tabs);
 				}
 			} catch (err) {
-				setError(
-					err instanceof Error
-						? err
-						: new Error("Failed to fetch tab")
-				);
+				setError(err instanceof Error ? err : new Error("Failed to fetch tab"));
 			} finally {
 				setIsLoading(false);
 			}
