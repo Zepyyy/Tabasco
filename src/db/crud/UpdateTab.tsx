@@ -18,7 +18,7 @@ export async function updateCurrentTabs(tabs: string[][], activeTab: string) {
 	activeTab = activeTab ? activeTab : "0";
 	try {
 		await db.TabInfo.where("position").equals(activeTab).modify({ tabs: tabs });
-		console.log(`Updated tab (Tabbed): "${activeTab}", ${tabs}`);
+		console.log(`Updated tab (Tabbed): "${activeTab}"`);
 	} catch (error) {
 		console.log(`Failed to update tab: ${error}`);
 	}
