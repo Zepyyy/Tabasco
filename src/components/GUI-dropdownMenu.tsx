@@ -40,7 +40,7 @@ export default function GUIDropdownMenu() {
 				</DropdownMenuTrigger>
 				<DropdownMenuContent className="flex flex-col p-0 m-0 bg-background/80 rounded-lg shadow-lg ml-10 z-40 font-serifText text-xl">
 					<DropdownMenuItem
-						className="[&_svg]:size-6 cursor-pointer bg-background text-destructive focus:bg-foreground/10 focus:text-destructive outline-none text-xl"
+						className="[&_svg]:size-6 cursor-pointer bg-background text-destructive focus:bg-foreground/10 focus:text-destructive outline-hidden text-xl"
 						onClick={async () => {
 							await clearTab(tabId);
 							// Force a re-render by navigating to the same route
@@ -53,7 +53,7 @@ export default function GUIDropdownMenu() {
 						</div>
 					</DropdownMenuItem>
 					<DropdownMenuItem
-						className="[&_svg]:size-6 cursor-pointer bg-background text-tab focus:bg-foreground/10 focus:text-tab outline-none text-xl"
+						className="[&_svg]:size-6 cursor-pointer bg-background text-tab focus:bg-foreground/10 focus:text-tab outline-hidden text-xl"
 						onClick={() => setTheme(theme === "light" ? "dark" : "light")}
 					>
 						<div className="flex flex-row items-center w-full gap-2">

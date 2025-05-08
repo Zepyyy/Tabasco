@@ -12,7 +12,7 @@ const NoteCell = ({
 	onToggle,
 }: NoteCellProps) => (
 	<div
-		className={`border-r-2 last:border-none w-8 h-8 flex items-center justify-center cursor-grabbing font-bold text-foreground z-10 text-xl font-serifText [&:nth-child(6n)]:border-tab border-tabsubtle data-[value="-"]:text-tab/30 data-[value="X"]:text-tab/50`}
+		className={`border-r-2 last:border-none w-8 h-8 flex items-center justify-center cursor-grabbing font-bold text-foreground z-10 text-xl font-serifText nth-[6n]:border-tab border-tabsubtle data-[value="-"]:text-tab/30 data-[value="X"]:text-tab/50`}
 		onClick={() => onIncrement(stringIndex, noteIndex)}
 		onContextMenu={(e) => {
 			e.preventDefault();

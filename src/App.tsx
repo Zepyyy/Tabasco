@@ -24,7 +24,7 @@ export default function App() {
 			<ThemeContext.Provider value={{ theme, setTheme }}>
 				<TabsContext.Provider value={tabs}>
 					<NameContext.Provider value={{ tabName, setTabName }}>
-						<main className="flex min-h-screen transition ease-out !pointer-events-auto text-xl">
+						<main className="flex min-h-screen transition ease-out pointer-events-auto! text-xl">
 							<BreadCrumbs />
 							<div className="flex flex-col justify-start w-full p-24">
 								<TabName />

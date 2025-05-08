@@ -29,7 +29,7 @@ const RenameInput = ({
 	onCancel: () => void;
 }) => (
 	<input
-		className="bg-background text-foreground px-2 py-1 rounded-md w-full border border-tab/20 focus:border-primary/50 focus:ring-1 focus:ring-primary/50 outline-none transition-all"
+		className="bg-background text-foreground px-2 py-1 rounded-md w-full border border-tab/20 focus:border-primary/50 focus:ring-1 focus:ring-primary/50 outline-hidden transition-all"
 		type="text"
 		defaultValue={initialValue}
 		autoFocus
@@ -59,21 +59,21 @@ const SheetActionsMenu = ({
 }) => (
 	<>
 		<DropdownMenuItem
-			className="group flex h-7 select-none items-center text-tab outline-none data-[disabled]:pointer-events-none focus:bg-foreground/10"
+			className="group flex h-7 select-none items-center text-tab outline-hidden data-disabled:pointer-events-none focus:bg-foreground/10"
 			onClick={onRename}
 			key={`Rename-${position}`}
 		>
 			Rename
 		</DropdownMenuItem>
 		<DropdownMenuItem
-			className="group flex h-7 select-none items-center text-tab outline-none data-[disabled]:pointer-events-none focus:bg-foreground/10"
+			className="group flex h-7 select-none items-center text-tab outline-hidden data-disabled:pointer-events-none focus:bg-foreground/10"
 			onClick={() => console.log("Duplicate")}
 			key={`Duplicate-${position}`}
 		>
 			Duplicate
 		</DropdownMenuItem>
 		<DropdownMenuItem
-			className="group flex h-7 select-none items-center text-tab outline-none data-[disabled]:pointer-events-none focus:bg-foreground/10"
+			className="group flex h-7 select-none items-center text-tab outline-hidden data-disabled:pointer-events-none focus:bg-foreground/10"
 			onClick={onMoveDown}
 			key={`Move-${position}`}
 		>
@@ -81,7 +81,7 @@ const SheetActionsMenu = ({
 		</DropdownMenuItem>
 		<DropdownMenuSeparator className="bg-tab" />
 		<DropdownMenuItem
-			className="group cursor-pointer flex h-6 select-none items-center leading-none text-destructive-foreground outline-none data-[disabled]:pointer-events-none focus:bg-destructive/10 focus:text-destructive pt-0"
+			className="group cursor-pointer flex h-6 select-none items-center leading-none text-destructive-foreground outline-hidden data-disabled:pointer-events-none focus:bg-destructive/10 focus:text-destructive pt-0"
 			onClick={onDelete}
 			key={`Delete-${position}`}
 		>
@@ -134,7 +134,7 @@ export default function TabsDropdownMenu() {
 					</DropdownMenuTrigger>
 					<DropdownMenuPortal>
 						<DropdownMenuContent
-							className="flex flex-col p-0 m-0 bg-background/80 backdrop-blur-sm shadow-lg ml-10 z-40 font-serifText text-xl"
+							className="flex flex-col p-0 m-0 bg-background/80 backdrop-blur-xs shadow-lg ml-10 z-40 font-serifText text-xl"
 							sideOffset={4}
 						>
 							<DropdownMenuLabel>
@@ -150,9 +150,9 @@ export default function TabsDropdownMenu() {
 							{tabs.map((tab: TabInfo) => (
 								<Link to={`/sheet/${tab.position}`} key={tab.position}>
 									<DropdownMenuSub key={tab.position}>
-										<DropdownMenuSubTrigger className="group relative flex h-6 select-none items-center pl-2 pr-2 outline-none data-[disabled]:pointer-events-none my-1 last:my-0 gap-9 text-xl data-[state=open]:bg-foreground/10 text-tab bg-background focus:bg-foreground/10 focus:text-tab">
+										<DropdownMenuSubTrigger className="group relative flex h-6 select-none items-center pl-2 pr-2 outline-hidden data-disabled:pointer-events-none my-1 last:my-0 gap-9 text-xl data-[state=open]:bg-foreground/10 text-tab bg-background focus:bg-foreground/10 focus:text-tab">
 											{tab.tabName}
-											<div className="ml-auto focus:text-tab/50 group-data-[highlighted]:text-tab/50"></div>
+											<div className="ml-auto focus:text-tab/50 group-data-highlighted:text-tab/50"></div>
 										</DropdownMenuSubTrigger>
 										<DropdownMenuPortal>
 											<DropdownMenuSubContent
