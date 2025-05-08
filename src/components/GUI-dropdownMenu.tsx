@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Settings, Sun, Moon, Eraser } from "lucide-react";
 
 import { Button } from "./ui/button";
@@ -10,12 +11,22 @@ import {
 import { useParams, useNavigate } from "react-router";
 import { clearTab } from "@/db/crud/ClearTab";
 import { useTheme } from "./theme-provider";
+import {
+	AlertDialog,
+	AlertDialogAction,
+	AlertDialogCancel,
+	AlertDialogContent,
+	AlertDialogDescription,
+	AlertDialogFooter,
+	AlertDialogHeader,
+	AlertDialogTitle,
+} from "./ui/alert-dialog";
 
-// Reusable component for the rename input
 export default function GUIDropdownMenu() {
 	const { theme, setTheme } = useTheme();
 	const { tabId } = useParams<{ tabId: string }>();
 	const navigate = useNavigate();
+	const [isDialogOpen, setIsDialogOpen] = useState(false);
 
 	return (
 		<>
@@ -29,14 +40,10 @@ export default function GUIDropdownMenu() {
 						<Settings />
 					</Button>
 				</DropdownMenuTrigger>
-				<DropdownMenuContent className="flex flex-col p-0 m-0 bg-background/80 rounded-lg shadow-lg ml-10 z-40 font-serifText text-xl">
+				<DropdownMenuContent className="flex flex-col p-0 m-0 bg-background/80 rounded-lg shadow-lg ml-10 z-40 font-serif-text text-xl">
 					<DropdownMenuItem
-						className="[&_svg]:size-6 cursor-pointer bg-background text-destructive focus:bg-foreground/10 focus:text-destructive outline-none text-xl"
-						onClick={async () => {
-							await clearTab(tabId);
-							// Force a re-render by navigating to the same route
-							navigate(`/sheet/${tabId}`);
-						}}
+						className="[&_svg]:size-6 cursor-pointer text-destructive-foreground focus:bg-destructive/10 focus:text-destructive outline-none text-xl"
+						onClick={() => setIsDialogOpen(true)}
 					>
 						<div className="flex flex-row items-center w-full gap-2">
 							<Eraser />
@@ -54,6 +61,31 @@ export default function GUIDropdownMenu() {
 					</DropdownMenuItem>
 				</DropdownMenuContent>
 			</DropdownMenu>
+
+			{/* AlertDialog controlled by state */}
+			<AlertDialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+				<AlertDialogContent>
+					<AlertDialogHeader>
+						<AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+						<AlertDialogDescription>
+							This action cannot be undone. This will permanently delete your
+							account and remove your data from our servers.
+						</AlertDialogDescription>
+					</AlertDialogHeader>
+					<AlertDialogFooter>
+						<AlertDialogCancel>Cancel</AlertDialogCancel>
+						<AlertDialogAction
+							onClick={async () => {
+								await clearTab(tabId);
+								// Force a re-render by navigating to the same route
+								navigate(`/sheet/${tabId}`);
+							}}
+						>
+							Continue
+						</AlertDialogAction>
+					</AlertDialogFooter>
+				</AlertDialogContent>
+			</AlertDialog>
 		</>
 	);
 }

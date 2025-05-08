@@ -25,10 +25,10 @@ export default function App() {
 							<TabName />
 							<GuitarTabCreator />
 							<div className="flex flex-col justify-between gap-1 mt-4">
-								<p className="text-xl text-tab font-serifText">
+								<p className="text-xl text-tab font-serif-text">
 									Click to increment fret number
 								</p>
-								<p className="text-xl text-tab font-serifText">
+								<p className="text-xl text-tab font-serif-text">
 									Right-click to switch note open/mute/off
 								</p>
 							</div>

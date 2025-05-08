@@ -9,15 +9,15 @@ import {
 
 export default function BreadCrumbs() {
 	return (
-		<Breadcrumb className="w-full absolute top-0 left-0 pt-12 pl-12 z-20 text-2xl font-serifText">
+		<Breadcrumb className="w-full absolute top-0 left-0 pt-12 pl-12 z-20 text-2xl font-serif-title">
 			<BreadcrumbList>
 				<BreadcrumbItem>
 					<BreadcrumbLink href="/">
-						<p className="text-2xl font-serifText">...</p>
+						<p className="text-2xl font-serif-title">...</p>
 					</BreadcrumbLink>
 				</BreadcrumbItem>
 				<BreadcrumbSeparator>
-					<p className="text-2xl font-serifText">/</p>
+					<p className="text-2xl font-serif-title">/</p>
 				</BreadcrumbSeparator>
 				<BreadcrumbItem>
 					<TabsDropdownMenu />

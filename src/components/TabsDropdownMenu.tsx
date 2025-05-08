@@ -126,7 +126,7 @@ export default function TabsDropdownMenu() {
 				<DropdownMenu>
 					<DropdownMenuTrigger
 						asChild
-						className="appearance-none border-none inline-flex items-center justify-center rounded-md text-tab transition-all text-xl font-serifText gap-2"
+						className="appearance-none border-none inline-flex items-center justify-center rounded-md text-tab transition-all text-xl font-serif-text gap-2"
 					>
 						<button aria-label="Customise options">
 							{tabName || "Unnamed"}
@@ -134,7 +134,7 @@ export default function TabsDropdownMenu() {
 					</DropdownMenuTrigger>
 					<DropdownMenuPortal>
 						<DropdownMenuContent
-							className="flex flex-col p-0 m-0 bg-background/80 backdrop-blur-xs shadow-lg ml-10 z-40 font-serifText text-xl"
+							className="flex flex-col p-0 m-0 bg-background/80 backdrop-blur-xs shadow-lg ml-10 z-40 font-serif-text text-xl"
 							sideOffset={4}
 						>
 							<DropdownMenuLabel>
@@ -156,7 +156,7 @@ export default function TabsDropdownMenu() {
 										</DropdownMenuSubTrigger>
 										<DropdownMenuPortal>
 											<DropdownMenuSubContent
-												className="z-50 bg-background text-foreground shadow-lg border border-tab font-serifText p-0"
+												className="z-50 bg-background text-foreground shadow-lg border border-tab font-serif-text p-0"
 												sideOffset={6}
 												key={tab.position}
 											>
