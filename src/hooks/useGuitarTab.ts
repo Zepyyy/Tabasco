@@ -48,8 +48,27 @@ export const useGuitarTab = (): TabState & TabOperations => {
 		}
 	};
 
+	const handleNewLineClick = () => {
+		try {
+			const newTab = [...tab];
+			// Add a new DEFAULT_NOTE to each string in the tab
+			newTab.forEach((string) => {
+				for (let i = 0; i < NOTES; i++) {
+					string.push(DEFAULT_NOTE);
+				}
+			});
+			setTab(newTab);
+			updateCurrentTabs(newTab, tabId || "0");
+		} catch (err) {
+			setError(
+				err instanceof Error ? err : new Error("Failed to add new line"),
+			);
+		}
+	};
+
 	const incrementNotesNumber = (string: number, note: number): void => {
 		try {
+			console.log("string: ", string, "note: ", note);
 			const newTab = [...tab];
 			const currentValue = newTab[string][note];
 			switch (true) {
@@ -99,6 +118,7 @@ export const useGuitarTab = (): TabState & TabOperations => {
 
 	return {
 		tab,
+		handleNewLineClick,
 		isLoading,
 		error,
 		handleCellClick,

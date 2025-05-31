@@ -21,7 +21,7 @@ export default function App() {
 				<NameContext.Provider value={{ tabName, setTabName }}>
 					<main className="flex min-h-screen transition ease-out !pointer-events-auto text-xl">
 						<BreadCrumbs />
-						<div className="flex flex-col justify-start w-full p-24">
+						<div className="flex flex-col justify-start w-full p-12">
 							<TabName />
 							<GuitarTabCreator />
 							<div className="flex flex-col justify-between gap-1 mt-4">

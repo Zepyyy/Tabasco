@@ -24,19 +24,19 @@ export interface TabState {
 export interface TabOperations {
 	handleCellClick: (string: number, note: number) => Promise<void>;
 	incrementNotesNumber: (string: number, note: number) => void;
+	handleNewLineClick: (newTab: Tab) => void;
 }
 
 export interface NoteCellProps {
 	note: NoteValue;
 	stringIndex: number;
-	noteIndex: number;
-	onIncrement: (string: number, note: number) => void;
+	onIncrement: (stringIndex: number, noteIndex: number) => void;
 	onToggle: (string: number, note: number) => void;
 }
 
 export interface StringRowProps {
 	string: TabString;
 	stringIndex: number;
-	onIncrement: (string: number, note: number) => void;
+	onIncrement: (stringIndex: number, noteIndex: number) => void;
 	onToggle: (string: number, note: number) => void;
 }
