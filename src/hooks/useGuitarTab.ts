@@ -68,7 +68,6 @@ export const useGuitarTab = (): TabState & TabOperations => {
 
 	const incrementNotesNumber = (string: number, note: number): void => {
 		try {
-			console.log("string: ", string, "note: ", note);
 			const newTab = [...tab];
 			const currentValue = newTab[string][note];
 			switch (true) {

@@ -23,8 +23,8 @@ export const useTabOperations = () => {
 		});
 	};
 
-	const handleDelete = (position: string) => {
-		deleteTabById(position);
+	const handleDelete = async (position: string) => {
+		await deleteTabById(position);
 	};
 
 	const handleAddTab = () => {

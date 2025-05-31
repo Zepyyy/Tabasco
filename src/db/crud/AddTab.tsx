@@ -15,13 +15,13 @@ export default async function addTab({
 	position?: string;
 }) {
 	try {
-		console.log("this is triggered");
+		// console.log("this is triggered");
 		// Get the current tabs, so we can determine the position of the new tab
 		// const currentTabs = await getTabs();
 		const lastTab = await getLastTabPosition();
-		console.log(lastTab);
+		// console.log(lastTab);
 		const maxPosition = lastTab ? parseInt(lastTab.position) + 1 : 0;
-		console.log(maxPosition);
+		// console.log(maxPosition);
 
 		// Add the new value!
 		await db.TabInfo.add({
@@ -33,8 +33,20 @@ export default async function addTab({
 					.map(() => Array(48).fill("-")),
 			position: position ? position : maxPosition.toString(), // Increment the position
 		});
-		console.log("this is added");
+		console.log(
+			"%c DEBUG: %c Tab Add Successfully added tab at position %c%s",
+			"background: #2c3e50; color: white;",
+			"background: inherit; color: white;",
+			"color: #22e66a;",
+			position || maxPosition,
+		);
 	} catch (error) {
-		console.log(error);
+		console.log(
+			"%c DEBUG: %c Tab Delete Failed to delete tab Error at position: %c%s %c Error: ",
+			"background: #2c3e50; color: white;",
+			"background: inherit; color: white;",
+			"color: #22e66a;",
+			error,
+		);
 	}
 }
