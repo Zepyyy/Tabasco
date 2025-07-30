@@ -9,6 +9,8 @@ import { NameContext } from "./contexts/NameContext";
 import { Analytics } from "@vercel/analytics/react";
 import GUI from "./components/GUI-menu";
 import { ThemeProvider } from "./components/theme-provider";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { MailIcon } from "lucide-react";
 
 export default function App() {
 	const [tabName, setTabName] = useState("");
@@ -19,12 +21,23 @@ export default function App() {
 		<ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
 			<TabsContext.Provider value={tabs}>
 				<NameContext.Provider value={{ tabName, setTabName }}>
-					<main className="flex min-h-screen transition ease-out !pointer-events-auto text-xl">
+					<div className="sm:hidden grid w-full items-start m-4 max-w-max">
+						<Alert>
+							<MailIcon />
+							<AlertTitle>
+								Not recommended for small screens
+							</AlertTitle>
+							<AlertDescription>
+								Please consider switching to a laptop
+							</AlertDescription>
+						</Alert>
+					</div>
+					<main className="flex min-h-screen transition ease-out !pointer-events-auto text-xl flex-col">
 						<BreadCrumbs />
-						<div className="flex flex-col justify-start w-full p-12">
+						<div className="flex flex-col justify-start w-full px-12 py-6">
 							<TabName />
 							<GuitarTabCreator />
-							<div className="flex flex-col justify-between gap-1 mt-4">
+							<div className="flex flex-col justify-between gap-1">
 								<p className="text-xl text-tab font-serif-text">
 									Click to increment fret number
 								</p>

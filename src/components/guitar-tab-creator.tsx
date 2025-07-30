@@ -23,7 +23,7 @@ const NoteCell = ({
 	absoluteNoteIndex,
 }: NoteCellProps & { absoluteNoteIndex: number }) => (
 	<div
-		className="border-r-2 last:border-none w-8 h-8 flex items-center justify-center cursor-grabbing font-bold text-foreground z-10 text-xl font-serif-text nth-[6n]:border-tab border-tabsubtle data-[value='-']:text-tab/30 data-[value='X']:text-tab/50 select-none"
+		className="border-r-2 last:border-none w-4 h-4 sm:w-6 sm:h-6 xl:w-8 xl:h-8 flex items-center justify-center cursor-grabbing font-bold text-foreground z-10 sm:text-md xl:text-xl font-serif-text nth-[6n]:border-tab border-tabsubtle data-[value='-']:text-tab/30 data-[value='X']:text-tab/50 select-none"
 		onClick={() => onIncrement(stringIndex, absoluteNoteIndex)}
 		onContextMenu={(e) => {
 			e.preventDefault(); // Prevent default context menu
@@ -120,7 +120,7 @@ export default function GuitarTabCreator() {
 		const startIndex = i * NOTES_PER_SECTION;
 		const endIndex = Math.min(
 			startIndex + NOTES_PER_SECTION,
-			tab[0]?.length || 0,
+			tab[0]?.length || 0
 		);
 
 		if (startIndex < (tab[0]?.length || 0)) {
@@ -132,13 +132,13 @@ export default function GuitarTabCreator() {
 	}
 
 	return (
-		<div className="container p-4 flex flex-col items-center overflow-x-auto max-w-full">
+		<div className="container p-4 flex flex-col items-center max-w-full">
 			{/* Tab sections container with horizontal scroll */}
-			<div className="w-full overflow-x-auto">
+			<div className="w-full overflow-x-scroll">
 				{sections.map((section, index) => (
 					<div
 						key={`tab-section-${index}`}
-						className="mb-4 flex flex-col items-center rounded-md"
+						className="mb-4 flex flex-col items-start rounded-md"
 					>
 						{section.data.map((string, stringIndex) => (
 							<StringRow
