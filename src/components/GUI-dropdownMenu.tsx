@@ -33,7 +33,7 @@ export default function GUIDropdownMenu() {
 			<DropdownMenu>
 				<DropdownMenuTrigger asChild>
 					<Button
-						variant={"deep"}
+						variant={"SoftDestructive"}
 						size={"icon-resize"}
 						className="text-xl font-medium p-2 [&_svg]:size-10 aspect-square"
 					>
@@ -42,7 +42,7 @@ export default function GUIDropdownMenu() {
 				</DropdownMenuTrigger>
 				<DropdownMenuContent className="flex flex-col p-0 mx-2 bg-background/80 rounded-lg shadow-lg ml-10 z-40 font-serif-text text-xl">
 					<DropdownMenuItem
-						className="[&_svg]:size-6 cursor-pointer text-destructive-foreground focus:bg-destructive/10 focus:text-destructive outline-none text-xl"
+						className="[&_svg]:size-6 cursor-pointer bg-background text-destructive-foreground focus:bg-destructive/10 focus:text-destructive-foreground outline-none text-xl"
 						onClick={() => setIsDialogOpen(true)}
 					>
 						<div className="flex flex-row items-center w-full gap-2">

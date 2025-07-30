@@ -35,7 +35,7 @@ export default function App() {
 					<main className="flex min-h-screen transition ease-out !pointer-events-auto text-xl flex-col">
 						<div className="flex justify-end">
 							<BreadCrumbs />
-							<div className="absolute top-0 flex flex-col items-end justify-start gap-4 p-4 z-99">
+							<div className="absolute top-0 flex flex-col items-end justify-start p-4 z-99">
 								<GUI />
 							</div>
 						</div>

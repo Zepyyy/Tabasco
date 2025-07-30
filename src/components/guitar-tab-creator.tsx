@@ -5,6 +5,7 @@ import { useGuitarTab } from "@/hooks/useGuitarTab";
 import { NoteCellProps, StringRowProps } from "@/types/guitar-tab";
 import { Button } from "./ui/button";
 import { useState, useEffect } from "react";
+import { Trash } from "lucide-react";
 
 /**
  * NoteCell component - Renders an individual note cell in the guitar tab
@@ -97,6 +98,7 @@ export default function GuitarTabCreator() {
 		handleCellClick,
 		incrementNotesNumber,
 		handleNewLineClick,
+		handleRemoveSection,
 	} = useGuitarTab();
 
 	// Constants and state for pagination
@@ -136,20 +138,31 @@ export default function GuitarTabCreator() {
 			{/* Tab sections container with horizontal scroll */}
 			<div className="w-full overflow-x-scroll">
 				{sections.map((section, index) => (
-					<div
-						key={`tab-section-${index}`}
-						className="mb-4 flex flex-col items-start rounded-md"
-					>
-						{section.data.map((string, stringIndex) => (
-							<StringRow
-								key={`string-${stringIndex}-section-${section.startNoteIndex}`}
-								string={string}
-								stringIndex={stringIndex}
-								startNoteIndex={section.startNoteIndex}
-								onIncrement={incrementNotesNumber}
-								onToggle={handleCellClick}
-							/>
-						))}
+					<div className="flex">
+						<div className="flex justify-center items-center">
+							<Button
+								variant="SoftDestructive"
+								className="flex justify-center"
+								onClick={() => handleRemoveSection(section)}
+							>
+								<Trash />
+							</Button>
+						</div>
+						<div
+							key={`tab-section-${index}`}
+							className="mb-4 flex flex-col items-start rounded-md"
+						>
+							{section.data.map((string, stringIndex) => (
+								<StringRow
+									key={`string-${stringIndex}-section-${section.startNoteIndex}`}
+									string={string}
+									stringIndex={stringIndex}
+									startNoteIndex={section.startNoteIndex}
+									onIncrement={incrementNotesNumber}
+									onToggle={handleCellClick}
+								/>
+							))}
+						</div>
 					</div>
 				))}
 			</div>

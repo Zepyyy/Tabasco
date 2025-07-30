@@ -8,7 +8,9 @@ const buttonVariants = cva(
 				default:
 					"bg-primary text-primary-foreground hover:bg-primary-hover shadow-sm",
 				destructive:
-					"bg-destructive text-destructive-foreground hover:bg-destructive/75 shadow-xs",
+					"bg-destructive/10 text-destructive-foreground hover:bg-destructive/25 shadow-xs",
+				SoftDestructive:
+					"bg-soft/25 text-soft-foreground hover:bg-soft/45 shadow-xs",
 				outline:
 					"bg-background text-primary hover:bg-primary/5 hover:text-primary border-2 border-primary",
 				deep: "bg-primary text-primary-foreground hover:bg-primary/80 shadow-sm",
@@ -28,7 +30,7 @@ const buttonVariants = cva(
 			variant: "default",
 			size: "default",
 		},
-	},
+	}
 );
 
 export { buttonVariants };

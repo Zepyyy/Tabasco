@@ -25,6 +25,10 @@ export interface TabOperations {
 	handleCellClick: (string: number, note: number) => Promise<void>;
 	incrementNotesNumber: (string: number, note: number) => void;
 	handleNewLineClick: (newTab: Tab) => void;
+	handleRemoveSection: (section: {
+		data: Tab;
+		startNoteIndex: number;
+	}) => void;
 }
 
 export interface NoteCellProps {

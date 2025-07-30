@@ -69,29 +69,29 @@ const SheetActionsMenu = ({
 }) => (
 	<>
 		<DropdownMenuItem
-			className="group flex h-7 select-none items-center text-tab outline-hidden data-disabled:pointer-events-none focus:bg-foreground/10"
+			className="group flex h-8 select-none items-center text-tab outline-hidden data-disabled:pointer-events-none focus:bg-foreground/10"
 			onClick={onRename}
 			key={`Rename-${position}`}
 		>
 			Rename
 		</DropdownMenuItem>
 		<DropdownMenuItem
-			className="group flex h-7 select-none items-center text-tab outline-hidden data-disabled:pointer-events-none focus:bg-foreground/10"
+			className="group flex h-8 select-none items-center text-tab outline-hidden data-disabled:pointer-events-none focus:bg-foreground/10"
 			// onClick={() => console.log("Duplicate")}
 			key={`Duplicate-${position}`}
 		>
 			Duplicate
 		</DropdownMenuItem>
 		<DropdownMenuItem
-			className="group flex h-7 select-none items-center text-tab outline-hidden data-disabled:pointer-events-none focus:bg-foreground/10"
+			className="group flex h-8 select-none items-center text-tab outline-hidden data-disabled:pointer-events-none focus:bg-foreground/10"
 			onClick={onMoveDown}
 			key={`Move-${position}`}
 		>
 			Move Down
 		</DropdownMenuItem>
-		<DropdownMenuSeparator className="bg-tab" />
+		<DropdownMenuSeparator className="bg-tab m-0" />
 		<DropdownMenuItem
-			className="group cursor-pointer flex h-6 select-none items-center leading-none text-destructive-foreground outline-hidden data-disabled:pointer-events-none focus:bg-destructive/10 focus:text-destructive pt-0"
+			className="group cursor-pointer flex h-7 select-none items-center leading-none outline-hidden data-disabled:pointer-events-none text-destructive-foreground focus:bg-destructive/10 focus:text-destructive-foreground pt-1"
 			onClick={onDelete}
 			key={`Delete-${position}`}
 		>
@@ -117,7 +117,7 @@ export default function TabsDropdownMenu() {
 	const handleRenameSubmit = (
 		position: string,
 		oldName: string,
-		newName: string,
+		newName: string
 	) => {
 		if (newName && newName !== oldName) {
 			handleRename(position, newName);
@@ -132,7 +132,11 @@ export default function TabsDropdownMenu() {
 				<RenameInput
 					initialValue={editingTab.name}
 					onRename={(newName) =>
-						handleRenameSubmit(editingTab.position, editingTab.name, newName)
+						handleRenameSubmit(
+							editingTab.position,
+							editingTab.name,
+							newName
+						)
 					}
 					onCancel={() => setEditingTab(null)}
 				/>
@@ -161,11 +165,14 @@ export default function TabsDropdownMenu() {
 										/>
 									</div>
 								</DropdownMenuLabel>
-								<DropdownMenuSeparator className="h-[0.5px] bg-tab" />
+								<DropdownMenuSeparator className="m-0 bg-tab" />
 								{tabs.map((tab: TabInfo) => (
-									<Link to={`/sheet/${tab.position}`} key={tab.position}>
+									<Link
+										to={`/sheet/${tab.position}`}
+										key={tab.position}
+									>
 										<DropdownMenuSub key={tab.position}>
-											<DropdownMenuSubTrigger className="group relative flex h-6 select-none items-center pl-2 pr-2 outline-hidden data-disabled:pointer-events-none my-1 last:my-0 gap-9 text-xl data-[state=open]:bg-foreground/10 text-tab bg-background focus:bg-foreground/10 focus:text-tab">
+											<DropdownMenuSubTrigger className="group relative flex h-8 select-none items-center pl-2 pr-2 outline-hidden data-disabled:pointer-events-none my-1 last:my-0 gap-9 text-xl data-[state=open]:bg-foreground/10 text-tab bg-background focus:bg-foreground/10 focus:text-tab">
 												{tab.tabName}
 												<div className="ml-auto focus:text-tab/50 group-data-highlighted:text-tab/50"></div>
 											</DropdownMenuSubTrigger>
@@ -180,13 +187,22 @@ export default function TabsDropdownMenu() {
 														onRename={() => {
 															setEditingTab({
 																name: tab.tabName,
-																position: tab.position,
+																position:
+																	tab.position,
 															});
 														}}
-														onMoveDown={() => handleMove(tab.position)}
+														onMoveDown={() =>
+															handleMove(
+																tab.position
+															)
+														}
 														onDelete={() => {
-															setIsDialogOpen(true);
-															setConcernedTab(tab);
+															setIsDialogOpen(
+																true
+															);
+															setConcernedTab(
+																tab
+															);
 														}}
 													/>
 												</DropdownMenuSubContent>
@@ -198,20 +214,27 @@ export default function TabsDropdownMenu() {
 						</DropdownMenuPortal>
 					</DropdownMenu>
 
-					<AlertDialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+					<AlertDialog
+						open={isDialogOpen}
+						onOpenChange={setIsDialogOpen}
+					>
 						<AlertDialogContent>
 							<AlertDialogHeader>
-								<AlertDialogTitle>Are you sure?</AlertDialogTitle>
+								<AlertDialogTitle>
+									Are you sure?
+								</AlertDialogTitle>
 								<AlertDialogDescription>
-									This action cannot be undone. This will permanently delete the
-									tab.
+									This action cannot be undone. This will
+									permanently delete the tab.
 								</AlertDialogDescription>
 							</AlertDialogHeader>
 							<AlertDialogFooter>
 								<AlertDialogCancel>Cancel</AlertDialogCancel>
 								<AlertDialogAction
 									onClick={async () => {
-										await handleDelete(concernedTab?.position || "");
+										await handleDelete(
+											concernedTab?.position || ""
+										);
 										navigate(`/sheet/0`);
 									}}
 								>
