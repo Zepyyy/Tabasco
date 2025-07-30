@@ -139,7 +139,7 @@ export default function GuitarTabCreator() {
 			<div className="w-full overflow-x-scroll">
 				{sections.map((section, index) => (
 					<div className="flex">
-						<div className="flex justify-center items-center">
+						<div className="flex justify-center items-center mr-6">
 							<Button
 								variant="SoftDestructive"
 								className="flex justify-center"
