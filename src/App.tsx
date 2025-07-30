@@ -33,7 +33,12 @@ export default function App() {
 						</Alert>
 					</div>
 					<main className="flex min-h-screen transition ease-out !pointer-events-auto text-xl flex-col">
-						<BreadCrumbs />
+						<div className="flex justify-end">
+							<BreadCrumbs />
+							<div className="absolute top-0 flex flex-col items-end justify-start gap-4 p-4 z-99">
+								<GUI />
+							</div>
+						</div>
 						<div className="flex flex-col justify-start w-full px-12 py-6">
 							<TabName />
 							<GuitarTabCreator />
@@ -45,9 +50,6 @@ export default function App() {
 									Right-click to switch note open/mute/off
 								</p>
 							</div>
-						</div>
-						<div className="absolute bottom-0 left-0 w-full flex flex-col items-center justify-end gap-4 p-4 z-10">
-							<GUI />
 						</div>
 					</main>
 					<Analytics />

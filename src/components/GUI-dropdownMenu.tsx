@@ -40,7 +40,7 @@ export default function GUIDropdownMenu() {
 						<Settings />
 					</Button>
 				</DropdownMenuTrigger>
-				<DropdownMenuContent className="flex flex-col p-0 m-0 bg-background/80 rounded-lg shadow-lg ml-10 z-40 font-serif-text text-xl">
+				<DropdownMenuContent className="flex flex-col p-0 mx-2 bg-background/80 rounded-lg shadow-lg ml-10 z-40 font-serif-text text-xl">
 					<DropdownMenuItem
 						className="[&_svg]:size-6 cursor-pointer text-destructive-foreground focus:bg-destructive/10 focus:text-destructive outline-none text-xl"
 						onClick={() => setIsDialogOpen(true)}
@@ -52,7 +52,9 @@ export default function GUIDropdownMenu() {
 					</DropdownMenuItem>
 					<DropdownMenuItem
 						className="[&_svg]:size-6 cursor-pointer bg-background text-tab focus:bg-foreground/10 focus:text-tab outline-none text-xl"
-						onClick={() => setTheme(theme === "light" ? "dark" : "light")}
+						onClick={() =>
+							setTheme(theme === "light" ? "dark" : "light")
+						}
 					>
 						<div className="flex flex-row items-center w-full gap-2">
 							{theme === "light" ? <Moon /> : <Sun />}
@@ -66,9 +68,12 @@ export default function GUIDropdownMenu() {
 			<AlertDialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
 				<AlertDialogContent>
 					<AlertDialogHeader>
-						<AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+						<AlertDialogTitle>
+							Are you absolutely sure?
+						</AlertDialogTitle>
 						<AlertDialogDescription>
-							This action cannot be undone. This will permanently clear the tab.
+							This action cannot be undone. This will permanently
+							clear the tab.
 						</AlertDialogDescription>
 					</AlertDialogHeader>
 					<AlertDialogFooter>
