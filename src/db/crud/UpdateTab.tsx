@@ -1,21 +1,23 @@
 import { db } from "../db";
 
-export default async function updateTabNameById(id: string, newName: string) {
+export default async function updateTabNameById(id: number, newName: string) {
 	try {
-		const updatedCount = await db.TabInfo.where({ position: id }).modify({
+		const updatedCount = await db.TabInfo.where({
+			id: id,
+		}).modify({
 			tabName: newName,
 		});
 		if (updatedCount === 0) {
 			console.log(
-				"%c DEBUG: %c Tab Rename No tab found at position: ",
+				"%c DEBUG: %c Tab Rename No tab found at id: %c",
 				"background: #2c3e50; color: white;",
 				"background: inherit; color: white;",
-				"%c" + id,
-				"color: #2c3e50;",
+				"color: #22e66a;",
+				id,
 			);
 		} else {
 			console.log(
-				"%c DEBUG: %c Tab Rename Successfully renamed tab %c%s%c to %c%s",
+				"%c DEBUG: %c Tab Rename Successfully renamed tab at id: %c%s%c to %c%s",
 				"background: #2c3e50; color: white;",
 				"background: inherit; color: white;",
 				"color: #22e66a;",
@@ -31,6 +33,47 @@ export default async function updateTabNameById(id: string, newName: string) {
 			"background: #2c3e50; color: white;",
 			"background: inherit; color: white;",
 			"%c" + id,
+			"color: #2c3e50;",
+			error,
+		);
+	}
+}
+export async function updateTabNameByPosition(
+	position: string,
+	newName: string,
+) {
+	try {
+		const updatedCount = await db.TabInfo.where({
+			position: position,
+		}).modify({
+			tabName: newName,
+		});
+		if (updatedCount === 0) {
+			console.log(
+				"%c DEBUG: %c Tab Rename No tab found at position: %c",
+				"background: #2c3e50; color: white;",
+				"background: inherit; color: white;",
+				"color: #22e66a;",
+				position,
+			);
+		} else {
+			console.log(
+				"%c DEBUG: %c Tab Rename Successfully renamed tab at position: %c%s%c to %c%s",
+				"background: #2c3e50; color: white;",
+				"background: inherit; color: white;",
+				"color: #22e66a;",
+				position,
+				"color: white;",
+				"color: #22b5e6;",
+				newName,
+			);
+		}
+	} catch (error) {
+		console.log(
+			"%c DEBUG: Tab Rename %c Failed to rename tab Error: ",
+			"background: #2c3e50; color: white;",
+			"background: inherit; color: white;",
+			"%c" + position,
 			"color: #2c3e50;",
 			error,
 		);
@@ -59,49 +102,57 @@ export async function updateCurrentTabs(tabs: string[][], activeTab: string) {
 	}
 }
 
-export async function updateTabPositionById(id: string, position: string) {
+export async function updateTabPositionById(
+	currentId: number,
+	newPosition: string,
+) {
 	try {
 		await db.transaction("rw", db.TabInfo, async () => {
-			const tab1 = await db.TabInfo.where({ position: id }).first();
-			const tab2 = await db.TabInfo.where({ position: position }).first();
+			const tab1 = await db.TabInfo.where({ id: currentId }).first();
+			const tab2 = await db.TabInfo.where({
+				position: newPosition,
+			}).first();
 
 			if (!tab1) {
 				console.log(
-					"%c DEBUG: Tab Position %c No tab found at position %c%s%c",
+					"%c DEBUG: %c Tab Position No tab found with id %c%s%c",
 					"background: #2c3e50; color: white;",
 					"background: inherit; color: white;",
 					"color: #22e66a;",
-					id,
+					currentId,
 				);
 				return; // Exit the transaction if a tab is not found
-			}
-
-			if (!tab2) {
+			} else if (tab1 && !tab2) {
+				await db.TabInfo.where({ id: currentId }).modify({
+					position: newPosition,
+				});
 				console.log(
-					"%c DEBUG: %c Tab Position No tab found at position %c%s%c ",
+					"%c DEBUG: %c Tab Position No tab found at position %c%s%c, setting the position wihtout swap necessary",
 					"background: #2c3e50; color: white;",
 					"background: inherit; color: white;",
 					"color: #22e66a;",
-					position,
+					newPosition,
 				);
-				return; // Exit the transaction if a tab is not found
+				return;
+			} else {
+				await db.TabInfo.where({ id: currentId }).modify({
+					position: newPosition,
+				});
+				await db.TabInfo.where({ id: tab2?.id }).modify({
+					position: tab1.position,
+				});
+				console.log(
+					"%c DEBUG: %c Tab Position Successfully swapped positions between tabs: %c%s%c and %c%s",
+					"background: #2c3e50; color: white;",
+					"background: inherit; color: white;",
+					"color: #22e66a;",
+					currentId,
+					"color: white;",
+					"color: #22e66a;",
+					tab2?.id,
+				);
+				return;
 			}
-
-			await db.TabInfo.where({ id: tab1.id }).modify({
-				position: position,
-			});
-			await db.TabInfo.where({ id: tab2.id }).modify({ position: id });
-
-			console.log(
-				"%c DEBUG: %c Tab Position Successfully swapped positions between tabs: %c%s%c and %c%s",
-				"background: #2c3e50; color: white;",
-				"background: inherit; color: white;",
-				"color: #22e66a;",
-				id,
-				"color: white;",
-				"color: #22e66a;",
-				position,
-			);
 		});
 	} catch (error) {
 		console.log(

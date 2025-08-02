@@ -1,11 +1,11 @@
 import { db } from "../db";
 
-export default async function getTabNameById(id: string) {
+export default async function getTabNameByPosition(position: string) {
 	try {
-		const tab = await db.TabInfo.where({ position: id }).first();
+		const tab = await db.TabInfo.where({ position: position }).first();
 		if (!tab) {
 			console.log(
-				"%cDEBUG:%c No tab found at position: %c" + id,
+				"%cDEBUG:%c No tab found at id: %c" + position,
 				"background: #2c3e50; color: white; padding: 2px 5px;",
 				"background: inherit; color: white;",
 				"color: #22e66a;",
@@ -13,7 +13,7 @@ export default async function getTabNameById(id: string) {
 			return "";
 		} else {
 			console.log(
-				"%cDEBUG:%c Got tab: %c" + id,
+				"%cDEBUG:%c Got tab at id: %c" + position,
 				"background: #2c3e50; color: white; padding: 2px 5px;",
 				"background: inherit; color: white;",
 				"color: #22e66a;",
@@ -38,12 +38,13 @@ export default async function getTabNameById(id: string) {
 		return "";
 	}
 }
-export async function getTabsById(id: string) {
+export async function getTabsByPosition(position: string) {
 	try {
-		const tab = await db.TabInfo.where({ position: id }).first();
+		const tab = await db.TabInfo.where({ position: position }).first();
+		console.log(tab);
 		if (!tab) {
 			console.log(
-				"%cDEBUG:%c No tab found at position: %c" + id,
+				"%cDEBUG:%c No tab found at id: %c" + position,
 				"background: #2c3e50; color: white; padding: 2px 5px;",
 				"background: inherit; color: white;",
 				"color: #22e66a;",

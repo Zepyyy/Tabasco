@@ -1,19 +1,19 @@
 import { db } from "../db";
 
-export default async function deleteTabById(id: string) {
+export default async function deleteTabById(id: number) {
 	try {
-		const updatedCount = await db.TabInfo.where("position").equals(id).delete();
+		const updatedCount = await db.TabInfo.where("id").equals(id).delete();
 		if (updatedCount === 0) {
 			console.log(
-				"%c DEBUG: %c Tab Delete No tab found at position: ",
+				"%c DEBUG: %c Tab Delete No tab found at id: %c",
 				"background: #2c3e50; color: white;",
 				"background: inherit; color: white;",
 				"%c" + id,
-				"color: #2c3e50;",
+				"color: #22e66a;",
 			);
 		} else {
 			console.log(
-				"%c DEBUG: %c Tab Delete Successfully deleted tab at position %c%s",
+				"%c DEBUG: %c Tab Delete Successfully deleted tab at id %c%s",
 				"background: #2c3e50; color: white;",
 				"background: inherit; color: white;",
 				"color: #22e66a;",
@@ -22,7 +22,7 @@ export default async function deleteTabById(id: string) {
 		}
 	} catch (error) {
 		console.log(
-			"%c DEBUG: %c Tab Delete Failed to delete tab %c%s %c Error: ",
+			"%c DEBUG: %c Tab Delete Failed to delete tab at id %c%s %c Error: ",
 			"background: #2c3e50; color: white;",
 			"background: inherit; color: white;",
 			"%c" + id,
