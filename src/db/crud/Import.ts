@@ -5,7 +5,7 @@ import { TabInfo } from "../db";
 export async function ImportTabs(jsonData: unknown) {
 	try {
 		// Parse the imported JSON data
-		let importedData: TabInfo;
+		let importedData: Partial<TabInfo>;
 
 		// Handle different possible structures of the imported data
 		if (jsonData) {
@@ -20,10 +20,9 @@ export async function ImportTabs(jsonData: unknown) {
 					nestedData.data[0].rows
 				) {
 					// Structure from dexie export
-					const tabData = nestedData.data[0].rows as Array<TabInfo>;
+					const tabData = nestedData.data[0].rows as Array<Partial<TabInfo>>;
 
 					importedData = {
-						id: 0,
 						tabName: (tabData[0]?.tabName as string) || "Imported Tab",
 						tabs:
 							(tabData[0]?.tabs as string[][]) ||
@@ -35,9 +34,7 @@ export async function ImportTabs(jsonData: unknown) {
 					throw new Error("Invalid dexie export structure");
 				}
 			} else if (data.tabName && data.tabs) {
-				// Direct TabInfo structure
 				importedData = {
-					id: 0,
 					tabName: data.tabName as string,
 					tabs: data.tabs as string[][],
 				};
@@ -48,7 +45,7 @@ export async function ImportTabs(jsonData: unknown) {
 			throw new Error("Invalid import data format");
 		}
 
-		const position = await addTab(importedData);
+		const position = await addTab(importedData as Partial<TabInfo>);
 
 		if (!position) {
 			console.log(

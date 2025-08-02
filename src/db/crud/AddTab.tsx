@@ -6,7 +6,7 @@ export async function getLastTabPosition() {
 	return tab?.position;
 }
 
-export default async function addTab({ tabName, tabs, position }: TabInfo) {
+export default async function addTab({ tabName, tabs }: Partial<TabInfo>) {
 	try {
 		const lastTabPosition = await getLastTabPosition();
 		const maxPosition =
@@ -21,16 +21,16 @@ export default async function addTab({ tabName, tabs, position }: TabInfo) {
 				Array(6)
 					.fill(null)
 					.map(() => Array(48).fill("-")),
-			position: position ? position : maxPosition.toString(), // Increment the position
+			position: maxPosition.toString(), // Increment the position
 		});
 		console.log(
 			"%c DEBUG: %c Tab Add Successfully added tab at position %c%s",
 			"background: #2c3e50; color: white;",
 			"background: inherit; color: white;",
 			"color: #22e66a;",
-			position || maxPosition,
+			maxPosition,
 		);
-		return position || maxPosition;
+		return maxPosition;
 	} catch (error) {
 		console.log(
 			"%c DEBUG: %c Tab Delete Failed to delete tab Error at position: %c%s %c Error: ",
