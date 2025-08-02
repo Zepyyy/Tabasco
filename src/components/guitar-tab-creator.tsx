@@ -55,7 +55,7 @@ const StringRow = ({
 	<div id="row" className="flex">
 		{string.map((note, noteIndex) => (
 			<NoteCell
-				key={noteIndex}
+				key={`${stringIndex}-${noteIndex}`}
 				note={note}
 				stringIndex={stringIndex}
 				absoluteNoteIndex={startNoteIndex + noteIndex}
@@ -122,7 +122,7 @@ export default function GuitarTabCreator() {
 		const startIndex = i * NOTES_PER_SECTION;
 		const endIndex = Math.min(
 			startIndex + NOTES_PER_SECTION,
-			tab[0]?.length || 0
+			tab[0]?.length || 0,
 		);
 
 		if (startIndex < (tab[0]?.length || 0)) {
@@ -138,12 +138,16 @@ export default function GuitarTabCreator() {
 			{/* Tab sections container with horizontal scroll */}
 			<div className="w-full overflow-x-scroll">
 				{sections.map((section, index) => (
-					<div className="flex">
-						<div className="flex justify-center items-center mr-6">
+					<div className="flex" key={index}>
+						<div
+							className="flex justify-center items-center mr-6"
+							key={`div-${index}`}
+						>
 							<Button
 								variant="SoftDestructive"
 								className="flex justify-center"
 								onClick={() => handleRemoveSection(section)}
+								key={`delete-section-${index}`}
 							>
 								<Trash />
 							</Button>
@@ -154,7 +158,7 @@ export default function GuitarTabCreator() {
 						>
 							{section.data.map((string, stringIndex) => (
 								<StringRow
-									key={`string-${stringIndex}-section-${section.startNoteIndex}`}
+									key={`row-${stringIndex}-section-${index}`}
 									string={string}
 									stringIndex={stringIndex}
 									startNoteIndex={section.startNoteIndex}

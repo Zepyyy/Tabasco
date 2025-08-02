@@ -1,7 +1,10 @@
 import { useState, useEffect } from "react";
 import { useParams, useLocation } from "react-router";
-import { getTabsById } from "@/db/crud/GetTab";
+import { getTabsByPosition } from "@/db/crud/GetTab";
 import { updateCurrentTabs } from "@/db/crud/UpdateTab";
+import { exportTabs } from "@/db/crud/Export";
+import download from "downloadjs";
+
 import {
 	STRINGS,
 	DEFAULT_NOTE,
@@ -14,7 +17,9 @@ import {
 } from "@/types/guitar-tab";
 
 export const useGuitarTab = (): TabState & TabOperations => {
-	const { tabId } = useParams<{ tabId: string }>();
+	const { tabPositionFromParam } = useParams<{
+		tabPositionFromParam: string;
+	}>();
 	const location = useLocation();
 	const [NOTES] = useState(48);
 	const [tab, setTab] = useState<Tab>(
@@ -42,7 +47,7 @@ export const useGuitarTab = (): TabState & TabOperations => {
 				)
 			);
 			setTab(newTab);
-			await updateCurrentTabs(newTab, tabId || "0");
+			await updateCurrentTabs(newTab, tabPositionFromParam || "0");
 		} catch (err) {
 			setError(
 				err instanceof Error ? err : new Error("Failed to update tab")
@@ -60,7 +65,7 @@ export const useGuitarTab = (): TabState & TabOperations => {
 				}
 			});
 			setTab(newTab);
-			updateCurrentTabs(newTab, tabId || "0");
+			updateCurrentTabs(newTab, tabPositionFromParam || "0");
 		} catch (err) {
 			setError(
 				err instanceof Error ? err : new Error("Failed to add new line")
@@ -89,7 +94,7 @@ export const useGuitarTab = (): TabState & TabOperations => {
 				}
 			}
 			setTab(newTab);
-			updateCurrentTabs(newTab, tabId || "0");
+			updateCurrentTabs(newTab, tabPositionFromParam || "0");
 		} catch (err) {
 			setError(
 				err instanceof Error
@@ -112,7 +117,7 @@ export const useGuitarTab = (): TabState & TabOperations => {
 					return newString;
 				});
 				setTab(newTab);
-				updateCurrentTabs(newTab, tabId || "0");
+				updateCurrentTabs(newTab, tabPositionFromParam || "0");
 			} catch (err) {
 				setError(
 					err instanceof Error
@@ -122,7 +127,7 @@ export const useGuitarTab = (): TabState & TabOperations => {
 			}
 		} else {
 			console.log(
-				"%cDEBUG:%c You can't delete the first section %c",
+				"%cDEBUG:%c You can't delete a section if it's the only one %c",
 				"background: #2c3e50; color: white; padding: 2px 5px;",
 				"color: #22dce6;"
 			);
@@ -131,13 +136,13 @@ export const useGuitarTab = (): TabState & TabOperations => {
 
 	useEffect(() => {
 		const fetchTab = async () => {
-			if (!tabId) return;
+			if (!tabPositionFromParam) return;
 
 			setIsLoading(true);
 			setError(null);
 
 			try {
-				const tabs = await getTabsById(tabId);
+				const tabs = await getTabsByPosition(tabPositionFromParam);
 				if (tabs) {
 					setTab(tabs);
 				}
@@ -153,7 +158,21 @@ export const useGuitarTab = (): TabState & TabOperations => {
 		};
 
 		fetchTab();
-	}, [tabId, location.key]);
+	}, [tabPositionFromParam, location.key]);
+
+	const handleExport = async (position: string) => {
+		setIsLoading(true);
+		try {
+			const blob = await exportTabs(position);
+			download(blob, "export.json", "application/json");
+		} catch (err) {
+			setError(
+				err instanceof Error ? err : new Error("Failed to fetch tab")
+			);
+		} finally {
+			setIsLoading(false);
+		}
+	};
 
 	return {
 		tab,
@@ -163,5 +182,6 @@ export const useGuitarTab = (): TabState & TabOperations => {
 		handleCellClick,
 		incrementNotesNumber,
 		handleRemoveSection,
+		handleExport,
 	};
 };

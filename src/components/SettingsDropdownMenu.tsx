@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Settings, Sun, Moon, Eraser } from "lucide-react";
+import { Settings, Sun, Moon, Eraser, FolderOutput } from "lucide-react";
 
 import { Button } from "./ui/button";
 import {
@@ -21,12 +21,16 @@ import {
 	AlertDialogHeader,
 	AlertDialogTitle,
 } from "./ui/alert-dialog";
+import { useGuitarTab } from "@/hooks/useGuitarTab";
 
-export default function GUIDropdownMenu() {
+export default function SettingsDropdownMenu() {
 	const { theme, setTheme } = useTheme();
-	const { tabId } = useParams<{ tabId: string }>();
+	const { tabPositionFromParam } = useParams<{
+		tabPositionFromParam: string;
+	}>();
 	const navigate = useNavigate();
 	const [isDialogOpen, setIsDialogOpen] = useState(false);
+	const { handleExport } = useGuitarTab();
 
 	return (
 		<>
@@ -42,23 +46,30 @@ export default function GUIDropdownMenu() {
 				</DropdownMenuTrigger>
 				<DropdownMenuContent className="flex flex-col p-0 mx-2 bg-background/80 rounded-lg shadow-lg ml-10 z-40 font-serif-text text-xl">
 					<DropdownMenuItem
+						className="[&_svg]:size-6 cursor-pointer bg-background text-tab focus:bg-foreground/10 focus:text-tab outline-none text-xl"
+						onClick={() => setTheme(theme === "light" ? "dark" : "light")}
+					>
+						<div className="flex flex-row items-center w-full gap-2">
+							{theme === "light" ? <Moon /> : <Sun />}
+							<span>Toggle theme</span>
+						</div>
+					</DropdownMenuItem>
+					<DropdownMenuItem
+						className="[&_svg]:size-6 cursor-pointer bg-background text-tab focus:bg-foreground/10 focus:text-tab outline-none text-xl"
+						onClick={() => handleExport(tabPositionFromParam || "0")}
+					>
+						<div className="flex flex-row items-center w-full gap-2">
+							<FolderOutput />
+							<span>Export</span>
+						</div>
+					</DropdownMenuItem>
+					<DropdownMenuItem
 						className="[&_svg]:size-6 cursor-pointer bg-background text-destructive-foreground focus:bg-destructive/10 focus:text-destructive-foreground outline-none text-xl"
 						onClick={() => setIsDialogOpen(true)}
 					>
 						<div className="flex flex-row items-center w-full gap-2">
 							<Eraser />
 							<span>Clear tab</span>
-						</div>
-					</DropdownMenuItem>
-					<DropdownMenuItem
-						className="[&_svg]:size-6 cursor-pointer bg-background text-tab focus:bg-foreground/10 focus:text-tab outline-none text-xl"
-						onClick={() =>
-							setTheme(theme === "light" ? "dark" : "light")
-						}
-					>
-						<div className="flex flex-row items-center w-full gap-2">
-							{theme === "light" ? <Moon /> : <Sun />}
-							<span>Toggle theme</span>
 						</div>
 					</DropdownMenuItem>
 				</DropdownMenuContent>
@@ -68,21 +79,18 @@ export default function GUIDropdownMenu() {
 			<AlertDialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
 				<AlertDialogContent>
 					<AlertDialogHeader>
-						<AlertDialogTitle>
-							Are you absolutely sure?
-						</AlertDialogTitle>
+						<AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
 						<AlertDialogDescription>
-							This action cannot be undone. This will permanently
-							clear the tab.
+							This action cannot be undone. This will permanently clear the tab.
 						</AlertDialogDescription>
 					</AlertDialogHeader>
 					<AlertDialogFooter>
 						<AlertDialogCancel>Cancel</AlertDialogCancel>
 						<AlertDialogAction
 							onClick={async () => {
-								await clearTab(tabId);
+								await clearTab(tabPositionFromParam);
 								// Force a re-render by navigating to the same route
-								navigate(`/sheet/${tabId}`);
+								navigate(`/sheet/${tabPositionFromParam}`);
 							}}
 						>
 							Continue

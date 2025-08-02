@@ -1,10 +1,10 @@
-import GUIDropdownMenu from "./GUI-dropdownMenu";
+import SettingsDropdownMenu from "./SettingsDropdownMenu";
 
-export default function GUI() {
+export default function SettingsMenu() {
 	return (
 		<div className="flex flex-col gap-4 rounded-lg">
 			<div className="flex gap-2 justify-center items-center">
-				<GUIDropdownMenu />
+				<SettingsDropdownMenu />
 			</div>
 		</div>
 	);

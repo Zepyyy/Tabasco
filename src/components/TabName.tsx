@@ -1,29 +1,31 @@
 import { useContext, useEffect } from "react";
 import { Input } from "@/components/ui/input";
 import { NameContext } from "@/contexts/NameContext";
-import updateTabNameById from "@/db/crud/UpdateTab";
+import { updateTabNameByPosition } from "@/db/crud/UpdateTab";
 import { useParams } from "react-router";
 import getTabNameById from "@/db/crud/GetTab";
 
 export default function TabName() {
 	const { tabName, setTabName } = useContext(NameContext);
-	const { tabId } = useParams<{ tabId: string }>();
+	const { tabPositionFromParam } = useParams<{
+		tabPositionFromParam: string;
+	}>();
 	function HandleSetTabName(tabName: string) {
-		if (tabId) {
-			updateTabNameById(tabId, tabName);
+		if (tabPositionFromParam) {
+			updateTabNameByPosition(tabPositionFromParam, tabName);
 		}
 		setTabName(tabName);
 	}
 
 	useEffect(() => {
-		if (tabId) {
-			getTabNameById(tabId).then((tabName) => {
+		if (tabPositionFromParam) {
+			getTabNameById(tabPositionFromParam).then((tabName) => {
 				if (tabName) {
 					setTabName(tabName);
 				}
 			});
 		}
-	}, [setTabName, tabId]);
+	}, [setTabName, tabPositionFromParam]);
 
 	return (
 		<Input

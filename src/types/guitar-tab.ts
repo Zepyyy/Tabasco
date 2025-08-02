@@ -29,6 +29,7 @@ export interface TabOperations {
 		data: Tab;
 		startNoteIndex: number;
 	}) => void;
+	handleExport: (id: string) => Promise<void>;
 }
 
 export interface NoteCellProps {

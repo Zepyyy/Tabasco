@@ -1,6 +1,6 @@
 import { Plus } from "lucide-react";
 import { useContext, useState } from "react";
-import { Link, useNavigate } from "react-router";
+import { Link } from "react-router";
 import { useTabOperations } from "@/hooks/useTabOperations";
 import { TabsContext } from "@/contexts/TabsContext";
 import { NameContext } from "@/contexts/NameContext";
@@ -104,23 +104,18 @@ export default function TabsDropdownMenu() {
 	const { tabName, setTabName } = useContext(NameContext);
 	const tabs = useContext(TabsContext);
 	const [editingTab, setEditingTab] = useState<{
+		id: number;
 		name: string;
-		position: string;
 	} | null>(null);
 	const { handleAddTab, handleRename, handleMove, handleDelete } =
 		useTabOperations();
-	const navigate = useNavigate();
 
 	const [isDialogOpen, setIsDialogOpen] = useState(false);
 	const [concernedTab, setConcernedTab] = useState<TabInfo | null>(null);
 
-	const handleRenameSubmit = (
-		position: string,
-		oldName: string,
-		newName: string
-	) => {
+	const handleRenameSubmit = (id: number, oldName: string, newName: string) => {
 		if (newName && newName !== oldName) {
-			handleRename(position, newName);
+			handleRename(id, newName);
 		}
 		setEditingTab(null);
 		setTabName(newName);
@@ -132,11 +127,7 @@ export default function TabsDropdownMenu() {
 				<RenameInput
 					initialValue={editingTab.name}
 					onRename={(newName) =>
-						handleRenameSubmit(
-							editingTab.position,
-							editingTab.name,
-							newName
-						)
+						handleRenameSubmit(editingTab.id, editingTab.name, newName)
 					}
 					onCancel={() => setEditingTab(null)}
 				/>
@@ -167,11 +158,8 @@ export default function TabsDropdownMenu() {
 								</DropdownMenuLabel>
 								<DropdownMenuSeparator className="m-0 bg-tab" />
 								{tabs.map((tab: TabInfo) => (
-									<Link
-										to={`/sheet/${tab.position}`}
-										key={tab.position}
-									>
-										<DropdownMenuSub key={tab.position}>
+									<Link to={`/sheet/${tab.position}`} key={tab.id}>
+										<DropdownMenuSub key={tab.id}>
 											<DropdownMenuSubTrigger className="group relative flex h-8 select-none items-center pl-2 pr-2 outline-hidden data-disabled:pointer-events-none my-1 last:my-0 gap-9 text-xl data-[state=open]:bg-foreground/10 text-tab bg-background focus:bg-foreground/10 focus:text-tab">
 												{tab.tabName}
 												<div className="ml-auto focus:text-tab/50 group-data-highlighted:text-tab/50"></div>
@@ -180,29 +168,22 @@ export default function TabsDropdownMenu() {
 												<DropdownMenuSubContent
 													className="z-50 bg-background text-foreground shadow-lg border border-tab font-serif-text p-0"
 													sideOffset={6}
-													key={tab.position}
+													key={tab.id}
 												>
 													<SheetActionsMenu
 														position={tab.position}
 														onRename={() => {
 															setEditingTab({
+																id: tab.id,
 																name: tab.tabName,
-																position:
-																	tab.position,
 															});
 														}}
-														onMoveDown={() =>
-															handleMove(
-																tab.position
-															)
-														}
+														onMoveDown={() => {
+															handleMove(tab.id, tab.position);
+														}}
 														onDelete={() => {
-															setIsDialogOpen(
-																true
-															);
-															setConcernedTab(
-																tab
-															);
+															setIsDialogOpen(true);
+															setConcernedTab(tab);
 														}}
 													/>
 												</DropdownMenuSubContent>
@@ -214,18 +195,13 @@ export default function TabsDropdownMenu() {
 						</DropdownMenuPortal>
 					</DropdownMenu>
 
-					<AlertDialog
-						open={isDialogOpen}
-						onOpenChange={setIsDialogOpen}
-					>
+					<AlertDialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
 						<AlertDialogContent>
 							<AlertDialogHeader>
-								<AlertDialogTitle>
-									Are you sure?
-								</AlertDialogTitle>
+								<AlertDialogTitle>Are you sure?</AlertDialogTitle>
 								<AlertDialogDescription>
-									This action cannot be undone. This will
-									permanently delete the tab.
+									This action cannot be undone. This will permanently delete the
+									tab.
 								</AlertDialogDescription>
 							</AlertDialogHeader>
 							<AlertDialogFooter>
@@ -233,9 +209,9 @@ export default function TabsDropdownMenu() {
 								<AlertDialogAction
 									onClick={async () => {
 										await handleDelete(
-											concernedTab?.position || ""
+											concernedTab?.id,
+											concernedTab?.position,
 										);
-										navigate(`/sheet/0`);
 									}}
 								>
 									Delete

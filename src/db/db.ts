@@ -2,7 +2,7 @@
 import Dexie, { type EntityTable } from "dexie";
 
 interface TabInfo {
-	id?: number;
+	id: number;
 	tabName: string;
 	tabs: string[][];
 	position: string;
