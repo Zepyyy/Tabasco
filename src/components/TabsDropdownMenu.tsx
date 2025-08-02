@@ -113,12 +113,10 @@ export default function TabsDropdownMenu() {
 	const [isDialogOpen, setIsDialogOpen] = useState(false);
 	const [concernedTab, setConcernedTab] = useState<TabInfo | null>(null);
 
-	const handleRenameSubmit = (id: number, oldName: string, newName: string) => {
-		if (newName && newName !== oldName) {
-			handleRename(id, newName);
-		}
-		setEditingTab(null);
+	const handleRenameSubmit = (id: number, newName: string) => {
 		setTabName(newName);
+		handleRename(id, newName);
+		setEditingTab(null);
 	};
 
 	return (
@@ -126,9 +124,7 @@ export default function TabsDropdownMenu() {
 			{editingTab ? (
 				<RenameInput
 					initialValue={editingTab.name}
-					onRename={(newName) =>
-						handleRenameSubmit(editingTab.id, editingTab.name, newName)
-					}
+					onRename={(newName) => handleRenameSubmit(editingTab.id, newName)}
 					onCancel={() => setEditingTab(null)}
 				/>
 			) : (
@@ -161,7 +157,7 @@ export default function TabsDropdownMenu() {
 									<Link to={`/sheet/${tab.position}`} key={tab.id}>
 										<DropdownMenuSub key={tab.id}>
 											<DropdownMenuSubTrigger className="group relative flex h-8 select-none items-center pl-2 pr-2 outline-hidden data-disabled:pointer-events-none my-1 last:my-0 gap-9 text-xl data-[state=open]:bg-foreground/10 text-tab bg-background focus:bg-foreground/10 focus:text-tab">
-												{tab.tabName}
+												{tab.tabName || "Unnamed"}
 												<div className="ml-auto focus:text-tab/50 group-data-highlighted:text-tab/50"></div>
 											</DropdownMenuSubTrigger>
 											<DropdownMenuPortal>

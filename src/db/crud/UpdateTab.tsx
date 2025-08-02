@@ -103,8 +103,8 @@ export async function updateCurrentTabs(tabs: string[][], activeTab: string) {
 }
 
 export async function updateTabPositionById(
-	currentId: number,
 	newPosition: string,
+	currentId?: number,
 ) {
 	try {
 		await db.transaction("rw", db.TabInfo, async () => {

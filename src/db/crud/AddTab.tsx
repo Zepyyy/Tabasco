@@ -1,29 +1,19 @@
+import { TabInfo } from "@/db/db";
 import { db } from "../db";
 
-async function getLastTabPosition() {
+export async function getLastTabPosition() {
 	const tab = await db.TabInfo.orderBy("position").last();
-	return tab;
+	return tab?.position;
 }
 
-export default async function addTab({
-	tabName,
-	tabs,
-	position,
-}: {
-	tabName?: string;
-	tabs?: string[][];
-	position?: string;
-}) {
+export default async function addTab({ tabName, tabs, position }: TabInfo) {
 	try {
-		// console.log("this is triggered");
-		// Get the current tabs, so we can determine the position of the new tab
-		// const currentTabs = await getTabs();
-		const lastTab = await getLastTabPosition();
-		// console.log(lastTab);
-		const maxPosition = lastTab ? parseInt(lastTab.position) + 1 : 0;
-		// console.log(maxPosition);
+		const lastTabPosition = await getLastTabPosition();
+		const maxPosition =
+			lastTabPosition && lastTabPosition !== undefined
+				? (parseInt(lastTabPosition as string) + 1).toString()
+				: "0";
 
-		// Add the new value!
 		await db.TabInfo.add({
 			tabName: tabName || "Unnamed",
 			tabs:
@@ -40,6 +30,7 @@ export default async function addTab({
 			"color: #22e66a;",
 			position || maxPosition,
 		);
+		return position || maxPosition;
 	} catch (error) {
 		console.log(
 			"%c DEBUG: %c Tab Delete Failed to delete tab Error at position: %c%s %c Error: ",

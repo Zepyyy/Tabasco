@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useParams, useLocation } from "react-router";
+import { useParams, useLocation, useNavigate } from "react-router";
 import { getTabsByPosition } from "@/db/crud/GetTab";
 import { updateCurrentTabs } from "@/db/crud/UpdateTab";
 import { exportTabs } from "@/db/crud/Export";
@@ -15,12 +15,14 @@ import {
 	type TabState,
 	type TabOperations,
 } from "@/types/guitar-tab";
+import { ImportTabs } from "@/db/crud/Import";
 
 export const useGuitarTab = (): TabState & TabOperations => {
 	const { tabPositionFromParam } = useParams<{
 		tabPositionFromParam: string;
 	}>();
 	const location = useLocation();
+	const navigate = useNavigate();
 	const [NOTES] = useState(48);
 	const [tab, setTab] = useState<Tab>(
 		Array(STRINGS)
@@ -152,14 +154,41 @@ export const useGuitarTab = (): TabState & TabOperations => {
 		setIsLoading(true);
 		try {
 			const blob = await exportTabs(position);
-			download(blob, "export.json", "application/json");
+			if (blob) {
+				// Convert blob to text to get the JSON data
+				const text = await blob.text();
+				const jsonData = JSON.parse(text);
+				download(
+					JSON.stringify(jsonData, null, 2),
+					"export.json",
+					"application/json",
+				);
+			} else {
+				throw new Error("Export failed - no data returned");
+			}
 		} catch (err) {
-			setError(err instanceof Error ? err : new Error("Failed to fetch tab"));
+			setError(err instanceof Error ? err : new Error("Failed to export tab"));
 		} finally {
 			setIsLoading(false);
 		}
 	};
 
+	const handleImport = async (jsonData: JSON) => {
+		setIsLoading(true);
+		try {
+			const position = (await ImportTabs(jsonData)) || "0";
+			if (position) {
+				navigate(`/sheet/${position}`);
+			} else {
+				throw new Error("Import failed - no data returned");
+			}
+			return position;
+		} catch (err) {
+			setError(err instanceof Error ? err : new Error("Failed to import"));
+		} finally {
+			setIsLoading(false);
+		}
+	};
 	return {
 		tab,
 		handleNewLineClick,
@@ -168,6 +197,7 @@ export const useGuitarTab = (): TabState & TabOperations => {
 		handleCellClick,
 		incrementNotesNumber,
 		handleRemoveSection,
+		handleImport,
 		handleExport,
 	};
 };

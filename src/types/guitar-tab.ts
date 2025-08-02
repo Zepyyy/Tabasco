@@ -30,6 +30,7 @@ export interface TabOperations {
 		startNoteIndex: number;
 	}) => void;
 	handleExport: (id: string) => Promise<void>;
+	handleImport: (jsonData: JSON) => Promise<string | undefined>;
 }
 
 export interface NoteCellProps {

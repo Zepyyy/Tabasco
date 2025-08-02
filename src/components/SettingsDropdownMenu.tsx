@@ -1,5 +1,12 @@
-import { useState } from "react";
-import { Settings, Sun, Moon, Eraser, FolderOutput } from "lucide-react";
+import { ChangeEvent, useState } from "react";
+import {
+	Settings,
+	Sun,
+	Moon,
+	Eraser,
+	FolderOutput,
+	FolderInput,
+} from "lucide-react";
 
 import { Button } from "./ui/button";
 import {
@@ -22,6 +29,7 @@ import {
 	AlertDialogTitle,
 } from "./ui/alert-dialog";
 import { useGuitarTab } from "@/hooks/useGuitarTab";
+import { Input } from "./ui/input";
 
 export default function SettingsDropdownMenu() {
 	const { theme, setTheme } = useTheme();
@@ -30,7 +38,29 @@ export default function SettingsDropdownMenu() {
 	}>();
 	const navigate = useNavigate();
 	const [isDialogOpen, setIsDialogOpen] = useState(false);
-	const { handleExport } = useGuitarTab();
+	const { handleImport, handleExport } = useGuitarTab();
+
+	const handleFileChange = async (e: ChangeEvent<HTMLInputElement>) => {
+		if (e.target.files && e.target.files[0]) {
+			const selectedFile = e.target.files[0];
+
+			try {
+				const text = await selectedFile.text();
+				const jsonData = JSON.parse(text);
+
+				// Import the data
+				const newPosition = await handleImport(jsonData);
+
+				if (newPosition) {
+					// Navigate to the newly imported tab
+					navigate(`/sheet/${newPosition}`);
+				}
+			} catch (error) {
+				console.error("Error importing file:", error);
+				alert("Failed to import file. Please check the file format.");
+			}
+		}
+	};
 
 	return (
 		<>
@@ -52,6 +82,19 @@ export default function SettingsDropdownMenu() {
 						<div className="flex flex-row items-center w-full gap-2">
 							{theme === "light" ? <Moon /> : <Sun />}
 							<span>Toggle theme</span>
+						</div>
+					</DropdownMenuItem>
+
+					<DropdownMenuItem className="[&_svg]:size-6 cursor-pointer bg-background text-tab focus:bg-foreground/10 focus:text-tab outline-none text-xl">
+						<div className="flex flex-row items-center w-full gap-2">
+							<FolderInput />
+							<Input
+								type="file"
+								accept="application/json"
+								onChange={handleFileChange}
+								onClick={(e) => e.stopPropagation()}
+								className="ml-auto"
+							/>
 						</div>
 					</DropdownMenuItem>
 					<DropdownMenuItem

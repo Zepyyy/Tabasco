@@ -20,9 +20,7 @@ export default function TabName() {
 	useEffect(() => {
 		if (tabPositionFromParam) {
 			getTabNameById(tabPositionFromParam).then((tabName) => {
-				if (tabName) {
-					setTabName(tabName);
-				}
+				setTabName(tabName);
 			});
 		}
 	}, [setTabName, tabPositionFromParam]);
