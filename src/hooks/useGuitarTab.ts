@@ -205,10 +205,6 @@ export const useGuitarTab = (): TabState & TabOperations => {
 			}
 
 			const importedTabPosition = await ImportTabs(jsonData);
-			if (!importedTabPosition) {
-				throw new Error("Import failed - no position returned");
-			}
-
 			navigate(`/sheet/${importedTabPosition}`);
 			return importedTabPosition;
 		} catch (err) {

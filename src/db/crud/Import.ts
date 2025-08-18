@@ -24,14 +24,14 @@ export async function ImportTabs(tabData: Partial<TabInfo>) {
 				"color: #22e66a;",
 			);
 			throw new Error(errorMsg);
-		} else {
-			console.log(
-				"%cDEBUG:%c Successfully imported tab at position: " + position,
-				"background: #2c3e50; color: white; padding: 2px 5px;",
-				"background: inherit; color: white;",
-				"color: #22e66a;",
-			);
 		}
+
+		console.log(
+			"%cDEBUG:%c Successfully imported tab at position: " + position,
+			"background: #2c3e50; color: white; padding: 2px 5px;",
+			"background: inherit; color: white;",
+			"color: #22e66a;",
+		);
 		return position;
 	} catch (error) {
 		console.log(
