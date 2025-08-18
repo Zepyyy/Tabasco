@@ -16,6 +16,7 @@ import {
 	type TabOperations,
 } from "@/types/guitar-tab";
 import { ImportTabs } from "@/db/crud/Import";
+import { TabInfo } from "@/db/db";
 
 export const useGuitarTab = (): TabState & TabOperations => {
 	const { tabPositionFromParam } = useParams<{
@@ -153,16 +154,19 @@ export const useGuitarTab = (): TabState & TabOperations => {
 	const handleExport = async (position: string) => {
 		setIsLoading(true);
 		try {
-			const blob = await exportTabs(position);
-			if (blob) {
-				// Convert blob to text to get the JSON data
-				const text = await blob.text();
-				const jsonData = JSON.parse(text);
-				download(
-					JSON.stringify(jsonData, null, 2),
-					"export.json",
-					"application/json",
+			const exportedData = await exportTabs(position);
+			if (exportedData) {
+				const tabName = exportedData.tabName || `Tab-Unnamed-${position}`;
+				const tabs = exportedData.tabs || [];
+				const jsonData = JSON.stringify(
+					{
+						tabName,
+						tabs,
+					},
+					null,
+					2,
 				);
+				download(jsonData, `Tab-${tabName}.json`, "application/json");
 			} else {
 				throw new Error("Export failed - no data returned");
 			}
@@ -173,18 +177,49 @@ export const useGuitarTab = (): TabState & TabOperations => {
 		}
 	};
 
-	const handleImport = async (jsonData: JSON) => {
-		setIsLoading(true);
+	const handleImport = async (jsonData: Partial<TabInfo>) => {
+		console.log("%cDEBUG:%c Importing tab data", "color: #22e66a;", jsonData);
+		setError(null); // Clear any previous errors
+
 		try {
-			const position = (await ImportTabs(jsonData)) || "0";
-			if (position) {
-				navigate(`/sheet/${position}`);
-			} else {
-				throw new Error("Import failed - no data returned");
+			if (!jsonData) {
+				throw new Error("No data provided for import");
 			}
-			return position;
+
+			setIsLoading(true);
+
+			if (Object.keys(jsonData).length === 0) {
+				throw new Error("No data to import");
+			}
+
+			// Check if the JSON data has the expected type (Partial<TabInfo>)
+			if (
+				!(
+					"tabName" in jsonData &&
+					"tabs" in jsonData &&
+					Array.isArray(jsonData.tabs) &&
+					jsonData.tabs.every((row) => Array.isArray(row))
+				)
+			) {
+				throw new Error("Invalid data format for import");
+			}
+
+			const importedTabPosition = await ImportTabs(jsonData);
+			if (!importedTabPosition) {
+				throw new Error("Import failed - no position returned");
+			}
+
+			navigate(`/sheet/${importedTabPosition}`);
+			return importedTabPosition;
 		} catch (err) {
+			console.error(
+				"%cDEBUG:%c Import error:",
+				"background: #2c3e50; color: white; padding: 2px 5px;",
+				"color: #22dce6;",
+				err,
+			);
 			setError(err instanceof Error ? err : new Error("Failed to import"));
+			return null;
 		} finally {
 			setIsLoading(false);
 		}

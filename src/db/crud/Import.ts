@@ -1,60 +1,29 @@
-import "dexie-export-import";
 import addTab from "./AddTab";
 import { TabInfo } from "../db";
 
-export async function ImportTabs(jsonData: unknown) {
+export async function ImportTabs(tabData: Partial<TabInfo>) {
 	try {
 		// Parse the imported JSON data
-		let importedData: Partial<TabInfo>;
-
-		// Handle different possible structures of the imported data
-		if (jsonData) {
-			const data = jsonData as Record<string, unknown>;
-
-			if (data.data && typeof data.data === "object" && data.data !== null) {
-				const nestedData = data.data as Record<string, unknown>;
-				if (
-					nestedData.data &&
-					Array.isArray(nestedData.data) &&
-					nestedData.data[0] &&
-					nestedData.data[0].rows
-				) {
-					// Structure from dexie export
-					const tabData = nestedData.data[0].rows as Array<Partial<TabInfo>>;
-
-					importedData = {
-						tabName: (tabData[0]?.tabName as string) || "Imported Tab",
-						tabs:
-							(tabData[0]?.tabs as string[][]) ||
-							Array(6)
-								.fill(null)
-								.map(() => Array(48).fill("-")),
-					};
-				} else {
-					throw new Error("Invalid dexie export structure");
-				}
-			} else if (data.tabName && data.tabs) {
-				importedData = {
-					tabName: data.tabName as string,
-					tabs: data.tabs as string[][],
-				};
-			} else {
-				throw new Error("Invalid import data format");
-			}
-		} else {
-			throw new Error("Invalid import data format");
-		}
+		const importedData = {
+			tabName: (tabData.tabName as string) || "Imported Tab",
+			tabs:
+				(tabData.tabs as string[][]) ||
+				Array(6)
+					.fill(null)
+					.map(() => Array(48).fill("-")),
+		};
 
 		const position = await addTab(importedData as Partial<TabInfo>);
 
 		if (!position) {
+			const errorMsg = "Import failed - no position returned";
 			console.log(
-				"%cDEBUG:%c Import failed %c",
+				"%cDEBUG:%c " + errorMsg,
 				"background: #2c3e50; color: white; padding: 2px 5px;",
 				"background: inherit; color: white;",
 				"color: #22e66a;",
 			);
-			return "";
+			throw new Error(errorMsg);
 		} else {
 			console.log(
 				"%cDEBUG:%c Successfully imported tab at position: " + position,

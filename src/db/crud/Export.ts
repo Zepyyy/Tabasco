@@ -1,16 +1,10 @@
-import { db } from "../db";
-import "dexie-export-import";
-import { exportDB } from "dexie-export-import";
+import { getFullTabByPosition } from "./GetTab";
 
 export async function exportTabs(position: string) {
 	try {
-		const tab = await exportDB(db, {
-			prettyJson: true,
-			filter: (table, value) =>
-				table === "TabInfo" && value?.position === position,
-		});
+		const fullTabs = await getFullTabByPosition(position);
 
-		if (!tab) {
+		if (!fullTabs) {
 			console.log(
 				"%cDEBUG:%c No tab found at position: %c" + position,
 				"background: #2c3e50; color: white; padding: 2px 5px;",
@@ -25,8 +19,8 @@ export async function exportTabs(position: string) {
 				"background: inherit; color: white;",
 				"color: #22e66a;",
 			);
+			return fullTabs;
 		}
-		return tab;
 	} catch (error) {
 		console.log(
 			"%cDEBUG:%c Failed to export tab Error: ",

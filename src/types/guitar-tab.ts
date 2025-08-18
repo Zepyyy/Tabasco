@@ -1,3 +1,5 @@
+import { TabInfo } from "@/db/db";
+
 // Constants
 export const STRINGS = 6;
 export const DEFAULT_NOTE = "-";
@@ -25,12 +27,9 @@ export interface TabOperations {
 	handleCellClick: (string: number, note: number) => Promise<void>;
 	incrementNotesNumber: (string: number, note: number) => void;
 	handleNewLineClick: (newTab: Tab) => void;
-	handleRemoveSection: (section: {
-		data: Tab;
-		startNoteIndex: number;
-	}) => void;
+	handleRemoveSection: (section: { data: Tab; startNoteIndex: number }) => void;
 	handleExport: (id: string) => Promise<void>;
-	handleImport: (jsonData: JSON) => Promise<string | undefined>;
+	handleImport: (jsonData: Partial<TabInfo>) => Promise<string | null>;
 }
 
 export interface NoteCellProps {

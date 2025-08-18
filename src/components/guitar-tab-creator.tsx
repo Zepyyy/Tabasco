@@ -80,7 +80,7 @@ const LoadingState = () => (
  * @param error - The error object to display
  */
 const ErrorState = ({ error }: { error: Error }) => (
-	<div className="flex items-center justify-center p-8 text-destructive">
+	<div className="flex items-center justify-center p-8 text-tab">
 		<p>Error: {error.message}</p>
 	</div>
 );
