@@ -10,7 +10,7 @@ import { Analytics } from "@vercel/analytics/react";
 import GUI from "./components/SettingsMenu";
 import { ThemeProvider } from "./components/theme-provider";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { MailIcon } from "lucide-react";
+import { AlertCircleIcon } from "lucide-react";
 
 export default function App() {
 	const [tabName, setTabName] = useState("");
@@ -22,8 +22,8 @@ export default function App() {
 			<TabsContext.Provider value={tabs}>
 				<NameContext.Provider value={{ tabName, setTabName }}>
 					<div className="sm:hidden grid w-full items-start m-4 max-w-max">
-						<Alert>
-							<MailIcon />
+						<Alert variant={"destructive"}>
+							<AlertCircleIcon />
 							<AlertTitle>Not recommended for small screens</AlertTitle>
 							<AlertDescription>
 								Please consider switching to a laptop

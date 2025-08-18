@@ -91,7 +91,7 @@ const SheetActionsMenu = ({
 		</DropdownMenuItem>
 		<DropdownMenuSeparator className="bg-tab m-0" />
 		<DropdownMenuItem
-			className="group cursor-pointer flex h-7 select-none items-center leading-none outline-hidden data-disabled:pointer-events-none text-destructive-foreground focus:bg-destructive/10 focus:text-destructive-foreground pt-1"
+			className="group cursor-pointer flex h-7 select-none items-center leading-none outline-hidden data-disabled:pointer-events-none text-destructive-foreground focus:bg-destructive focus:text-destructive-foreground pt-1"
 			onClick={onDelete}
 			key={`Delete-${position}`}
 		>

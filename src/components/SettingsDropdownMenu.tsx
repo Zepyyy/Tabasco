@@ -137,7 +137,7 @@ export default function SettingsDropdownMenu() {
 						</div>
 					</DropdownMenuItem>
 					<DropdownMenuItem
-						className="[&_svg]:size-6 cursor-pointer bg-background text-destructive-foreground focus:bg-destructive/10 focus:text-destructive-foreground outline-none text-xl"
+						className="[&_svg]:size-6 cursor-pointer bg-background text-destructive-foreground focus:bg-destructive focus:text-destructive-foreground outline-none text-xl"
 						onClick={() => setIsDialogOpen(true)}
 					>
 						<div className="flex flex-row items-center w-full gap-2">
@@ -174,12 +174,15 @@ export default function SettingsDropdownMenu() {
 
 			{/* Error display */}
 			{displayError && (
-				<div className="fixed bottom-4 right-4 bg-destructive/15 p-4 rounded-md shadow-lg z-50">
-					<p className="font-medium">Error: {displayError.message}</p>
+				<div className="fixed bottom-4 right-4 bg-destructive p-4 rounded-md shadow-lg z-50">
+					<p className="font-normal text-md text-destructive-foreground">
+						Error:
+						<span className="text-foreground"> {displayError.message}</span>
+					</p>
 					<Button
 						variant="destructive"
 						size="sm"
-						className="mt-2"
+						className="block mt-2"
 						onClick={() => setDisplayError(null)}
 					>
 						Dismiss
