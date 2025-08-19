@@ -179,7 +179,7 @@ export const useGuitarTab = (): TabState & TabOperations => {
 
 	const handleImport = async (jsonData: Partial<TabInfo>) => {
 		console.log("%cDEBUG:%c Importing tab data", "color: #22e66a;", jsonData);
-		setError(null); // Clear any previous errors
+		setError(null);
 
 		try {
 			if (!jsonData) {

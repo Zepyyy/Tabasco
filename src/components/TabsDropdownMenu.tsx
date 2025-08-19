@@ -1,6 +1,6 @@
 import { Plus } from "lucide-react";
 import { useContext, useState } from "react";
-import { Link } from "react-router";
+import { NavLink } from "react-router";
 import { useTabOperations } from "@/hooks/useTabOperations";
 import { TabsContext } from "@/contexts/TabsContext";
 import { NameContext } from "@/contexts/NameContext";
@@ -39,7 +39,7 @@ const RenameInput = ({
 	onCancel: () => void;
 }) => (
 	<input
-		className="bg-background text-foreground px-2 py-1 rounded-md w-full border border-tab/20 focus:border-primary/50 focus:ring-1 focus:ring-primary/50 outline-hidden transition-all"
+		className="bg-background text-foreground px-2 py-1 rounded-md w-full border border-tab/20 focus:border-primary/50 focus:ring-1 focus:ring-primary/50 outline-hidden transition-all text-xl"
 		type="text"
 		defaultValue={initialValue}
 		autoFocus
@@ -77,7 +77,6 @@ const SheetActionsMenu = ({
 		</DropdownMenuItem>
 		<DropdownMenuItem
 			className="group flex h-8 select-none items-center text-tab outline-hidden data-disabled:pointer-events-none focus:bg-foreground/10"
-			// onClick={() => console.log("Duplicate")}
 			key={`Duplicate-${position}`}
 		>
 			Duplicate
@@ -140,11 +139,11 @@ export default function TabsDropdownMenu() {
 						</DropdownMenuTrigger>
 						<DropdownMenuPortal>
 							<DropdownMenuContent
-								className="flex flex-col p-0 m-0 bg-background/80 backdrop-blur-xs shadow-lg ml-10 z-40 font-serif-text text-xl"
+								className="flex flex-col p-0 m-0 backdrop-blur-xs shadow-lg ml-10 z-40 font-serif-text text-2xl"
 								sideOffset={4}
 							>
 								<DropdownMenuLabel>
-									<div className="flex justify-between w-full relative items-center rounded-sm text-tab gap-8 text-xl">
+									<div className="flex justify-between w-full relative items-center rounded-sm text-tab gap-8 text-2xl font-normal">
 										Your tabs
 										<Plus
 											className="w-4 h-4 cursor-pointer"
@@ -154,15 +153,31 @@ export default function TabsDropdownMenu() {
 								</DropdownMenuLabel>
 								<DropdownMenuSeparator className="m-0 bg-tab" />
 								{tabs.map((tab: TabInfo) => (
-									<Link to={`/sheet/${tab.position}`} key={tab.id}>
+									<NavLink
+										to={`/sheet/${tab.position}`}
+										key={tab.id}
+										className={({ isActive, isPending }) =>
+											[
+												"text-tab",
+												"transition-all",
+												"duration-300",
+												"ease-out",
+												isActive
+													? "tab-active"
+													: isPending
+														? "tab-pending"
+														: "",
+											].join(" ")
+										}
+									>
 										<DropdownMenuSub key={tab.id}>
-											<DropdownMenuSubTrigger className="group relative flex h-8 select-none items-center pl-2 pr-2 outline-hidden data-disabled:pointer-events-none my-1 last:my-0 gap-9 text-xl data-[state=open]:bg-foreground/10 text-tab bg-background focus:bg-foreground/10 focus:text-tab">
-												{tab.tabName || "Unnamed"}
-												<div className="ml-auto focus:text-tab/50 group-data-highlighted:text-tab/50"></div>
+											<DropdownMenuSubTrigger className="group relative flex h-8 select-none items-center pr-2 outline-hidden data-disabled:pointer-events-none my-1 last:my-0 gap-9 text-2xl data-[state=open]:bg-foreground/10 focus:bg-foreground/10 font-normal">
+												<span className=" p-2">{tab.tabName || "Unnamed"}</span>
+												<div className="ml-auto group-data-highlighted:text-tab/50"></div>
 											</DropdownMenuSubTrigger>
 											<DropdownMenuPortal>
 												<DropdownMenuSubContent
-													className="z-50 bg-background text-foreground shadow-lg border border-tab font-serif-text p-0"
+													className="z-50 shadow-lg border border-tab font-serif-text p-0"
 													sideOffset={6}
 													key={tab.id}
 												>
@@ -185,7 +200,7 @@ export default function TabsDropdownMenu() {
 												</DropdownMenuSubContent>
 											</DropdownMenuPortal>
 										</DropdownMenuSub>
-									</Link>
+									</NavLink>
 								))}
 							</DropdownMenuContent>
 						</DropdownMenuPortal>

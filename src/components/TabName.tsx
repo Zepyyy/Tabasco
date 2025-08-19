@@ -32,7 +32,7 @@ export default function TabName() {
 			onChange={(e) => HandleSetTabName(e.target.value)}
 			maxLength={60}
 			placeholder="Enter tab name"
-			className="font-normal mb-4 border-none shadow-none focus-visible:ring-0 text-xl sm:text-2xl md:text-4xl py-0 h-fit w-full font-serif-title antialiased"
+			className="font-semibold mb-4 border-none shadow-none focus-visible:ring-0 text-xl sm:text-4xl md:text-6xl py-0 h-fit w-full font-serif-title antialiased"
 		/>
 	);
 }

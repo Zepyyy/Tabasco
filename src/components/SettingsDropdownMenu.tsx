@@ -182,7 +182,7 @@ export default function SettingsDropdownMenu() {
 					<Button
 						variant="destructive"
 						size="sm"
-						className="block mt-2"
+						className="block mt-2 shadow-none cursor-pointer"
 						onClick={() => setDisplayError(null)}
 					>
 						Dismiss

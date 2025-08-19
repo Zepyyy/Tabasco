@@ -79,11 +79,11 @@ const LoadingState = () => (
  * ErrorState component - Displays error messages
  * @param error - The error object to display
  */
-const ErrorState = ({ error }: { error: Error }) => (
-	<div className="flex items-center justify-center p-8 text-tab">
-		<p>Error: {error.message}</p>
-	</div>
-);
+// const ErrorState = ({ error }: { error: Error }) => (
+// 	<div className="flex items-center justify-center p-8 text-tab">
+// 		<p>Error: {error.message}</p>
+// 	</div>
+// );
 
 /**
  * GuitarTabCreator - Main component for creating and editing guitar tabs
@@ -94,7 +94,6 @@ export default function GuitarTabCreator() {
 	const {
 		tab,
 		isLoading,
-		error,
 		handleCellClick,
 		incrementNotesNumber,
 		handleNewLineClick,
@@ -114,7 +113,6 @@ export default function GuitarTabCreator() {
 
 	// Show loading or error states when appropriate
 	if (isLoading) return <LoadingState />;
-	if (error) return <ErrorState error={error} />;
 
 	// Divide the tab into manageable sections for display
 	const sections = [];
