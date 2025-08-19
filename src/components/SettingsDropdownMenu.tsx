@@ -91,20 +91,21 @@ export default function SettingsDropdownMenu() {
 			}
 		}
 	};
+	const fileInputRef = useRef<HTMLInputElement>(null);
 
 	return (
 		<>
 			<DropdownMenu>
 				<DropdownMenuTrigger asChild>
 					<Button
-						variant={"SoftDestructive"}
+						variant={"soft"}
 						size={"icon-resize"}
 						className="text-xl font-medium p-2 [&_svg]:size-10 aspect-square"
 					>
 						<Settings />
 					</Button>
 				</DropdownMenuTrigger>
-				<DropdownMenuContent className="flex flex-col p-0 mx-2 bg-background/80 rounded-lg shadow-lg ml-10 z-40 font-serif-text text-xl">
+				<DropdownMenuContent className="flex flex-col p-0 mr-2 bg-background/80 rounded-lg shadow-lg z-40 font-serif-text text-xl w-52">
 					<DropdownMenuItem
 						className="[&_svg]:size-6 cursor-pointer bg-background text-tab focus:bg-foreground/10 focus:text-tab outline-none text-xl"
 						onClick={() => setTheme(theme === "light" ? "dark" : "light")}
@@ -115,17 +116,22 @@ export default function SettingsDropdownMenu() {
 						</div>
 					</DropdownMenuItem>
 
-					<DropdownMenuItem className="[&_svg]:size-6 cursor-pointer bg-background text-tab focus:bg-foreground/10 focus:text-tab outline-none text-xl">
-						<div className="flex flex-row items-center w-full gap-2">
-							<FolderInput />
-							<Input
-								type="file"
-								accept="application/json"
-								onChange={handleFileChange}
-								onClick={(e) => e.stopPropagation()}
-								className="ml-auto"
-							/>
-						</div>
+					<DropdownMenuItem
+						asChild
+						className="[&_svg]:size-6 cursor-pointer bg-background text-tab focus:bg-foreground/10 focus:text-tab outline-none text-xl"
+					>
+						<Button
+							variant="transparent"
+							onClick={() => {
+								fileInputRef.current?.click();
+							}}
+							className="flex justify-start font-normal h-auto"
+						>
+							<div className="flex flex-row items-center gap-2 text-xl">
+								<FolderInput />
+								<span>Import</span>
+							</div>
+						</Button>
 					</DropdownMenuItem>
 					<DropdownMenuItem
 						className="[&_svg]:size-6 cursor-pointer bg-background text-tab focus:bg-foreground/10 focus:text-tab outline-none text-xl"
@@ -147,6 +153,14 @@ export default function SettingsDropdownMenu() {
 					</DropdownMenuItem>
 				</DropdownMenuContent>
 			</DropdownMenu>
+
+			<Input
+				ref={fileInputRef}
+				type="file"
+				accept="application/json"
+				className="hidden"
+				onChange={handleFileChange}
+			></Input>
 
 			{/* AlertDialog controlled by state */}
 			<AlertDialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
@@ -174,13 +188,13 @@ export default function SettingsDropdownMenu() {
 
 			{/* Error display */}
 			{displayError && (
-				<div className="fixed bottom-4 right-4 bg-destructive p-4 rounded-md shadow-lg z-50">
-					<p className="font-normal text-md text-destructive-foreground">
+				<div className="fixed bottom-4 right-4 bg-destructive p-3 rounded-md shadow-lg z-50">
+					<p className="font-medium text-sm text-destructive-foreground">
 						Error:
 						<span className="text-foreground"> {displayError.message}</span>
 					</p>
 					<Button
-						variant="destructive"
+						variant="transparent"
 						size="sm"
 						className="block mt-2 shadow-none cursor-pointer"
 						onClick={() => setDisplayError(null)}

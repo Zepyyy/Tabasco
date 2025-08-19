@@ -9,14 +9,13 @@ const buttonVariants = cva(
 					"bg-primary text-primary-foreground hover:bg-primary-hover shadow-sm",
 				destructive:
 					"bg-destructive text-destructive-foreground hover:bg-destructive shadow-xs",
-				SoftDestructive:
-					"bg-soft/25 text-soft-foreground hover:bg-soft/45 shadow-xs",
+				soft: "bg-soft/25 text-soft-foreground hover:bg-soft/45 shadow-xs",
 				outline:
 					"bg-background text-primary hover:bg-primary/5 hover:text-primary border-2 border-primary",
 				deep: "bg-primary text-primary-foreground hover:bg-primary/80 shadow-sm",
 				shallow:
 					"bg-secondary text-secondary-foreground hover:bg-secondary/80 shadow-sm",
-				transparent: "bg-background text-foreground",
+				transparent: "bg-background text-foreground shadow-none border-none",
 			},
 			size: {
 				default: "h-9 px-4 py-2",

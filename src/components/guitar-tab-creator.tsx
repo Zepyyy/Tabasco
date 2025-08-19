@@ -146,7 +146,7 @@ export default function GuitarTabCreator() {
 							key={`div-${index}`}
 						>
 							<Button
-								variant="SoftDestructive"
+								variant="soft"
 								className="flex justify-center"
 								onClick={() => handleRemoveSection(section)}
 								key={`delete-section-${index}`}
