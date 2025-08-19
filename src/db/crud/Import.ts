@@ -1,5 +1,6 @@
 import addTab from "./AddTab";
 import { TabInfo } from "../db";
+import { DEFAULT_NOTE, NOTES_PER_SECTION, STRINGS } from "@/types/guitar-tab";
 
 export async function ImportTabs(tabData: Partial<TabInfo>) {
 	try {
@@ -8,9 +9,9 @@ export async function ImportTabs(tabData: Partial<TabInfo>) {
 			tabName: (tabData.tabName as string) || "Imported Tab",
 			tabs:
 				(tabData.tabs as string[][]) ||
-				Array(6)
+				Array(STRINGS)
 					.fill(null)
-					.map(() => Array(48).fill("-")),
+					.map(() => Array(NOTES_PER_SECTION).fill(DEFAULT_NOTE)),
 		};
 
 		const position = await addTab(importedData as Partial<TabInfo>);

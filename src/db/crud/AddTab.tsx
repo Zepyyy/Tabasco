@@ -1,5 +1,6 @@
 import { TabInfo } from "@/db/db";
 import { db } from "../db";
+import { NOTES_PER_SECTION } from "@/types/guitar-tab";
 
 export async function getLastTabPosition() {
 	const tab = await db.TabInfo.orderBy("position").last();
@@ -20,7 +21,7 @@ export default async function addTab({ tabName, tabs }: Partial<TabInfo>) {
 				tabs ||
 				Array(6)
 					.fill(null)
-					.map(() => Array(48).fill("-")),
+					.map(() => Array(NOTES_PER_SECTION).fill("-")),
 			position: maxPosition.toString(), // Increment the position
 		});
 		console.log(

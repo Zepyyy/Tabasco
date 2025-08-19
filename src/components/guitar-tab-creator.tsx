@@ -2,7 +2,11 @@
 
 // Import necessary hooks and types
 import { useGuitarTab } from "@/hooks/useGuitarTab";
-import { NoteCellProps, StringRowProps } from "@/types/guitar-tab";
+import {
+	NoteCellProps,
+	NOTES_PER_SECTION,
+	StringRowProps,
+} from "@/types/guitar-tab";
 import { Button } from "./ui/button";
 import { useState, useEffect } from "react";
 import { Trash } from "lucide-react";
@@ -101,7 +105,7 @@ export default function GuitarTabCreator() {
 	} = useGuitarTab();
 
 	// Constants and state for pagination
-	const NOTES_PER_SECTION = 48; // Number of notes to display per section
+	// const NOTES_PER_SECTION = 54; // Number of notes to display per section
 	const [sectionsCount, setSectionsCount] = useState(1);
 
 	// Calculate number of sections needed based on tab length

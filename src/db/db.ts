@@ -1,4 +1,5 @@
 // db.ts
+import { DEFAULT_NOTE, NOTES_PER_SECTION, STRINGS } from "@/types/guitar-tab";
 import Dexie, { type EntityTable } from "dexie";
 
 interface TabInfo {
@@ -24,9 +25,9 @@ db.on("populate", function () {
 	// Init your DB with some default statuses:
 	db.TabInfo.add({
 		tabName: "Default",
-		tabs: Array(6)
+		tabs: Array(STRINGS)
 			.fill(null)
-			.map(() => Array(48).fill("-")),
+			.map(() => Array(NOTES_PER_SECTION).fill(DEFAULT_NOTE)),
 		position: "0",
 	});
 });

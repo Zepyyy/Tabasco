@@ -9,7 +9,7 @@ import {
 
 export default function BreadCrumbs() {
 	return (
-		<Breadcrumb className="w-full flex flex-col pt-8 pl-8 z-20 text-2xl font-serif-title">
+		<Breadcrumb className="w-full flex flex-col pt-4 pl-6 z-20 text-2xl font-serif-title">
 			<BreadcrumbList>
 				<BreadcrumbItem>
 					<BreadcrumbLink href="/">

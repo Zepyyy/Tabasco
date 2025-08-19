@@ -14,6 +14,7 @@ import {
 	type Tab,
 	type TabState,
 	type TabOperations,
+	NOTES_PER_SECTION,
 } from "@/types/guitar-tab";
 import { ImportTabs } from "@/db/crud/Import";
 import { TabInfo } from "@/db/db";
@@ -24,11 +25,10 @@ export const useGuitarTab = (): TabState & TabOperations => {
 	}>();
 	const location = useLocation();
 	const navigate = useNavigate();
-	const [NOTES] = useState(48);
 	const [tab, setTab] = useState<Tab>(
 		Array(STRINGS)
 			.fill(null)
-			.map(() => Array(NOTES).fill(DEFAULT_NOTE)),
+			.map(() => Array(NOTES_PER_SECTION).fill(DEFAULT_NOTE)),
 	);
 	const [isLoading, setIsLoading] = useState(false);
 	const [error, setError] = useState<Error | null>(null);
@@ -61,7 +61,7 @@ export const useGuitarTab = (): TabState & TabOperations => {
 			const newTab = [...tab];
 			// Add a new DEFAULT_NOTE to each string in the tab
 			newTab.forEach((string) => {
-				for (let i = 0; i < NOTES; i++) {
+				for (let i = 0; i < NOTES_PER_SECTION; i++) {
 					string.push(DEFAULT_NOTE);
 				}
 			});
@@ -105,7 +105,7 @@ export const useGuitarTab = (): TabState & TabOperations => {
 		data: Tab;
 		startNoteIndex: number;
 	}): void => {
-		if (tab[0].length !== 48) {
+		if (tab[0].length !== NOTES_PER_SECTION) {
 			try {
 				const sectionLength = section.data[0]?.length || 0;
 				const newTab = tab.map((string) => {

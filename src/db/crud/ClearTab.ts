@@ -1,13 +1,10 @@
+import { DEFAULT_NOTE, NOTES_PER_SECTION, STRINGS } from "@/types/guitar-tab";
 import { updateCurrentTabs } from "./UpdateTab";
-
-const DEFAULT_NOTE = "-";
-const STRINGS = 6;
-const NOTES = 48;
 
 export const clearTab = async (tabId: string = "0") => {
 	const newTab = Array(STRINGS)
 		.fill(null)
-		.map(() => Array(NOTES).fill(DEFAULT_NOTE));
+		.map(() => Array(NOTES_PER_SECTION).fill(DEFAULT_NOTE));
 	await updateCurrentTabs(newTab, tabId);
 	console.log(
 		"%c DEBUG: %c Tab Clear Successfully cleared tab content for tab %c%s",

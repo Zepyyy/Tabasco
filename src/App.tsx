@@ -37,9 +37,11 @@ export default function App() {
 								<GUI />
 							</div>
 						</div>
-						<div className="flex flex-col justify-start w-full px-12 py-6">
+						<div className="flex flex-col justify-start w-full px-4 py-6">
 							<TabName />
-							<GuitarTabCreator />
+							<div className="px-4">
+								<GuitarTabCreator />
+							</div>
 							<div className="flex flex-col justify-between gap-1">
 								<p className="text-xl text-tab font-serif-text">
 									Click to increment fret number
