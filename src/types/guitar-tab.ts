@@ -27,21 +27,56 @@ export interface TabOperations {
 	handleCellClick: (string: number, note: number) => Promise<void>;
 	incrementNotesNumber: (string: number, note: number) => void;
 	handleNewLineClick: (newTab: Tab) => void;
-	handleRemoveSection: (section: { data: Tab; startNoteIndex: number }) => void;
+	handleRemoveSection: (section: {
+		data: Tab;
+		startNoteIndex: number;
+	}) => void;
 	handleExport: (id: string) => Promise<void>;
 	handleImport: (jsonData: Partial<TabInfo>) => Promise<string | null>;
+	handleSwitchNotes: (
+		NoteOnePosition: NoteCellPosition,
+		NoteTwoPosition: NoteCellPosition,
+	) => void;
 }
 
-export interface NoteCellProps {
+export interface NoteCellPosition {
+	string: number;
+	position: number;
+}
+
+export interface NoteCellState {
 	note: NoteValue;
 	stringIndex: number;
+	absoluteNoteIndex: number;
 	onIncrement: (stringIndex: number, noteIndex: number) => void;
 	onToggle: (string: number, note: number) => void;
 }
 
-export interface StringRowProps {
+export interface NoteCellOperations {
+	handleSwitchNotes: (
+		noteOnePosition: NoteCellPosition,
+		noteTwoPosition: NoteCellPosition,
+	) => void;
+	setNoteOnePosition: React.Dispatch<React.SetStateAction<NoteCellPosition>>;
+	noteOnePosition: NoteCellPosition;
+}
+
+export type NoteCellProps = NoteCellState & NoteCellOperations;
+
+export interface StringRowState {
 	string: TabString;
 	stringIndex: number;
+	startNoteIndex: number;
 	onIncrement: (stringIndex: number, noteIndex: number) => void;
 	onToggle: (string: number, note: number) => void;
 }
+export interface StringRowPosition {
+	handleSwitchNotes: (
+		noteOnePosition: NoteCellPosition,
+		noteTwoPosition: NoteCellPosition,
+	) => void;
+	noteOnePosition: NoteCellPosition;
+	setNoteOnePosition: React.Dispatch<React.SetStateAction<NoteCellPosition>>;
+}
+
+export type StringRowProps = StringRowState & StringRowPosition;

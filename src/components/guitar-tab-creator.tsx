@@ -4,8 +4,8 @@
 import { useGuitarTab } from "@/hooks/useGuitarTab";
 import {
 	NoteCellProps,
-	NOTES_PER_SECTION,
 	StringRowProps,
+	NOTES_PER_SECTION,
 } from "@/types/guitar-tab";
 import { Button } from "./ui/button";
 import { useState, useEffect } from "react";
@@ -20,19 +20,36 @@ import { Trash } from "lucide-react";
  * @param onToggle - Function to handle toggling note states
  * @param absoluteNoteIndex - The absolute index of the note in the entire tab
  */
+
 const NoteCell = ({
 	note,
 	stringIndex,
 	onIncrement,
 	onToggle,
 	absoluteNoteIndex,
-}: NoteCellProps & { absoluteNoteIndex: number }) => (
+	handleSwitchNotes,
+	noteOnePosition,
+	setNoteOnePosition,
+}: NoteCellProps) => (
 	<div
 		className="border-r-2 last:border-none w-4 h-4 sm:w-6 sm:h-6 xl:w-8 xl:h-8 flex items-center justify-center cursor-grabbing font-bold text-foreground z-10 sm:text-md xl:text-xl font-serif-text nth-[6n]:border-tab border-tabsubtle data-[value='-']:text-tab/30 data-[value='X']:text-tab/50 select-none"
 		onClick={() => onIncrement(stringIndex, absoluteNoteIndex)}
 		onContextMenu={(e) => {
 			e.preventDefault(); // Prevent default context menu
 			onToggle(stringIndex, absoluteNoteIndex);
+		}}
+		onMouseDownCapture={() => {
+			setNoteOnePosition({
+				string: stringIndex,
+				position: absoluteNoteIndex,
+			});
+		}}
+		onMouseUpCapture={() => {
+			handleSwitchNotes(noteOnePosition, {
+				string: stringIndex,
+				position: absoluteNoteIndex,
+			});
+			setNoteOnePosition({ string: -1, position: -1 });
 		}}
 		id="note"
 		data-value={note}
@@ -55,7 +72,10 @@ const StringRow = ({
 	onIncrement,
 	onToggle,
 	startNoteIndex,
-}: StringRowProps & { startNoteIndex: number }) => (
+	handleSwitchNotes,
+	noteOnePosition,
+	setNoteOnePosition,
+}: StringRowProps) => (
 	<div id="row" className="flex">
 		{string.map((note, noteIndex) => (
 			<NoteCell
@@ -65,6 +85,9 @@ const StringRow = ({
 				absoluteNoteIndex={startNoteIndex + noteIndex}
 				onIncrement={onIncrement}
 				onToggle={onToggle}
+				handleSwitchNotes={handleSwitchNotes}
+				noteOnePosition={noteOnePosition}
+				setNoteOnePosition={setNoteOnePosition}
 			/>
 		))}
 	</div>
@@ -102,11 +125,16 @@ export default function GuitarTabCreator() {
 		incrementNotesNumber,
 		handleNewLineClick,
 		handleRemoveSection,
+		handleSwitchNotes,
 	} = useGuitarTab();
 
 	// Constants and state for pagination
 	// const NOTES_PER_SECTION = 54; // Number of notes to display per section
 	const [sectionsCount, setSectionsCount] = useState(1);
+	const [noteOnePositon, setNoteOnePosition] = useState({
+		position: -1,
+		string: -1,
+	});
 
 	// Calculate number of sections needed based on tab length
 	useEffect(() => {
@@ -166,6 +194,9 @@ export default function GuitarTabCreator() {
 									startNoteIndex={section.startNoteIndex}
 									onIncrement={incrementNotesNumber}
 									onToggle={handleCellClick}
+									handleSwitchNotes={handleSwitchNotes}
+									noteOnePosition={noteOnePositon}
+									setNoteOnePosition={setNoteOnePosition}
 								/>
 							))}
 						</div>

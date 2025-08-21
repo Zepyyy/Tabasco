@@ -1,3 +1,4 @@
+import { DEFAULT_NOTE, NoteCellPosition } from "@/types/guitar-tab";
 import { db } from "../db";
 
 export default async function updateTabNameById(id: number, newName: string) {
@@ -99,6 +100,104 @@ export async function updateCurrentTabs(tabs: string[][], activeTab: string) {
 			"color: #22e66a;",
 			error,
 		);
+	}
+}
+export async function switchTwoNotesByPosition(
+	tabPosition: string,
+	NoteOnePosition: NoteCellPosition,
+	NoteTwoPosition: NoteCellPosition,
+) {
+	try {
+		let result = undefined;
+		await db.transaction("rw", db.TabInfo, async () => {
+			const tab = await db.TabInfo.where({
+				position: tabPosition,
+			}).first();
+
+			if (!tab) {
+				console.log(
+					"%c DEBUG: %c Tab Position No tab found with id %c%s%c",
+					"background: #2c3e50; color: white;",
+					"background: inherit; color: white;",
+					"color: #22e66a;",
+					tabPosition,
+				);
+				result = undefined;
+				return;
+			}
+
+			const noteOneValue =
+				tab.tabs[NoteOnePosition.string][NoteOnePosition.position];
+			const noteTwoValue =
+				tab.tabs[NoteTwoPosition.string][NoteTwoPosition.position];
+
+			if (noteOneValue === DEFAULT_NOTE && noteTwoValue === DEFAULT_NOTE) {
+				// Throw to abort the transaction on a useless switch
+				throw "useless switch";
+			} else {
+				// Making a deep copy of the tabs array to avoid mutating the original
+				const newTab = tab.tabs.map((row) => [...row]);
+				const temp = newTab[NoteOnePosition.string][NoteOnePosition.position];
+
+				// Swap the values
+				newTab[NoteOnePosition.string][NoteOnePosition.position] =
+					newTab[NoteTwoPosition.string][NoteTwoPosition.position];
+				newTab[NoteTwoPosition.string][NoteTwoPosition.position] = temp;
+
+				console.log(
+					"Swapped:",
+					`[${NoteOnePosition.string}][${NoteOnePosition.position}] <-> [${NoteTwoPosition.string}][${NoteTwoPosition.position}]`,
+				);
+				console.log("Resulting tab:", newTab);
+
+				await db.TabInfo.where({ position: tabPosition }).modify({
+					tabs: newTab,
+				});
+
+				console.log(
+					"%c DEBUG: %c Tab Update Successfully switched notes at positions %c %s - %s %c , %c %s - %s",
+					"background: #2c3e50; color: white;",
+					"background: inherit; color: white;",
+					"color: #22e66a;",
+					NoteOnePosition.string,
+					NoteOnePosition.position,
+					"color: white;",
+					"color: #22e66a;",
+					NoteTwoPosition.string,
+					NoteTwoPosition.position,
+				);
+				result = "worked";
+			}
+		});
+		// If we get here, either the swap happened or nothing was thrown
+		if (result === undefined) {
+			console.log(
+				"%c DEBUG: %c Tab Update Successfully switched notes at positions %c %s - %s %c , %c %s - %s",
+				"background: #2c3e50; color: white;",
+				"background: inherit; color: white;",
+				"color: #22e66a;",
+				NoteOnePosition.string,
+				NoteOnePosition.position,
+				"color: white;",
+				"color: #22e66a;",
+				NoteTwoPosition.string,
+				NoteTwoPosition.position,
+			);
+			return "worked";
+		} else {
+			return result;
+		}
+	} catch (error) {
+		console.log(
+			"%cDEBUG:%c Tab Update and Failed to update tab content Error: %c %s %s",
+			"background: #2c3e50; color: white;",
+			"background: inherit; color: white;",
+			"color: #22e66a;",
+			NoteOnePosition.position,
+			NoteTwoPosition.position,
+			error,
+		);
+		return "oh fuck";
 	}
 }
 

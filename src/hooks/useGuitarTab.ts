@@ -1,7 +1,10 @@
 import { useState, useEffect } from "react";
 import { useParams, useLocation, useNavigate } from "react-router";
 import { getTabsByPosition } from "@/db/crud/GetTab";
-import { updateCurrentTabs } from "@/db/crud/UpdateTab";
+import {
+	switchTwoNotesByPosition,
+	updateCurrentTabs,
+} from "@/db/crud/UpdateTab";
 import { exportTabs } from "@/db/crud/Export";
 import download from "downloadjs";
 
@@ -15,6 +18,7 @@ import {
 	type TabState,
 	type TabOperations,
 	NOTES_PER_SECTION,
+	NoteCellPosition,
 } from "@/types/guitar-tab";
 import { ImportTabs } from "@/db/crud/Import";
 import { TabInfo } from "@/db/db";
@@ -220,6 +224,36 @@ export const useGuitarTab = (): TabState & TabOperations => {
 			setIsLoading(false);
 		}
 	};
+
+	const handleSwitchNotes = async (
+		NoteOnePosition: NoteCellPosition,
+		NoteTwoPosition: NoteCellPosition,
+	) => {
+		console.log(
+			tabPositionFromParam,
+			",",
+			NoteOnePosition,
+			",",
+			NoteTwoPosition,
+		);
+		if (NoteOnePosition.position == -1 || NoteOnePosition.string == -1) {
+			return;
+		}
+		if (
+			NoteOnePosition.string == NoteTwoPosition.string &&
+			NoteOnePosition.position == NoteTwoPosition.position
+		) {
+			return;
+		}
+
+		const result = await switchTwoNotesByPosition(
+			tabPositionFromParam || "0",
+			NoteOnePosition,
+			NoteTwoPosition,
+		);
+		navigate(`/sheet/${tabPositionFromParam}`);
+		console.log(result);
+	};
 	return {
 		tab,
 		handleNewLineClick,
@@ -230,5 +264,6 @@ export const useGuitarTab = (): TabState & TabOperations => {
 		handleRemoveSection,
 		handleImport,
 		handleExport,
+		handleSwitchNotes,
 	};
 };
