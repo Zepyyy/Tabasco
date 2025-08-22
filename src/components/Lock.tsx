@@ -1,4 +1,4 @@
-import { LockIcon } from "lucide-react";
+import { LockIcon, LockOpen } from "lucide-react";
 import { Button } from "./ui/button";
 import { LockContext } from "@/contexts/LockContext";
 import { useContext } from "react";
@@ -13,7 +13,7 @@ export default function Lock() {
 				className="text-xl font-medium [&_svg]:size-6 p-2 aspect-square"
 				onClick={() => setIsLocked(!isLocked)}
 			>
-				<LockIcon />
+				{isLocked ? <LockIcon /> : <LockOpen />}
 			</Button>
 		</div>
 	);
