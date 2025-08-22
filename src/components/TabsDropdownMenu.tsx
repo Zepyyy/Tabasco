@@ -131,7 +131,7 @@ export default function TabsDropdownMenu() {
 					<DropdownMenu>
 						<DropdownMenuTrigger
 							asChild
-							className="appearance-none border-none inline-flex items-center justify-center rounded-md text-tab transition-all text-xl font-serif-text gap-2"
+							className="appearance-none border-none inline-flex items-center justify-center rounded-md text-tab transition-all text-xl font-serif-text"
 						>
 							<button aria-label="Customise options">
 								{tabName || "Unnamed"}

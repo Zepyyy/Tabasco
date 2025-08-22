@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { useParams, useLocation, useNavigate } from "react-router";
 import { getTabsByPosition } from "@/db/crud/GetTab";
 import {
@@ -7,6 +7,7 @@ import {
 } from "@/db/crud/UpdateTab";
 import { exportTabs } from "@/db/crud/Export";
 import download from "downloadjs";
+import { LockContext } from "@/contexts/LockContext";
 
 import {
 	STRINGS,
@@ -36,11 +37,16 @@ export const useGuitarTab = (): TabState & TabOperations => {
 	);
 	const [isLoading, setIsLoading] = useState(false);
 	const [error, setError] = useState<Error | null>(null);
+	const isLocked = useContext(LockContext).isLocked;
 
 	const handleCellClick = async (
 		string: number,
 		note: number,
 	): Promise<void> => {
+		if (isLocked) {
+			handleLock();
+			return;
+		}
 		try {
 			const newTab = tab.map((row: string[], i: number) =>
 				row.map((cell: string, j: number) =>
@@ -61,6 +67,10 @@ export const useGuitarTab = (): TabState & TabOperations => {
 	};
 
 	const handleNewLineClick = () => {
+		if (isLocked) {
+			handleLock();
+			return;
+		}
 		try {
 			const newTab = [...tab];
 			// Add a new DEFAULT_NOTE to each string in the tab
@@ -79,6 +89,10 @@ export const useGuitarTab = (): TabState & TabOperations => {
 	};
 
 	const incrementNotesNumber = (string: number, note: number): void => {
+		if (isLocked) {
+			handleLock();
+			return;
+		}
 		try {
 			const newTab = [...tab];
 			const currentValue = newTab[string][note];
@@ -109,6 +123,10 @@ export const useGuitarTab = (): TabState & TabOperations => {
 		data: Tab;
 		startNoteIndex: number;
 	}): void => {
+		if (isLocked) {
+			handleLock();
+			return;
+		}
 		if (tab[0].length !== NOTES_PER_SECTION) {
 			try {
 				const sectionLength = section.data[0]?.length || 0;
@@ -229,6 +247,10 @@ export const useGuitarTab = (): TabState & TabOperations => {
 		NoteOnePosition: NoteCellPosition,
 		NoteTwoPosition: NoteCellPosition,
 	) => {
+		if (isLocked) {
+			handleLock();
+			return;
+		}
 		console.log(
 			tabPositionFromParam,
 			",",
@@ -254,6 +276,12 @@ export const useGuitarTab = (): TabState & TabOperations => {
 		navigate(`/sheet/${tabPositionFromParam}`);
 		console.log(result);
 	};
+
+	const handleLock = () => {
+		console.log("ITSLOCKED BRUV");
+		return;
+	};
+
 	return {
 		tab,
 		handleNewLineClick,
