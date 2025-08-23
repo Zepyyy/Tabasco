@@ -42,7 +42,7 @@ export default function App() {
 									<GUI />
 								</div>
 							</div>
-							<div className="flex flex-col justify-start w-full px-4 py-6">
+							<div className="flex flex-col justify-start w-full px-4 py-4">
 								<TabName />
 								<div className="px-4">
 									<GuitarTabCreator />
