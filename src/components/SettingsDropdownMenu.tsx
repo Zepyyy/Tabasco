@@ -99,8 +99,8 @@ export default function SettingsDropdownMenu() {
 				<DropdownMenuTrigger asChild>
 					<Button
 						variant={"soft"}
-						size={"icon-resize"}
-						className="text-xl font-medium p-2 [&_svg]:size-10 aspect-square"
+						size={"bigIcon"}
+						className="text-xl font-medium p-2 [&_svg]:size-10"
 					>
 						<Settings />
 					</Button>

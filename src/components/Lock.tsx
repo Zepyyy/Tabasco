@@ -9,11 +9,22 @@ export default function Lock() {
 		<div className="flex flex-col rounded-lg justify-center">
 			<Button
 				variant={isLocked ? "shallow" : "transparent"}
-				size={"icon-resize"}
-				className="text-xl font-medium [&_svg]:size-6 p-2 aspect-square"
-				onClick={() => setIsLocked(!isLocked)}
+				size={"bigIcon"}
+				className="p-2 [&_svg]:size-6 cursor-pointer duration-75 transition-opacity active:scale-90"
+				onMouseDown={() => setIsLocked(!isLocked)}
 			>
-				{isLocked ? <LockIcon /> : <LockOpen />}
+				<div className="relative w-6 h-6 flex items-center justify-center">
+					<LockIcon
+						className={`absolute left-0 top-0 transition-opacity duration-200 ${
+							isLocked ? "opacity-100" : "opacity-0 pointer-events-none"
+						}`}
+					/>
+					<LockOpen
+						className={`absolute left-0 top-0 transition-opacity duration-200 ${
+							!isLocked ? "opacity-100" : "opacity-90 pointer-events-none"
+						}`}
+					/>
+				</div>
 			</Button>
 		</div>
 	);
