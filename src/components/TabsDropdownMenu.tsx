@@ -1,4 +1,4 @@
-import { Plus } from "lucide-react";
+import { ChevronUp, Plus } from "lucide-react";
 import { useContext, useState } from "react";
 import { NavLink } from "react-router";
 import { useTabOperations } from "@/hooks/useTabOperations";
@@ -118,6 +118,8 @@ export default function TabsDropdownMenu() {
 		setEditingTab(null);
 	};
 
+	const [upPosition, setUpPosition] = useState(false);
+
 	return (
 		<>
 			{editingTab ? (
@@ -128,13 +130,22 @@ export default function TabsDropdownMenu() {
 				/>
 			) : (
 				<>
-					<DropdownMenu>
+					<DropdownMenu onOpenChange={() => setUpPosition(!upPosition)}>
 						<DropdownMenuTrigger
 							asChild
 							className="appearance-none border-none inline-flex items-center justify-center rounded-md text-tab transition-all text-xl font-serif-text"
 						>
-							<button aria-label="Customise options">
+							<button
+								aria-label="Customise options"
+								className="flex gap-1 duration-75 transition-transform items-end"
+							>
 								{tabName || "Unnamed"}
+								<ChevronUp
+									strokeWidth={1.5}
+									className={`transition-transform duration-200 text-tab ${
+										upPosition ? "rotate-0" : "rotate-180"
+									}`}
+								/>
 							</button>
 						</DropdownMenuTrigger>
 						<DropdownMenuPortal>
