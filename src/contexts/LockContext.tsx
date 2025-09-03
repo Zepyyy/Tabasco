@@ -2,6 +2,6 @@
 import { createContext } from "react";
 
 export const LockContext = createContext({
-	isLocked: true,
+	isLocked: JSON.parse(localStorage.getItem("isLocked") ?? "false"),
 	setIsLocked: (_isLocked: boolean) => {},
 });

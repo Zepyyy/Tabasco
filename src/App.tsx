@@ -18,7 +18,9 @@ export default function App() {
 	const [tabName, setTabName] = useState("");
 	const tabs =
 		useLiveQuery(() => db.TabInfo.orderBy("position").toArray()) || [];
-	const [isLocked, setIsLocked] = useState(false);
+	const [isLocked, setIsLocked] = useState<boolean>(
+		JSON.parse(localStorage.getItem("isLocked") ?? "false"),
+	);
 
 	return (
 		<ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
