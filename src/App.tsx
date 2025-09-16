@@ -8,7 +8,7 @@ import { TabsContext } from "./contexts/TabsContext";
 import { NameContext } from "./contexts/NameContext";
 import { LockContext } from "./contexts/LockContext";
 import { Analytics } from "@vercel/analytics/react";
-import GUI from "./components/SettingsMenu";
+import Gui from "./components/SettingsMenu";
 import { ThemeProvider } from "./components/theme-provider";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { AlertCircleIcon } from "lucide-react";
@@ -41,7 +41,7 @@ export default function App() {
 								<BreadCrumbs />
 								<div className="flex flex-row gap-6">
 									<Lock />
-									<GUI />
+									<Gui />
 								</div>
 							</div>
 							<div className="flex flex-col justify-start w-full px-4 py-4">
