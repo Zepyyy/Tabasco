@@ -1,7 +1,7 @@
 import { cva } from "class-variance-authority";
 
 const buttonVariants = cva(
-	"inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-sm text-sm font-semibold transition-all duration-150 focus-visible:outline-hidden focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 inset-shadow-[0_2px_4px_rgba(255,255,255,0.2),0_-3px_0_rgba(0,0,0,0.2)] shadow-[0_4px_4px_rgba(0,0,0,0.2)] active:inset-shadow-[0_2px_4px_rgba(255,255,255,0.2),0_-1px_0_rgba(0,0,0,0.2)] active:shadow-[0_4px_4px_rgba(0,0,0,0.2)] [&>*]:transform [&>*]:-translate-y-0.5 [&>*]:transition-transform [&>*]:duration-150 active:[&>*]:translate-y-0",
+	"inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-sm text-sm font-semibold transition-all duration-150 focus-visible:outline-hidden focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 inset-shadow-[0_-3px_0_rgba(0,0,0,0.2)] shadow-[0_4px_4px_rgba(0,0,0,0.2)] active:inset-shadow-[0_-1px_0_rgba(0,0,0,0.2)] active:shadow-[0_4px_4px_rgba(0,0,0,0.2)] [&>*]:transform [&>*]:-translate-y-0.5 [&>*]:transition-transform [&>*]:duration-150 active:[&>*]:translate-y-0",
 	{
 		variants: {
 			variant: {
