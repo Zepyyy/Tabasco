@@ -1,20 +1,19 @@
 import { cva } from "class-variance-authority";
 
 const buttonVariants = cva(
-	"inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-sm text-sm font-semibold transition-colors focus-visible:outline-hidden focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
+	"inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-sm text-sm font-semibold transition-all duration-150 focus-visible:outline-hidden focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 inset-shadow-[0_2px_4px_rgba(255,255,255,0.2),0_-3px_0_rgba(0,0,0,0.2)] shadow-[0_4px_4px_rgba(0,0,0,0.2)] active:inset-shadow-[0_2px_4px_rgba(255,255,255,0.2),0_-1px_0_rgba(0,0,0,0.2)] active:shadow-[0_4px_4px_rgba(0,0,0,0.2)] [&>*]:transform [&>*]:-translate-y-0.5 [&>*]:transition-transform [&>*]:duration-150 active:[&>*]:translate-y-0",
 	{
 		variants: {
 			variant: {
-				default: "bg-primary text-primary-foreground shadow-sm",
+				default: "bg-primary text-primary-foreground",
 				destructive:
-					"bg-destructive text-destructive-foreground hover:bg-destructive shadow-xs",
-				soft: "bg-soft/25 text-soft-foreground hover:bg-soft/45 shadow-xs",
-				outline:
-					"bg-background text-primary hover:bg-primary/5 hover:text-primary border-2 border-primary",
-				deep: "bg-primary text-primary-foreground hover:bg-primary/80 shadow-sm active:bg-primary/90",
-				shallow:
-					"bg-secondary text-secondary-foreground hover:bg-secondary/80 shadow-sm active:bg-secondary/90",
-				transparent: "bg-background text-foreground shadow-none border-none",
+					"bg-destructive text-destructive-foreground hover:bg-destructive",
+				soft: "bg-soft/25 text-soft-foreground",
+				outline: "bg-background text-primary border-2 border-primary",
+				deep: "bg-primary text-primary-foreground",
+				shallow: "bg-secondary text-secondary-foreground",
+				transparent:
+					"bg-background text-foreground border-none shadow-none inset-shadow-none active:shadow-none active:inset-shadow-none",
 			},
 			size: {
 				default: "h-9 px-4 py-2",
