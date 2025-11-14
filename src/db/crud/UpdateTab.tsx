@@ -81,7 +81,7 @@ export async function updateTabNameByPosition(
 	}
 }
 export async function updateCurrentTabs(tabs: string[][], activeTab: string) {
-	activeTab = activeTab ? activeTab : "0";
+	activeTab = activeTab || "0";
 	try {
 		await db.TabInfo.where("position").equals(activeTab).modify({ tabs: tabs });
 		console.log(
@@ -102,6 +102,21 @@ export async function updateCurrentTabs(tabs: string[][], activeTab: string) {
 		);
 	}
 }
+
+export async function updateTabCapoByPosition(position: string, capo: number) {
+	await db.TabInfo.where({ position: position }).modify({ capo: capo });
+	console.log(
+		"%c DEBUG: %c Tab Capo Update Successfully updated tab capo at position: %c%s to %c%s",
+		"background: #2c3e50; color: white;",
+		"background: inherit; color: white;",
+		"color: #22e66a;",
+		position,
+		"color: white;",
+		"color: #22b5e6;",
+		capo,
+	);
+}
+
 export async function switchTwoNotesByPosition(
 	tabPosition: string,
 	NoteOnePosition: NoteCellPosition,

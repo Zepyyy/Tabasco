@@ -7,6 +7,7 @@ interface TabInfo {
 	tabName: string;
 	tabs: string[][];
 	position: string;
+	capo: number;
 }
 
 const db = new Dexie("TabInfo") as Dexie & {
@@ -21,6 +22,11 @@ db.version(2).stores({
 	TabInfo: "++id, tabName, position", // primary key "id" (for the runtime!)
 });
 
+// Schema declaration:
+db.version(3).stores({
+	TabInfo: "++id, tabName, position, capo", // primary key "id" (for the runtime!)
+});
+
 db.on("populate", function () {
 	// Init your DB with some default statuses:
 	db.TabInfo.add({
@@ -29,6 +35,7 @@ db.on("populate", function () {
 			.fill(null)
 			.map(() => Array(NOTES_PER_SECTION).fill(DEFAULT_NOTE)),
 		position: "0",
+		capo: -1,
 	});
 });
 

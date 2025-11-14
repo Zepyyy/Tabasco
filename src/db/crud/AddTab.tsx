@@ -23,6 +23,7 @@ export default async function addTab({ tabName, tabs }: Partial<TabInfo>) {
 					.fill(null)
 					.map(() => Array(NOTES_PER_SECTION).fill("-")),
 			position: maxPosition.toString(), // Increment the position
+			capo: -1,
 		});
 		console.log(
 			"%c DEBUG: %c Tab Add Successfully added tab at position %c%s",
