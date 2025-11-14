@@ -5,6 +5,7 @@ import { Button } from "./ui/button";
 import { updateTabCapoByPosition } from "@/db/crud/UpdateTab";
 import { useParams } from "react-router";
 import { getCapoByPosition } from "@/db/crud/GetTab";
+import { MAX_FRET } from "@/types/guitar-tab";
 
 export default function Capo() {
 	const { capo, setCapo } = useContext(CapoContext);
@@ -12,8 +13,10 @@ export default function Capo() {
 		tabPositionFromParam: string;
 	}>();
 	function HandleSetCapo(capo: number) {
-		setCapo(capo);
-		updateTabCapoByPosition(tabPositionFromParam || "0", capo);
+		if (capo >= -1 && capo <= MAX_FRET) {
+			setCapo(capo);
+			updateTabCapoByPosition(tabPositionFromParam || "0", capo);
+		}
 	}
 
 	useEffect(() => {
@@ -23,12 +26,10 @@ export default function Capo() {
 	}, [capo, setCapo, tabPositionFromParam]);
 
 	return (
-		<div className="flex flex-row gap-2 justify-evenly">
+		<div className="flex flex-row gap-2 justify-evenly items-center">
 			{capo != -1 && capo != undefined ? (
 				<div className="flex flex-row gap-2 text-tab font-serif-title antialiased md:text-3xl text-2xl sm:text-2xl w-full">
-					<p className="text-tab md:text-3xl text-2xl sm:text-2xl">
-						Capo: {undefined}
-					</p>
+					<p className="text-tab md:text-3xl text-2xl sm:text-2xl">Capo:</p>
 					<Input
 						type="text"
 						value={capo}
@@ -46,7 +47,7 @@ export default function Capo() {
 					/>
 				</div>
 			) : (
-				<div className="flex flex-row gap-2 text-tab font-serif-title antialiased md:text-3xl text-2xl sm:text-2xl w-full">
+				<div className="flex flex-row gap-2 font-serif-title antialiased md:text-3xl text-2xl sm:text-2xl w-full">
 					<Button
 						variant="transparent"
 						size="default"

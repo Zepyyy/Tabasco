@@ -37,7 +37,7 @@ export const useGuitarTab = (): TabState & TabOperations => {
 	);
 	const [isLoading, setIsLoading] = useState(false);
 	const [error, setError] = useState<Error | null>(null);
-	const isLocked = useContext(LockContext).isLocked;
+	const { isLocked } = useContext(LockContext);
 
 	const handleCellClick = async (
 		string: number,
