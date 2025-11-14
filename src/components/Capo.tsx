@@ -6,16 +6,20 @@ import { updateTabCapoByPosition } from "@/db/crud/UpdateTab";
 import { useParams } from "react-router";
 import { getCapoByPosition } from "@/db/crud/GetTab";
 import { MAX_FRET } from "@/types/guitar-tab";
-import { LockContext } from "@/contexts/LockContext";
+import { useLock } from "@/hooks/useLock";
 
 export default function Capo() {
 	const { capo, setCapo } = useContext(CapoContext);
-	const { isLocked } = useContext(LockContext);
+	const { handleLock, isLocked } = useLock();
 
 	const { tabPositionFromParam } = useParams<{
 		tabPositionFromParam: string;
 	}>();
 	function HandleSetCapo(capo: number) {
+		if (isLocked) {
+			handleLock();
+			return;
+		}
 		if (capo >= -1 && capo <= MAX_FRET && !isLocked) {
 			setCapo(capo);
 			updateTabCapoByPosition(tabPositionFromParam || "0", capo);
