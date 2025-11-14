@@ -25,10 +25,13 @@ export default function App() {
 	const [isLocked, setIsLocked] = useState<boolean>(
 		JSON.parse(localStorage.getItem("isLocked") ?? "false"),
 	);
+	const [trigger, setTrigger] = useState<boolean>(false);
 
 	return (
 		<ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
-			<LockContext.Provider value={{ isLocked, setIsLocked }}>
+			<LockContext.Provider
+				value={{ isLocked, setIsLocked, trigger, setTrigger }}
+			>
 				<TabsContext.Provider value={tabs}>
 					<NameContext.Provider value={{ tabName, setTabName }}>
 						<CapoContext.Provider value={{ capo, setCapo }}>
