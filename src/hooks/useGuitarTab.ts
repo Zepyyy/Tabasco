@@ -1,4 +1,4 @@
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect } from "react";
 import { useParams, useLocation, useNavigate } from "react-router";
 import { getTabsByPosition } from "@/db/crud/GetTab";
 import {
@@ -7,7 +7,7 @@ import {
 } from "@/db/crud/UpdateTab";
 import { exportTabs } from "@/db/crud/Export";
 import download from "downloadjs";
-import { LockContext } from "@/contexts/LockContext";
+import { useLock } from "@/hooks/useLock";
 
 import {
 	STRINGS,
@@ -37,7 +37,8 @@ export const useGuitarTab = (): TabState & TabOperations => {
 	);
 	const [isLoading, setIsLoading] = useState(false);
 	const [error, setError] = useState<Error | null>(null);
-	const { isLocked } = useContext(LockContext);
+
+	const { handleLock, isLocked } = useLock();
 
 	const handleCellClick = async (
 		string: number,
@@ -282,11 +283,6 @@ export const useGuitarTab = (): TabState & TabOperations => {
 		);
 		navigate(`/sheet/${tabPositionFromParam}`);
 		console.log(result);
-	};
-
-	const handleLock = () => {
-		console.log("ITSLOCKED BRUV");
-		return;
 	};
 
 	return {

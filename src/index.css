@@ -221,3 +221,16 @@
 	color: hsl(var(--muted-foreground));
 	background-color: hsl(var(--muted));
 }
+
+@theme {
+	--animate-wiggle-once: wiggle-once 2s ease-in-out;
+	@keyframes wiggle-once {
+		0%,
+		100% {
+			transform: rotate(-20deg);
+		}
+		50% {
+			transform: rotate(20deg);
+		}
+	}
+}
