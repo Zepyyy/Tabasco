@@ -180,10 +180,12 @@ export const useGuitarTab = (): TabState & TabOperations => {
 			if (exportedData) {
 				const tabName = exportedData.tabName || `Tab-Unnamed-${position}`;
 				const tabs = exportedData.tabs || [];
+				const capo = exportedData.capo || -1;
 				const jsonData = JSON.stringify(
 					{
 						tabName,
 						tabs,
+						capo,
 					},
 					null,
 					2,
@@ -200,7 +202,11 @@ export const useGuitarTab = (): TabState & TabOperations => {
 	};
 
 	const handleImport = async (jsonData: Partial<TabInfo>) => {
-		console.log("%cDEBUG:%c Importing tab data", "color: #22e66a;", jsonData);
+		console.log(
+			"%cDEBUG:%c Importing tab data",
+			"background: #2c3e50; color: white; padding: 2px 5px;",
+			jsonData,
+		);
 		setError(null);
 
 		try {
@@ -219,6 +225,7 @@ export const useGuitarTab = (): TabState & TabOperations => {
 				!(
 					"tabName" in jsonData &&
 					"tabs" in jsonData &&
+					"capo" in jsonData &&
 					Array.isArray(jsonData.tabs) &&
 					jsonData.tabs.every((row) => Array.isArray(row))
 				)

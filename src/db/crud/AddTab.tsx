@@ -7,7 +7,11 @@ export async function getLastTabPosition() {
 	return tab?.position;
 }
 
-export default async function addTab({ tabName, tabs }: Partial<TabInfo>) {
+export default async function addTab({
+	tabName,
+	tabs,
+	capo,
+}: Partial<TabInfo>) {
 	try {
 		const lastTabPosition = await getLastTabPosition();
 		const maxPosition =
@@ -23,7 +27,7 @@ export default async function addTab({ tabName, tabs }: Partial<TabInfo>) {
 					.fill(null)
 					.map(() => Array(NOTES_PER_SECTION).fill("-")),
 			position: maxPosition.toString(), // Increment the position
-			capo: -1,
+			capo: capo || -1,
 		});
 		console.log(
 			"%c DEBUG: %c Tab Add Successfully added tab at position %c%s",

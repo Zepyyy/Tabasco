@@ -12,6 +12,7 @@ export async function ImportTabs(tabData: Partial<TabInfo>) {
 				Array(STRINGS)
 					.fill(null)
 					.map(() => Array(NOTES_PER_SECTION).fill(DEFAULT_NOTE)),
+			capo: (tabData.capo as number) || -1,
 		};
 
 		const position = await addTab(importedData as Partial<TabInfo>);
@@ -28,7 +29,7 @@ export async function ImportTabs(tabData: Partial<TabInfo>) {
 		}
 
 		console.log(
-			"%cDEBUG:%c Successfully imported tab at position: " + position,
+			"%cDEBUG:%c Successfully imported tab at position: %c" + position,
 			"background: #2c3e50; color: white; padding: 2px 5px;",
 			"background: inherit; color: white;",
 			"color: #22e66a;",
