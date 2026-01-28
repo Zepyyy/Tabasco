@@ -16,11 +16,11 @@ import {
 	switchTwoNotesByPosition,
 	updateCurrentTabs,
 } from "@/db/crud/UpdateTab";
-import { TabInfo } from "@/db/db";
 import { useLock } from "@/hooks/useLock";
 import type {
 	NoteCellPosition,
 	Tab,
+	TabInfo,
 	TabOperations,
 	TabState,
 } from "@/types/guitar-tab";

@@ -1,22 +1,15 @@
-import { ChangeEvent, useState, useEffect, useRef } from "react";
 import {
+	Eraser,
+	FolderInput,
+	FolderOutput,
+	Moon,
 	Settings,
 	Sun,
-	Moon,
-	Eraser,
-	FolderOutput,
-	FolderInput,
 } from "lucide-react";
-
-import { Button } from "./ui/button";
-import {
-	DropdownMenu,
-	DropdownMenuContent,
-	DropdownMenuItem,
-	DropdownMenuTrigger,
-} from "./ui/dropdown-menu";
-import { useParams, useNavigate } from "react-router";
+import { ChangeEvent, useEffect, useRef, useState } from "react";
+import { useNavigate, useParams } from "react-router";
 import { clearTab } from "@/db/crud/ClearTab";
+import { useGuitarTab } from "@/hooks/useGuitarTab";
 import { useTheme } from "./theme-provider";
 import {
 	AlertDialog,
@@ -28,7 +21,13 @@ import {
 	AlertDialogHeader,
 	AlertDialogTitle,
 } from "./ui/alert-dialog";
-import { useGuitarTab } from "@/hooks/useGuitarTab";
+import { Button } from "./ui/button";
+import {
+	DropdownMenu,
+	DropdownMenuContent,
+	DropdownMenuItem,
+	DropdownMenuTrigger,
+} from "./ui/dropdown-menu";
 import { Input } from "./ui/input";
 
 export default function SettingsDropdownMenu() {

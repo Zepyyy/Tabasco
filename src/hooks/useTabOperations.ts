@@ -4,7 +4,8 @@ import addTab from "@/db/crud/AddTab";
 import deleteTabById from "@/db/crud/DeleteTab";
 import { getTabsByPosition } from "@/db/crud/GetTab";
 import updateTabNameById, { updateTabPositionById } from "@/db/crud/UpdateTab";
-import { db, TabInfo } from "@/db/db";
+import { db } from "@/db/db";
+import { TabInfo } from "@/types/guitar-tab";
 
 export const useTabOperations = () => {
 	const tabs = useLiveQuery(() => db.TabInfo.toArray()) || [];

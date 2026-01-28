@@ -1,7 +1,7 @@
 import { ArrowRight, LockIcon, LockOpen } from "lucide-react";
-import { Button } from "./ui/button";
 import { useEffect } from "react";
 import { useLock } from "@/hooks/useLock";
+import { Button } from "./ui/button";
 
 export default function Lock() {
 	const { isLocked, setIsLocked, trigger } = useLock();

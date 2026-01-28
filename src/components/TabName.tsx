@@ -1,9 +1,9 @@
 import { useContext, useEffect } from "react";
+import { useParams } from "react-router";
 import { Input } from "@/components/ui/input";
 import { NameContext } from "@/contexts/NameContext";
-import { updateTabNameByPosition } from "@/db/crud/UpdateTab";
-import { useParams } from "react-router";
 import getTabNameById from "@/db/crud/GetTab";
+import { updateTabNameByPosition } from "@/db/crud/UpdateTab";
 import { useLock } from "@/hooks/useLock";
 
 export default function TabName() {
