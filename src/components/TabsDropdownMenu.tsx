@@ -107,6 +107,10 @@ export default function TabsDropdownMenu() {
 	const { tabName, setTabName } = useContext(NameContext);
 	const tabs = useLiveQuery(() => db.TabInfo.toArray()) || [];
 
+	tabs.sort(
+		(a, b) => Number.parseInt(a.position) - Number.parseInt(b.position),
+	);
+
 	const [editingTab, setEditingTab] = useState<{
 		id: number;
 		name: string;
@@ -115,7 +119,7 @@ export default function TabsDropdownMenu() {
 		handleAddTab,
 		handleRename,
 		handleDuplicate,
-		// handleMove,
+		handleMove,
 		handleDelete,
 	} = useTabOperations();
 
@@ -193,9 +197,7 @@ export default function TabsDropdownMenu() {
 									>
 										<DropdownMenuSub key={tab.id}>
 											<DropdownMenuSubTrigger className="group relative flex h-8 select-none items-center pr-2 outline-hidden data-disabled:pointer-events-none my-1 last:my-0 gap-9 text-2xl data-[state=open]:bg-foreground/10 focus:bg-foreground/10 font-normal">
-												<span className=" p-2">
-													{tab.position} - {tab.tabName || "Unnamed"}
-												</span>
+												<span className=" p-2">{tab.tabName || "Unnamed"}</span>
 												<div className="ml-auto group-data-highlighted:text-tab/50"></div>
 											</DropdownMenuSubTrigger>
 											<DropdownMenuPortal>
@@ -220,8 +222,8 @@ export default function TabsDropdownMenu() {
 															});
 														}}
 														onMoveDown={() => {
-															// handleMove(tab.id, tab.position);
-															console.log("broken, wip");
+															handleMove(tab.id, tab.position);
+															// console.log("broken, wip");
 														}}
 														onDelete={() => {
 															setIsDialogOpen(true);
