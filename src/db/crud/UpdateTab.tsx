@@ -1,4 +1,5 @@
-import { DEFAULT_NOTE, NoteCellPosition } from "@/types/guitar-tab";
+import type { NoteCellPosition } from "@/types/guitar-tab";
+import { DEFAULT_NOTE } from "@/types/guitar-tab";
 import { db } from "../db";
 
 export default async function updateTabNameById(id: number, newName: string) {

@@ -1,11 +1,10 @@
 import { useContext } from "react";
+import { useNavigate } from "react-router";
 import { TabsContext } from "@/contexts/TabsContext";
 import addTab from "@/db/crud/AddTab";
-import { updateTabPositionById } from "@/db/crud/UpdateTab";
 import deleteTabById from "@/db/crud/DeleteTab";
+import updateTabNameById, { updateTabPositionById } from "@/db/crud/UpdateTab";
 import { TabInfo } from "@/db/db";
-import updateTabNameById from "@/db/crud/UpdateTab";
-import { useNavigate } from "react-router";
 
 export const useTabOperations = () => {
 	const tabs = useContext(TabsContext);
@@ -22,7 +21,7 @@ export const useTabOperations = () => {
 			"at: ",
 			currentPosition,
 		);
-		const newPosition = parseInt(currentPosition) + 1;
+		const newPosition = Number.parseInt(currentPosition) + 1;
 		if (newPosition >= tabs.length) {
 			console.log("oups, last tab I hope");
 			return;
@@ -48,10 +47,10 @@ export const useTabOperations = () => {
 				if (
 					tab.position !== undefined &&
 					position !== undefined &&
-					parseInt(tab.position) >= parseInt(position)
+					Number.parseInt(tab.position) >= Number.parseInt(position)
 				) {
 					updateTabPositionById(
-						(parseInt(tab.position) - 1).toString(),
+						(Number.parseInt(tab.position) - 1).toString(),
 						tab.id,
 					);
 				}

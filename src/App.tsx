@@ -1,20 +1,20 @@
-import GuitarTabCreator from "./components/guitar-tab-creator";
-import BreadCrumbs from "./components/breadcrumb";
-import { useState } from "react";
-import TabName from "./components/TabName";
-import { db } from "./db/db";
-import { useLiveQuery } from "dexie-react-hooks";
-import { TabsContext } from "./contexts/TabsContext";
-import { NameContext } from "./contexts/NameContext";
-import { LockContext } from "./contexts/LockContext";
-import { CapoContext } from "./contexts/CapoContext";
 import { Analytics } from "@vercel/analytics/react";
-import Gui from "./components/SettingsMenu";
-import { ThemeProvider } from "./components/theme-provider";
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { useLiveQuery } from "dexie-react-hooks";
 import { AlertCircleIcon } from "lucide-react";
-import Lock from "./components/Lock";
+import { useState } from "react";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import BreadCrumbs from "./components/breadcrumb";
 import Capo from "./components/Capo";
+import GuitarTabCreator from "./components/guitar-tab-creator";
+import Lock from "./components/Lock";
+import Gui from "./components/SettingsMenu";
+import TabName from "./components/TabName";
+import { ThemeProvider } from "./components/theme-provider";
+import { CapoContext } from "./contexts/CapoContext";
+import { LockContext } from "./contexts/LockContext";
+import { NameContext } from "./contexts/NameContext";
+import { TabsContext } from "./contexts/TabsContext";
+import { db } from "./db/db";
 
 export default function App() {
 	const [tabName, setTabName] = useState("");

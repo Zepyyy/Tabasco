@@ -1,5 +1,5 @@
-import { LockContext } from "@/contexts/LockContext";
 import { useContext } from "react";
+import { LockContext } from "@/contexts/LockContext";
 
 export const useLock = () => {
 	const { isLocked, setIsLocked, trigger, setTrigger } =

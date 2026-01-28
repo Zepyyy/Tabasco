@@ -1,28 +1,27 @@
-import { useState, useEffect } from "react";
-import { useParams, useLocation, useNavigate } from "react-router";
+import download from "downloadjs";
+import { useEffect, useState } from "react";
+import { useLocation, useNavigate, useParams } from "react-router";
+import { exportTabs } from "@/db/crud/Export";
 import { getTabsByPosition } from "@/db/crud/GetTab";
+import { ImportTabs } from "@/db/crud/Import";
 import {
 	switchTwoNotesByPosition,
 	updateCurrentTabs,
 } from "@/db/crud/UpdateTab";
-import { exportTabs } from "@/db/crud/Export";
-import download from "downloadjs";
+import { TabInfo } from "@/db/db";
 import { useLock } from "@/hooks/useLock";
-
 import {
-	STRINGS,
 	DEFAULT_NOTE,
-	OPEN_STRING,
-	MUTED_STRING,
 	MAX_FRET,
-	type Tab,
-	type TabState,
-	type TabOperations,
+	MUTED_STRING,
 	NOTES_PER_SECTION,
 	NoteCellPosition,
+	OPEN_STRING,
+	STRINGS,
+	type Tab,
+	type TabOperations,
+	type TabState,
 } from "@/types/guitar-tab";
-import { ImportTabs } from "@/db/crud/Import";
-import { TabInfo } from "@/db/db";
 
 export const useGuitarTab = (): TabState & TabOperations => {
 	const { tabPositionFromParam } = useParams<{

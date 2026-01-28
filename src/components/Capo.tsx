@@ -1,12 +1,12 @@
 import { useContext, useEffect } from "react";
-import { Input } from "./ui/input";
-import { CapoContext } from "@/contexts/CapoContext";
-import { Button } from "./ui/button";
-import { updateTabCapoByPosition } from "@/db/crud/UpdateTab";
 import { useParams } from "react-router";
+import { CapoContext } from "@/contexts/CapoContext";
 import { getCapoByPosition } from "@/db/crud/GetTab";
-import { MAX_FRET } from "@/types/guitar-tab";
+import { updateTabCapoByPosition } from "@/db/crud/UpdateTab";
 import { useLock } from "@/hooks/useLock";
+import { MAX_FRET } from "@/types/guitar-tab";
+import { Button } from "./ui/button";
+import { Input } from "./ui/input";
 
 export default function Capo() {
 	const { capo, setCapo } = useContext(CapoContext);
@@ -42,8 +42,8 @@ export default function Capo() {
 						value={capo}
 						onChange={(e) => {
 							const { value } = e.target;
-							const num = parseInt(value, 10);
-							if (!isNaN(num)) {
+							const num = Number.parseInt(value, 10);
+							if (!Number.isNaN(num)) {
 								HandleSetCapo(num);
 							} else if (value === "") {
 								HandleSetCapo(-1); // No more capo, or invalid

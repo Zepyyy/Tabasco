@@ -1,6 +1,6 @@
-import { TabInfo } from "@/db/db";
-import { db } from "../db";
+import type { TabInfo } from "@/db/db";
 import { NOTES_PER_SECTION } from "@/types/guitar-tab";
+import { db } from "../db";
 
 export async function getLastTabPosition() {
 	const tab = await db.TabInfo.orderBy("position").last();
@@ -16,7 +16,7 @@ export default async function addTab({
 		const lastTabPosition = await getLastTabPosition();
 		const maxPosition =
 			lastTabPosition && lastTabPosition !== undefined
-				? (parseInt(lastTabPosition as string) + 1).toString()
+				? (Number.parseInt(lastTabPosition as string) + 1).toString()
 				: "0";
 
 		await db.TabInfo.add({

@@ -1,6 +1,6 @@
-import addTab from "./AddTab";
-import { TabInfo } from "../db";
 import { DEFAULT_NOTE, NOTES_PER_SECTION, STRINGS } from "@/types/guitar-tab";
+import { TabInfo } from "../db";
+import addTab from "./AddTab";
 
 export async function ImportTabs(tabData: Partial<TabInfo>) {
 	try {

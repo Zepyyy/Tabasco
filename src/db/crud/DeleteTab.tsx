@@ -39,18 +39,21 @@ export default async function deleteTabById(id: number) {
 		let targetPosition = "0"; // Default to first tab
 
 		if (deletedPosition) {
-			const deletedPosNum = parseInt(deletedPosition);
+			const deletedPosNum = Number.parseInt(deletedPosition);
 
 			// Try to find a tab with position less than the deleted one
 			const previousTab = remainingTabs
-				.filter((tab) => tab.position && parseInt(tab.position) < deletedPosNum)
+				.filter(
+					(tab) =>
+						tab.position && Number.parseInt(tab.position) < deletedPosNum,
+				)
 				.sort((a, b) => {
-					const posA = a.position ? parseInt(a.position) : 0;
-					const posB = b.position ? parseInt(b.position) : 0;
+					const posA = a.position ? Number.parseInt(a.position) : 0;
+					const posB = b.position ? Number.parseInt(b.position) : 0;
 					return posB - posA;
 				})[0];
 
-			if (previousTab && previousTab.position) {
+			if (previousTab?.position) {
 				targetPosition = previousTab.position;
 			} else {
 				// No previous tab, go to the first remaining tab
