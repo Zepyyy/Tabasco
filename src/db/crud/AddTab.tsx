@@ -3,8 +3,9 @@ import { NOTES_PER_SECTION } from "@/types/guitar-tab";
 import { db } from "../db";
 
 export async function getLastTabPosition() {
-	const tab = await db.TabInfo.orderBy("position").last();
-	return tab?.position;
+	// const tab = await db.TabInfo.orderBy("position").last();
+	const count = await db.TabInfo.count();
+	return count;
 }
 
 export default async function addTab({
@@ -14,10 +15,8 @@ export default async function addTab({
 }: Partial<TabInfo>) {
 	try {
 		const lastTabPosition = await getLastTabPosition();
-		const maxPosition =
-			lastTabPosition && lastTabPosition !== undefined
-				? (Number.parseInt(lastTabPosition as string) + 1).toString()
-				: "0";
+		console.log(lastTabPosition);
+		const maxPosition = lastTabPosition ? lastTabPosition : 0;
 
 		await db.TabInfo.add({
 			tabName: tabName || "Unnamed",

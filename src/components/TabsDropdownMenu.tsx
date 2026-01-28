@@ -1,10 +1,20 @@
 import { ChevronUp, Plus } from "lucide-react";
 import { useContext, useState } from "react";
 import { NavLink } from "react-router";
-import { useTabOperations } from "@/hooks/useTabOperations";
-import { TabsContext } from "@/contexts/TabsContext";
 import { NameContext } from "@/contexts/NameContext";
+import { TabsContext } from "@/contexts/TabsContext";
 import { TabInfo } from "@/db/db";
+import { useTabOperations } from "@/hooks/useTabOperations";
+import {
+	AlertDialog,
+	AlertDialogAction,
+	AlertDialogCancel,
+	AlertDialogContent,
+	AlertDialogDescription,
+	AlertDialogFooter,
+	AlertDialogHeader,
+	AlertDialogTitle,
+} from "./ui/alert-dialog";
 import {
 	DropdownMenu,
 	DropdownMenuContent,
@@ -17,16 +27,6 @@ import {
 	DropdownMenuSubTrigger,
 	DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
-import {
-	AlertDialog,
-	AlertDialogAction,
-	AlertDialogCancel,
-	AlertDialogContent,
-	AlertDialogDescription,
-	AlertDialogFooter,
-	AlertDialogHeader,
-	AlertDialogTitle,
-} from "./ui/alert-dialog";
 
 // Reusable component for the rename input
 const RenameInput = ({
@@ -59,11 +59,13 @@ const RenameInput = ({
 const SheetActionsMenu = ({
 	position,
 	onRename,
+	onDuplicate,
 	onMoveDown,
 	onDelete,
 }: {
 	position: string;
 	onRename: () => void;
+	onDuplicate: () => void;
 	onMoveDown: () => void;
 	onDelete: () => void;
 }) => (
@@ -77,6 +79,7 @@ const SheetActionsMenu = ({
 		</DropdownMenuItem>
 		<DropdownMenuItem
 			className="group flex h-8 select-none items-center text-tab outline-hidden data-disabled:pointer-events-none focus:bg-foreground/10"
+			onClick={onDuplicate}
 			key={`Duplicate-${position}`}
 		>
 			Duplicate
@@ -106,8 +109,13 @@ export default function TabsDropdownMenu() {
 		id: number;
 		name: string;
 	} | null>(null);
-	const { handleAddTab, handleRename, handleMove, handleDelete } =
-		useTabOperations();
+	const {
+		handleAddTab,
+		handleRename,
+		handleDuplicate,
+		handleMove,
+		handleDelete,
+	} = useTabOperations();
 
 	const [isDialogOpen, setIsDialogOpen] = useState(false);
 	const [concernedTab, setConcernedTab] = useState<TabInfo | null>(null);
@@ -183,7 +191,9 @@ export default function TabsDropdownMenu() {
 									>
 										<DropdownMenuSub key={tab.id}>
 											<DropdownMenuSubTrigger className="group relative flex h-8 select-none items-center pr-2 outline-hidden data-disabled:pointer-events-none my-1 last:my-0 gap-9 text-2xl data-[state=open]:bg-foreground/10 focus:bg-foreground/10 font-normal">
-												<span className=" p-2">{tab.tabName || "Unnamed"}</span>
+												<span className=" p-2">
+													{tab.position} - {tab.tabName || "Unnamed"}
+												</span>
 												<div className="ml-auto group-data-highlighted:text-tab/50"></div>
 											</DropdownMenuSubTrigger>
 											<DropdownMenuPortal>
@@ -198,6 +208,13 @@ export default function TabsDropdownMenu() {
 															setEditingTab({
 																id: tab.id,
 																name: tab.tabName,
+															});
+														}}
+														onDuplicate={() => {
+															handleDuplicate({
+																position: tab.position,
+																name: tab.tabName,
+																capo: tab.capo,
 															});
 														}}
 														onMoveDown={() => {

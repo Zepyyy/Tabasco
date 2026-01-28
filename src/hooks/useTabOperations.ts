@@ -3,6 +3,7 @@ import { useNavigate } from "react-router";
 import { TabsContext } from "@/contexts/TabsContext";
 import addTab from "@/db/crud/AddTab";
 import deleteTabById from "@/db/crud/DeleteTab";
+import { getTabsByPosition } from "@/db/crud/GetTab";
 import updateTabNameById, { updateTabPositionById } from "@/db/crud/UpdateTab";
 import { TabInfo } from "@/db/db";
 
@@ -69,10 +70,25 @@ export const useTabOperations = () => {
 		addTab({} as TabInfo);
 	};
 
+	const handleDuplicate = async (props: {
+		name: string;
+		position: string;
+		capo: number;
+	}) => {
+		const tabs = await getTabsByPosition(props.position);
+
+		addTab({
+			tabName: `${props.name} (copy)`,
+			tabs: tabs || [],
+			capo: props.capo,
+		});
+	};
+
 	return {
 		handleRename,
 		handleMove,
 		handleDelete,
 		handleAddTab,
+		handleDuplicate,
 	};
 };
