@@ -29,7 +29,7 @@ export interface TabOperations {
 	handleNewLineClick: (newTab: Tab) => void;
 	handleRemoveSection: (section: { data: Tab; startNoteIndex: number }) => void;
 	handleExport: (id: string) => Promise<void>;
-	handleImport: (jsonData: Partial<TabInfo>) => Promise<string | null>;
+	handleImport: (jsonData: Partial<TabInfo>) => Promise<number | null>;
 	handleSwitchNotes: (
 		NoteOnePosition: NoteCellPosition,
 		NoteTwoPosition: NoteCellPosition,
