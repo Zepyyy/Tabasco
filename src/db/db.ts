@@ -6,14 +6,7 @@ import {
 	NOTES_PER_SECTION,
 	STRINGS,
 } from "@/constants/guitar-tab";
-
-interface TabInfo {
-	id: number;
-	tabName: string;
-	tabs: string[][];
-	position: string;
-	capo: number;
-}
+import { TabInfo } from "@/types/guitar-tab";
 
 const db = new Dexie("TabInfo") as Dexie & {
 	TabInfo: EntityTable<
@@ -44,5 +37,4 @@ db.on("populate", function () {
 	});
 });
 
-export type { TabInfo };
 export { db };

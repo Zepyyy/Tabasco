@@ -1,5 +1,5 @@
 import { NOTES_PER_SECTION } from "@/constants/guitar-tab";
-import type { TabInfo } from "@/db/db";
+import { TabInfo } from "@/types/guitar-tab";
 import { db } from "../db";
 
 export async function getLastTabPosition() {

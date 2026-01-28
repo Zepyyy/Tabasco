@@ -3,8 +3,9 @@ import { ChevronUp, Plus } from "lucide-react";
 import { useContext, useState } from "react";
 import { NavLink } from "react-router";
 import { NameContext } from "@/contexts/NameContext";
-import { db, TabInfo } from "@/db/db";
+import { db } from "@/db/db";
 import { useTabOperations } from "@/hooks/useTabOperations";
+import { TabInfo } from "@/types/guitar-tab";
 import {
 	AlertDialog,
 	AlertDialogAction,
@@ -105,6 +106,7 @@ const SheetActionsMenu = ({
 export default function TabsDropdownMenu() {
 	const { tabName, setTabName } = useContext(NameContext);
 	const tabs = useLiveQuery(() => db.TabInfo.toArray()) || [];
+
 	const [editingTab, setEditingTab] = useState<{
 		id: number;
 		name: string;

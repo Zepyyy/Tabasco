@@ -3,7 +3,7 @@ import {
 	NOTES_PER_SECTION,
 	STRINGS,
 } from "@/constants/guitar-tab";
-import { TabInfo } from "../db";
+import { TabInfo } from "@/types/guitar-tab";
 import addTab from "./AddTab";
 
 export async function ImportTabs(tabData: Partial<TabInfo>) {

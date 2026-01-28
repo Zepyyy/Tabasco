@@ -3,7 +3,6 @@ import {
 	MUTED_STRING,
 	OPEN_STRING,
 } from "@/constants/guitar-tab";
-import { TabInfo } from "@/db/db";
 
 // Types
 export type NoteValue =
@@ -19,6 +18,14 @@ export interface TabState {
 	tab: Tab;
 	isLoading: boolean;
 	error: Error | null;
+}
+
+export interface TabInfo {
+	id: number;
+	tabName: string;
+	tabs: string[][];
+	position: string;
+	capo: number;
 }
 
 export interface TabOperations {
