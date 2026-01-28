@@ -1,10 +1,10 @@
 import { useContext, useEffect } from "react";
 import { useParams } from "react-router";
+import { MAX_FRET } from "@/constants/guitar-tab";
 import { CapoContext } from "@/contexts/CapoContext";
 import { getCapoByPosition } from "@/db/crud/GetTab";
 import { updateTabCapoByPosition } from "@/db/crud/UpdateTab";
 import { useLock } from "@/hooks/useLock";
-import { MAX_FRET } from "@/types/guitar-tab";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 

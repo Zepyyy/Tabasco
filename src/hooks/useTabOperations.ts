@@ -1,14 +1,13 @@
-import { useContext } from "react";
+import { useLiveQuery } from "dexie-react-hooks";
 import { useNavigate } from "react-router";
-import { TabsContext } from "@/contexts/TabsContext";
 import addTab from "@/db/crud/AddTab";
 import deleteTabById from "@/db/crud/DeleteTab";
 import { getTabsByPosition } from "@/db/crud/GetTab";
 import updateTabNameById, { updateTabPositionById } from "@/db/crud/UpdateTab";
-import { TabInfo } from "@/db/db";
+import { db, TabInfo } from "@/db/db";
 
 export const useTabOperations = () => {
-	const tabs = useContext(TabsContext);
+	const tabs = useLiveQuery(() => db.TabInfo.toArray()) || [];
 	const navigate = useNavigate();
 
 	const handleRename = (id: number, newName: string) => {
@@ -28,7 +27,7 @@ export const useTabOperations = () => {
 			return;
 		}
 
-		tabs.forEach((tab: TabInfo) => {
+		tabs?.forEach((tab: TabInfo) => {
 			console.log("tabid: ", tab.id);
 			console.log("tabposition :", tab.position);
 			// If a tab is present at the position, use this tab's position

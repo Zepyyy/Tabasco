@@ -1,8 +1,8 @@
-import { getFullTabByPosition } from "./GetTab";
+import { getTabInfoByPosition } from "./GetTab";
 
 export async function exportTabs(position: string) {
 	try {
-		const fullTabs = await getFullTabByPosition(position);
+		const fullTabs = await getTabInfoByPosition(position);
 
 		if (!fullTabs) {
 			console.log(

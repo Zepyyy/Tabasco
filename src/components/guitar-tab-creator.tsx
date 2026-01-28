@@ -1,15 +1,12 @@
 "use client";
 
+import { Trash } from "lucide-react";
+import { useEffect, useState } from "react";
+import { NOTES_PER_SECTION } from "@/constants/guitar-tab";
 // Import necessary hooks and types
 import { useGuitarTab } from "@/hooks/useGuitarTab";
-import {
-	NoteCellProps,
-	StringRowProps,
-	NOTES_PER_SECTION,
-} from "@/types/guitar-tab";
+import { NoteCellProps, StringRowProps } from "@/types/guitar-tab";
 import { Button } from "./ui/button";
-import { useState, useEffect } from "react";
-import { Trash } from "lucide-react";
 
 /**
  * NoteCell component - Renders an individual note cell in the guitar tab

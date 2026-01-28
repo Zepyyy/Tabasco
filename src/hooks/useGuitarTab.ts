@@ -1,6 +1,14 @@
 import download from "downloadjs";
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router";
+import {
+	DEFAULT_NOTE,
+	MAX_FRET,
+	MUTED_STRING,
+	NOTES_PER_SECTION,
+	OPEN_STRING,
+	STRINGS,
+} from "@/constants/guitar-tab";
 import { exportTabs } from "@/db/crud/Export";
 import { getTabsByPosition } from "@/db/crud/GetTab";
 import { ImportTabs } from "@/db/crud/Import";
@@ -10,17 +18,11 @@ import {
 } from "@/db/crud/UpdateTab";
 import { TabInfo } from "@/db/db";
 import { useLock } from "@/hooks/useLock";
-import {
-	DEFAULT_NOTE,
-	MAX_FRET,
-	MUTED_STRING,
-	NOTES_PER_SECTION,
+import type {
 	NoteCellPosition,
-	OPEN_STRING,
-	STRINGS,
-	type Tab,
-	type TabOperations,
-	type TabState,
+	Tab,
+	TabOperations,
+	TabState,
 } from "@/types/guitar-tab";
 
 export const useGuitarTab = (): TabState & TabOperations => {

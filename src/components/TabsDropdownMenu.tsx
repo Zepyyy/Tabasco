@@ -1,9 +1,9 @@
+import { useLiveQuery } from "dexie-react-hooks";
 import { ChevronUp, Plus } from "lucide-react";
 import { useContext, useState } from "react";
 import { NavLink } from "react-router";
 import { NameContext } from "@/contexts/NameContext";
-import { TabsContext } from "@/contexts/TabsContext";
-import { TabInfo } from "@/db/db";
+import { db, TabInfo } from "@/db/db";
 import { useTabOperations } from "@/hooks/useTabOperations";
 import {
 	AlertDialog,
@@ -89,7 +89,7 @@ const SheetActionsMenu = ({
 			onClick={onMoveDown}
 			key={`Move-${position}`}
 		>
-			Move Down
+			Move Down (broken)
 		</DropdownMenuItem>
 		<DropdownMenuSeparator className="bg-tab m-0" />
 		<DropdownMenuItem
@@ -104,7 +104,7 @@ const SheetActionsMenu = ({
 
 export default function TabsDropdownMenu() {
 	const { tabName, setTabName } = useContext(NameContext);
-	const tabs = useContext(TabsContext);
+	const tabs = useLiveQuery(() => db.TabInfo.toArray()) || [];
 	const [editingTab, setEditingTab] = useState<{
 		id: number;
 		name: string;
@@ -113,7 +113,7 @@ export default function TabsDropdownMenu() {
 		handleAddTab,
 		handleRename,
 		handleDuplicate,
-		handleMove,
+		// handleMove,
 		handleDelete,
 	} = useTabOperations();
 
@@ -218,7 +218,8 @@ export default function TabsDropdownMenu() {
 															});
 														}}
 														onMoveDown={() => {
-															handleMove(tab.id, tab.position);
+															// handleMove(tab.id, tab.position);
+															console.log("broken, wip");
 														}}
 														onDelete={() => {
 															setIsDialogOpen(true);

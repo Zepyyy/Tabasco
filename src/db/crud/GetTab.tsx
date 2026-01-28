@@ -108,7 +108,7 @@ export async function getTabsByPosition(position: string) {
 		return "";
 	}
 }
-export async function getFullTabByPosition(position: string) {
+export async function getTabInfoByPosition(position: string) {
 	try {
 		const tab = await db.TabInfo.where({ position: position }).first();
 		if (!tab) {

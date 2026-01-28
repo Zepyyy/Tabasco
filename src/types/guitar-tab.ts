@@ -1,12 +1,10 @@
+import {
+	DEFAULT_NOTE,
+	MUTED_STRING,
+	OPEN_STRING,
+} from "@/constants/guitar-tab";
 import { TabInfo } from "@/db/db";
 
-// Constants
-export const STRINGS = 6;
-export const DEFAULT_NOTE = "-";
-export const OPEN_STRING = "0";
-export const MUTED_STRING = "X";
-export const MAX_FRET = 24;
-export const NOTES_PER_SECTION = 54;
 // Types
 export type NoteValue =
 	| typeof DEFAULT_NOTE
