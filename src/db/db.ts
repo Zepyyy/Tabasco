@@ -1,6 +1,11 @@
 // db.ts
-import { DEFAULT_NOTE, NOTES_PER_SECTION, STRINGS } from "@/types/guitar-tab";
+
 import Dexie, { type EntityTable } from "dexie";
+import {
+	DEFAULT_NOTE,
+	NOTES_PER_SECTION,
+	STRINGS,
+} from "@/constants/guitar-tab";
 
 interface TabInfo {
 	id: number;

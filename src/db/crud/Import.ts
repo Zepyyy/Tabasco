@@ -1,4 +1,8 @@
-import { DEFAULT_NOTE, NOTES_PER_SECTION, STRINGS } from "@/types/guitar-tab";
+import {
+	DEFAULT_NOTE,
+	NOTES_PER_SECTION,
+	STRINGS,
+} from "@/constants/guitar-tab";
 import { TabInfo } from "../db";
 import addTab from "./AddTab";
 

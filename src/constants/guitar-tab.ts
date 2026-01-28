@@ -1,4 +1,3 @@
-
 // Constants
 export const STRINGS = 6;
 export const DEFAULT_NOTE = "-";
