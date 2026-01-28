@@ -90,7 +90,7 @@ const SheetActionsMenu = ({
 			onClick={onMoveDown}
 			key={`Move-${position}`}
 		>
-			Move Down (broken)
+			Move Down
 		</DropdownMenuItem>
 		<DropdownMenuSeparator className="bg-tab m-0" />
 		<DropdownMenuItem
