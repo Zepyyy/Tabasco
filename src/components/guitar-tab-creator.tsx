@@ -3,7 +3,6 @@
 import { Trash } from "lucide-react";
 import { useEffect, useState } from "react";
 import { NOTES_PER_SECTION } from "@/constants/guitar-tab";
-// Import necessary hooks and types
 import { useGuitarTab } from "@/hooks/useGuitarTab";
 import { NoteCellProps, StringRowProps } from "@/types/guitar-tab";
 import { Button } from "./ui/button";
@@ -126,7 +125,6 @@ export default function GuitarTabCreator() {
 	} = useGuitarTab();
 
 	// Constants and state for pagination
-	// const NOTES_PER_SECTION = 54; // Number of notes to display per section
 	const [sectionsCount, setSectionsCount] = useState(1);
 	const [noteOnePositon, setNoteOnePosition] = useState({
 		position: -1,
@@ -136,7 +134,7 @@ export default function GuitarTabCreator() {
 	// Calculate number of sections needed based on tab length
 	useEffect(() => {
 		if (tab.length > 0 && tab[0].length > 0) {
-			setSectionsCount(Math.ceil(tab[0].length / NOTES_PER_SECTION));
+			setSectionsCount(Math.ceil(tab[0].length / NOTES_PER_SECTION || 1));
 		}
 	}, [tab]);
 

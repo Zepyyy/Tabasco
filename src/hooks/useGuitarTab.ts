@@ -145,11 +145,7 @@ export const useGuitarTab = (): TabState & TabOperations => {
 				);
 			}
 		} else {
-			console.log(
-				"%cDEBUG:%c You can't delete a section if it's the only one %c",
-				"background: #2c3e50; color: white; padding: 2px 5px;",
-				"color: #22dce6;",
-			);
+			console.error("Cannot remove section: tab has only one section");
 		}
 	};
 
@@ -204,11 +200,6 @@ export const useGuitarTab = (): TabState & TabOperations => {
 	};
 
 	const handleImport = async (jsonData: Partial<TabInfo>) => {
-		console.log(
-			"%cDEBUG:%c Importing tab data",
-			"background: #2c3e50; color: white; padding: 2px 5px;",
-			jsonData,
-		);
 		setError(null);
 
 		try {
@@ -260,13 +251,6 @@ export const useGuitarTab = (): TabState & TabOperations => {
 			handleLock();
 			return;
 		}
-		console.log(
-			tabPositionFromParam,
-			",",
-			NoteOnePosition,
-			",",
-			NoteTwoPosition,
-		);
 		if (NoteOnePosition.position == -1 || NoteOnePosition.string == -1) {
 			return;
 		}
@@ -277,13 +261,12 @@ export const useGuitarTab = (): TabState & TabOperations => {
 			return;
 		}
 
-		const result = await switchTwoNotesByPosition(
+		await switchTwoNotesByPosition(
 			tabPositionFromParam || "0",
 			NoteOnePosition,
 			NoteTwoPosition,
 		);
 		navigate(`/sheet/${tabPositionFromParam}`);
-		console.log(result);
 	};
 
 	return {
