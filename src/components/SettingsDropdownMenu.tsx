@@ -1,16 +1,8 @@
-import {
-	Eraser,
-	FolderInput,
-	FolderOutput,
-	Moon,
-	Settings,
-	Sun,
-} from "lucide-react";
+import { Eraser, FolderInput, Settings } from "lucide-react";
 import { ChangeEvent, useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router";
 import { clearTab } from "@/db/crud/ClearTab";
 import { useGuitarTab } from "@/hooks/useGuitarTab";
-import { useTheme } from "./theme-provider";
 import {
 	AlertDialog,
 	AlertDialogAction,
@@ -31,14 +23,14 @@ import {
 import { Input } from "./ui/input";
 
 export default function SettingsDropdownMenu() {
-	const { theme, setTheme } = useTheme();
+	// const { theme, setTheme } = useTheme();
 	const { tabPositionFromParam } = useParams<{
 		tabPositionFromParam: string;
 	}>();
 	const navigate = useNavigate();
 	const [isDialogOpen, setIsDialogOpen] = useState(false);
 	const [displayError, setDisplayError] = useState<Error | null>(null);
-	const { handleImport, handleExport, error, isLoading } = useGuitarTab();
+	const { handleImport, error, isLoading } = useGuitarTab();
 	const errorTimerRef = useRef<number | null>(null);
 
 	// Function to set error with auto-dismiss
@@ -105,7 +97,7 @@ export default function SettingsDropdownMenu() {
 					</Button>
 				</DropdownMenuTrigger>
 				<DropdownMenuContent className="flex flex-col p-0 mr-2 bg-background/80 rounded-lg shadow-lg z-40 font-serif-text text-xl w-52">
-					<DropdownMenuItem
+					{/*<DropdownMenuItem
 						className="[&_svg]:size-6 cursor-pointer bg-background text-tab focus:bg-foreground/10 focus:text-tab outline-none text-xl"
 						onClick={() => setTheme(theme === "light" ? "dark" : "light")}
 					>
@@ -113,7 +105,7 @@ export default function SettingsDropdownMenu() {
 							{theme === "light" ? <Moon /> : <Sun />}
 							<span>Toggle theme</span>
 						</div>
-					</DropdownMenuItem>
+					</DropdownMenuItem>*/}
 
 					<DropdownMenuItem
 						asChild
@@ -132,15 +124,7 @@ export default function SettingsDropdownMenu() {
 							</div>
 						</Button>
 					</DropdownMenuItem>
-					<DropdownMenuItem
-						className="[&_svg]:size-6 cursor-pointer bg-background text-tab focus:bg-foreground/10 focus:text-tab outline-none text-xl"
-						onClick={() => handleExport(tabPositionFromParam || "0")}
-					>
-						<div className="flex flex-row items-center w-full gap-2">
-							<FolderOutput />
-							<span>Export</span>
-						</div>
-					</DropdownMenuItem>
+
 					<DropdownMenuItem
 						className="[&_svg]:size-6 cursor-pointer bg-background text-destructive-foreground focus:bg-destructive focus:text-destructive-foreground outline-none text-xl"
 						onClick={() => setIsDialogOpen(true)}

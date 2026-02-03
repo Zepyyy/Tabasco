@@ -1,9 +1,9 @@
 import { useLiveQuery } from "dexie-react-hooks";
 import { ChevronUp, Plus } from "lucide-react";
-import { useContext, useState } from "react";
+import { useState } from "react";
 import { NavLink } from "react-router";
-import { NameContext } from "@/contexts/NameContext";
 import { db } from "@/db/db";
+import { useTabCreation } from "@/hooks/useTabCreation";
 import { useTabOperations } from "@/hooks/useTabOperations";
 import { TabInfo } from "@/types/guitar-tab";
 import {
@@ -104,8 +104,8 @@ const SheetActionsMenu = ({
 );
 
 export default function TabsDropdownMenu() {
-	const { tabName, setTabName } = useContext(NameContext);
 	const tabs = useLiveQuery(() => db.TabInfo.toArray()) || [];
+	const { tabName, handleRename } = useTabOperations();
 
 	tabs.sort(
 		(a, b) => Number.parseInt(a.position) - Number.parseInt(b.position),
@@ -115,23 +115,11 @@ export default function TabsDropdownMenu() {
 		id: number;
 		name: string;
 	} | null>(null);
-	const {
-		handleAddTab,
-		handleRename,
-		handleDuplicate,
-		handleMove,
-		handleDelete,
-	} = useTabOperations();
+	const { handleAddTab, handleDuplicate } = useTabCreation();
+	const { handleMove, handleDelete } = useTabOperations();
 
 	const [isDialogOpen, setIsDialogOpen] = useState(false);
 	const [concernedTab, setConcernedTab] = useState<TabInfo | null>(null);
-
-	const handleRenameSubmit = (id: number, newName: string) => {
-		setTabName(newName);
-		handleRename(id, newName);
-		setEditingTab(null);
-	};
-
 	const [upPosition, setUpPosition] = useState(false);
 
 	return (
@@ -139,7 +127,7 @@ export default function TabsDropdownMenu() {
 			{editingTab ? (
 				<RenameInput
 					initialValue={editingTab.name}
-					onRename={(newName) => handleRenameSubmit(editingTab.id, newName)}
+					onRename={(newName) => handleRename(newName)}
 					onCancel={() => setEditingTab(null)}
 				/>
 			) : (
@@ -147,16 +135,17 @@ export default function TabsDropdownMenu() {
 					<DropdownMenu onOpenChange={() => setUpPosition(!upPosition)}>
 						<DropdownMenuTrigger
 							asChild
-							className="appearance-none border-none inline-flex items-center justify-center rounded-md text-tab transition-all text-xl font-serif-text"
+							className="appearance-none border-none inline-flex items-center justify-center rounded-md text-tab text-xl font-serif-text w-full h-full m-0 p-0"
 						>
 							<button
 								aria-label="Customise options"
-								className="flex gap-1 duration-75 transition-transform items-end"
+								className="flex gap-1 items-center"
 							>
 								{tabName || "Unnamed"}
 								<ChevronUp
-									strokeWidth={1.5}
-									className={`transition-transform duration-200 text-tab ${
+									size={16}
+									strokeWidth={2}
+									className={`transition-transform duration-200 text-tab pb-0.5 ${
 										upPosition ? "rotate-0" : "rotate-180"
 									}`}
 								/>
@@ -164,7 +153,7 @@ export default function TabsDropdownMenu() {
 						</DropdownMenuTrigger>
 						<DropdownMenuPortal>
 							<DropdownMenuContent
-								className="flex flex-col p-0 m-0 backdrop-blur-xs shadow-lg ml-10 z-40 font-serif-text text-2xl"
+								className="flex flex-col p-0 m-0 shadow-lg ml-10 z-40 font-serif-text text-2xl"
 								sideOffset={4}
 							>
 								<DropdownMenuLabel>
@@ -223,7 +212,6 @@ export default function TabsDropdownMenu() {
 														}}
 														onMoveDown={() => {
 															handleMove(tab.id, tab.position);
-															// console.log("broken, wip");
 														}}
 														onDelete={() => {
 															setIsDialogOpen(true);

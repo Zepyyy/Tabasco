@@ -9,6 +9,7 @@ import {
 	OPEN_STRING,
 	STRINGS,
 } from "@/constants/guitar-tab";
+import { useLock } from "@/contexts/LockContext";
 import { exportTabs } from "@/db/crud/Export";
 import { getTabsByPosition } from "@/db/crud/GetTab";
 import { ImportTabs } from "@/db/crud/Import";
@@ -16,7 +17,6 @@ import {
 	switchTwoNotesByPosition,
 	updateCurrentTabs,
 } from "@/db/crud/UpdateTab";
-import { useLock } from "@/hooks/useLock";
 import type {
 	NoteCellPosition,
 	Tab,
@@ -38,15 +38,14 @@ export const useGuitarTab = (): TabState & TabOperations => {
 	);
 	const [isLoading, setIsLoading] = useState(false);
 	const [error, setError] = useState<Error | null>(null);
-
-	const { handleLock, isLocked } = useLock();
+	const { locked, triggerLockFeedback } = useLock();
 
 	const handleCellClick = async (
 		string: number,
 		note: number,
 	): Promise<void> => {
-		if (isLocked) {
-			handleLock();
+		if (locked) {
+			triggerLockFeedback();
 			return;
 		}
 		try {
@@ -69,8 +68,8 @@ export const useGuitarTab = (): TabState & TabOperations => {
 	};
 
 	const handleNewLineClick = () => {
-		if (isLocked) {
-			handleLock();
+		if (locked) {
+			triggerLockFeedback();
 			return;
 		}
 		try {
@@ -91,8 +90,8 @@ export const useGuitarTab = (): TabState & TabOperations => {
 	};
 
 	const incrementNotesNumber = (string: number, note: number): void => {
-		if (isLocked) {
-			handleLock();
+		if (locked) {
+			triggerLockFeedback();
 			return;
 		}
 		try {
@@ -125,8 +124,8 @@ export const useGuitarTab = (): TabState & TabOperations => {
 		data: Tab;
 		startNoteIndex: number;
 	}): void => {
-		if (isLocked) {
-			handleLock();
+		if (locked) {
+			triggerLockFeedback();
 			return;
 		}
 		if (tab[0].length !== NOTES_PER_SECTION) {
@@ -247,8 +246,8 @@ export const useGuitarTab = (): TabState & TabOperations => {
 		NoteOnePosition: NoteCellPosition,
 		NoteTwoPosition: NoteCellPosition,
 	) => {
-		if (isLocked) {
-			handleLock();
+		if (locked) {
+			triggerLockFeedback();
 			return;
 		}
 		if (NoteOnePosition.position == -1 || NoteOnePosition.string == -1) {

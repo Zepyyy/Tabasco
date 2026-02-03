@@ -1,18 +1,38 @@
 import { useLiveQuery } from "dexie-react-hooks";
-import { useNavigate } from "react-router";
-import addTab from "@/db/crud/AddTab";
+import { useNavigate, useParams } from "react-router";
+import { useLock } from "@/contexts/LockContext";
 import deleteTabById from "@/db/crud/DeleteTab";
-import { getTabsByPosition } from "@/db/crud/GetTab";
 import updateTabNameById, { updateTabPositionById } from "@/db/crud/UpdateTab";
 import { db } from "@/db/db";
 import { TabInfo } from "@/types/guitar-tab";
 
-export const useTabOperations = () => {
-	const tabs = useLiveQuery(() => db.TabInfo.toArray()) || [];
+export const useTabOperations = (tabs: TabInfo[] = []) => {
+	const { locked, triggerLockFeedback } = useLock();
 	const navigate = useNavigate();
+	const { tabPositionFromParam } = useParams<{
+		tabPositionFromParam: string;
+	}>();
 
-	const handleRename = (id: number, newName: string) => {
-		updateTabNameById(id, newName);
+	// Use useLiveQuery to reactively get the current tab
+	const currentTab = useLiveQuery(async () => {
+		if (tabPositionFromParam) {
+			return await db.TabInfo.where("position")
+				.equals(tabPositionFromParam)
+				.first();
+		}
+		return null;
+	}, [tabPositionFromParam]);
+
+	const tabName = currentTab?.tabName || "";
+
+	const handleRename = (newName: string) => {
+		if (locked) {
+			triggerLockFeedback();
+			return;
+		}
+		if (tabPositionFromParam && currentTab?.id) {
+			updateTabNameById(currentTab.id, newName);
+		}
 	};
 
 	const handleMove = (currentId: number, currentPosition: string) => {
@@ -66,29 +86,10 @@ export const useTabOperations = () => {
 		}
 	};
 
-	const handleAddTab = () => {
-		addTab({} as TabInfo);
-	};
-
-	const handleDuplicate = async (props: {
-		name: string;
-		position: string;
-		capo: number;
-	}) => {
-		const tabs = await getTabsByPosition(props.position);
-
-		addTab({
-			tabName: `${props.name} (copy)`,
-			tabs: tabs || [],
-			capo: props.capo,
-		});
-	};
-
 	return {
+		tabName,
 		handleRename,
 		handleMove,
 		handleDelete,
-		handleAddTab,
-		handleDuplicate,
 	};
 };

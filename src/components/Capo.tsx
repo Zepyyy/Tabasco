@@ -1,73 +1,31 @@
-import { useContext, useEffect } from "react";
-import { useParams } from "react-router";
-import { MAX_FRET } from "@/constants/guitar-tab";
-import { CapoContext } from "@/contexts/CapoContext";
-import { getCapoByPosition } from "@/db/crud/GetTab";
-import { updateTabCapoByPosition } from "@/db/crud/UpdateTab";
-import { useLock } from "@/hooks/useLock";
-import { Button } from "./ui/button";
+import { useCapo } from "@/hooks/useCapo";
 import { Input } from "./ui/input";
 
 export default function Capo() {
-	const { capo, setCapo } = useContext(CapoContext);
-	const { handleLock, isLocked } = useLock();
+	const { capo, HandleSetCapos } = useCapo();
 
-	const { tabPositionFromParam } = useParams<{
-		tabPositionFromParam: string;
-	}>();
-	function HandleSetCapo(capo: number) {
-		if (isLocked) {
-			handleLock();
-			return;
+	const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+		const { value } = e.target;
+		const num = Number.parseInt(value, 10);
+		if (!Number.isNaN(num)) {
+			HandleSetCapos(num);
+		} else if (value === "") {
+			HandleSetCapos(-1); // No more capo, or invalid
 		}
-		if (capo >= -1 && capo <= MAX_FRET && !isLocked) {
-			setCapo(capo);
-			updateTabCapoByPosition(tabPositionFromParam || "0", capo);
-		}
-	}
-
-	useEffect(() => {
-		if (tabPositionFromParam) {
-			getCapoByPosition(tabPositionFromParam).then((capo) => setCapo(capo));
-		}
-	}, [capo, setCapo, tabPositionFromParam]);
+	};
 
 	return (
-		<div className="flex flex-row gap-2 justify-evenly items-center">
-			{capo != -1 && capo != undefined ? (
-				<div className="flex flex-row gap-2 text-tab font-serif-title antialiased md:text-3xl text-2xl sm:text-2xl w-full">
-					<p className="text-tab md:text-3xl text-2xl sm:text-2xl">Capo:</p>
-					<Input
-						type="text"
-						value={capo}
-						onChange={(e) => {
-							const { value } = e.target;
-							const num = Number.parseInt(value, 10);
-							if (!Number.isNaN(num)) {
-								HandleSetCapo(num);
-							} else if (value === "") {
-								HandleSetCapo(-1); // No more capo, or invalid
-							}
-						}}
-						placeholder="Enter capo position"
-						className="font-semibold border-none shadow-none focus-visible:ring-0 py-0 h-fit w-full md:text-3xl text-2xl sm:text-2xl"
-					/>
-				</div>
-			) : (
-				<div className="flex flex-row gap-2 font-serif-title antialiased md:text-3xl text-2xl sm:text-2xl w-full">
-					<Button
-						variant="transparent"
-						size="default"
-						className="font-semibold border-none shadow-none focus-visible:ring-0 py-0 h-fit w-1/4 md:text-3xl text-2xl sm:text-2xl"
-						onClick={() => {
-							HandleSetCapo(1);
-							console.log("Capo set to 1");
-						}}
-					>
-						No capo
-					</Button>
-				</div>
-			)}
+		<div className="flex flex-row justify-end! items-center text-tab font-serif-title antialiased md:text-3xl text-2xl sm:text-2xl w-full gap-2">
+			<p className="flex justify-end! text-tab md:text-3xl text-2xl sm:text-2xl w-full">
+				{capo !== -1 ? "Capo:" : ""}
+			</p>
+			<Input
+				type="text"
+				value={capo === -1 ? "" : capo}
+				onChange={(e) => handleChange(e)}
+				placeholder="Add capo"
+				className="flex font-semibold border-none shadow-none focus-visible:ring-0 py-0 h-fit w-full md:text-3xl text-2xl sm:text-2xl"
+			/>
 		</div>
 	);
 }

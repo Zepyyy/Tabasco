@@ -1,9 +1,12 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-import { createContext } from "react";
+import { createContext, useContext } from "react";
+import { LockContextType } from "@/types/guitar-tab";
 
-export const LockContext = createContext({
-	isLocked: JSON.parse(localStorage.getItem("isLocked") ?? "false"),
-	setIsLocked: (_isLocked: boolean) => {},
-	trigger: false,
-	setTrigger: (_trigger: boolean) => {},
-});
+export const LockContext = createContext<LockContextType | undefined>(
+	undefined,
+);
+
+export function useLock() {
+	const context = useContext(LockContext);
+	if (!context) throw new Error("useLock must be used within LockProvider");
+	return context;
+}

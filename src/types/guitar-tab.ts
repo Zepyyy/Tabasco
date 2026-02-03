@@ -13,6 +13,25 @@ export type NoteValue =
 export type TabString = NoteValue[];
 export type Tab = TabString[];
 
+// Contexts
+export type LockContextType = {
+	locked: boolean;
+	toggleLock: () => void;
+	triggerLockFeedback: () => void;
+	trigger: boolean;
+	showText: boolean;
+};
+
+export type NameContextType = {
+	tabName: string;
+	setTabName: (tabName: string) => void;
+};
+
+export type ThemeContextType = {
+	theme: string;
+	toggleTheme: () => void;
+};
+
 // Interfaces
 export interface TabState {
 	tab: Tab;
