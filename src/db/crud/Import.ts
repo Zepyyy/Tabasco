@@ -19,7 +19,8 @@ export async function ImportTabs(tabData: Partial<TabInfo>) {
 			capo: (tabData.capo as number) || -1,
 		};
 
-		const position = await addTab(importedData as Partial<TabInfo>);		if (!position) {
+		const position = await addTab(importedData as Partial<TabInfo>);
+		if (!position) {
 			throw new Error("Failed to import tab.");
 		}
 		return position;
