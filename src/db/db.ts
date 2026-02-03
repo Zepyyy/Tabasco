@@ -29,9 +29,9 @@ db.on("populate", function () {
 	// Init your DB with some default statuses:
 	db.TabInfo.add({
 		tabName: "Default",
-		tabs: Array(STRINGS)
-			.fill(null)
-			.map(() => Array(NOTES_PER_SECTION).fill(DEFAULT_NOTE)),
+		tabs: Array.from({ length: STRINGS }, () =>
+			Array.from({ length: NOTES_PER_SECTION }, () => DEFAULT_NOTE),
+		),
 		position: "0",
 		capo: -1,
 	});

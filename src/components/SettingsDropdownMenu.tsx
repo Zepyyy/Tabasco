@@ -1,6 +1,6 @@
 import { Eraser, FolderInput, Settings } from "lucide-react";
 import { ChangeEvent, useEffect, useRef, useState } from "react";
-import { useNavigate, useParams } from "react-router";
+import { useNavigate } from "react-router";
 import { clearTab } from "@/db/crud/ClearTab";
 import { useGuitarTab } from "@/hooks/useGuitarTab";
 import {
@@ -21,12 +21,11 @@ import {
 	DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
 import { Input } from "./ui/input";
+import { useCurrentTab } from "@/hooks/useCurrentTab";
 
 export default function SettingsDropdownMenu() {
-	// const { theme, setTheme } = useTheme();
-	const { tabPositionFromParam } = useParams<{
-		tabPositionFromParam: string;
-	}>();
+	const { position } = useCurrentTab();
+
 	const navigate = useNavigate();
 	const [isDialogOpen, setIsDialogOpen] = useState(false);
 	const [displayError, setDisplayError] = useState<Error | null>(null);
@@ -97,16 +96,6 @@ export default function SettingsDropdownMenu() {
 					</Button>
 				</DropdownMenuTrigger>
 				<DropdownMenuContent className="flex flex-col p-0 mr-2 bg-background/80 rounded-lg shadow-lg z-40 font-serif-text text-xl w-52">
-					{/*<DropdownMenuItem
-						className="[&_svg]:size-6 cursor-pointer bg-background text-tab focus:bg-foreground/10 focus:text-tab outline-none text-xl"
-						onClick={() => setTheme(theme === "light" ? "dark" : "light")}
-					>
-						<div className="flex flex-row items-center w-full gap-2">
-							{theme === "light" ? <Moon /> : <Sun />}
-							<span>Toggle theme</span>
-						</div>
-					</DropdownMenuItem>*/}
-
 					<DropdownMenuItem
 						asChild
 						className="[&_svg]:size-6 cursor-pointer bg-background text-tab focus:bg-foreground/10 focus:text-tab outline-none text-xl"
@@ -158,9 +147,9 @@ export default function SettingsDropdownMenu() {
 						<AlertDialogCancel>Cancel</AlertDialogCancel>
 						<AlertDialogAction
 							onClick={async () => {
-								await clearTab(tabPositionFromParam);
+								await clearTab(position);
 								// Force a re-render by navigating to the same route
-								navigate(`/sheet/${tabPositionFromParam}`);
+								navigate(`/sheet/${position}`);
 							}}
 						>
 							Continue

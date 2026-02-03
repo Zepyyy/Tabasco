@@ -1,7 +1,7 @@
 "use client";
 
 import { Trash } from "lucide-react";
-import { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { NOTES_PER_SECTION } from "@/constants/guitar-tab";
 import { useGuitarTab } from "@/hooks/useGuitarTab";
 import { NoteCellProps, StringRowProps } from "@/types/guitar-tab";
@@ -17,41 +17,43 @@ import { Button } from "./ui/button";
  * @param absoluteNoteIndex - The absolute index of the note in the entire tab
  */
 
-const NoteCell = ({
-	note,
-	stringIndex,
-	onIncrement,
-	onToggle,
-	absoluteNoteIndex,
-	handleSwitchNotes,
-	noteOnePosition,
-	setNoteOnePosition,
-}: NoteCellProps) => (
-	<div
-		className="border-r-2 last:border-none w-4 h-4 sm:w-6 sm:h-6 xl:w-8 xl:h-8 flex items-center justify-center cursor-grabbing font-bold text-foreground z-10 sm:text-md xl:text-xl font-serif-text nth-[6n]:border-tab border-tabsubtle data-[value='-']:text-tab/30 data-[value='X']:text-tab/50 select-none"
-		onClick={() => onIncrement(stringIndex, absoluteNoteIndex)}
-		onContextMenu={(e) => {
-			e.preventDefault(); // Prevent default context menu
-			onToggle(stringIndex, absoluteNoteIndex);
-		}}
-		onMouseDownCapture={() => {
-			setNoteOnePosition({
-				string: stringIndex,
-				position: absoluteNoteIndex,
-			});
-		}}
-		onMouseUpCapture={() => {
-			handleSwitchNotes(noteOnePosition, {
-				string: stringIndex,
-				position: absoluteNoteIndex,
-			});
-			setNoteOnePosition({ string: -1, position: -1 });
-		}}
-		id="note"
-		data-value={note}
-	>
-		{note}
-	</div>
+const NoteCell = React.memo(
+	({
+		note,
+		stringIndex,
+		onIncrement,
+		onToggle,
+		absoluteNoteIndex,
+		handleSwitchNotes,
+		noteOnePosition,
+		setNoteOnePosition,
+	}: NoteCellProps) => (
+		<div
+			className="border-r-2 last:border-none w-4 h-4 sm:w-6 sm:h-6 xl:w-8 xl:h-8 flex items-center justify-center cursor-grabbing font-bold text-foreground z-10 sm:text-md xl:text-xl font-serif-text nth-[6n]:border-tab border-tabsubtle data-[value='-']:text-tab/30 data-[value='X']:text-tab/50 select-none"
+			onClick={() => onIncrement(stringIndex, absoluteNoteIndex)}
+			onContextMenu={(e) => {
+				e.preventDefault(); // Prevent default context menu
+				onToggle(stringIndex, absoluteNoteIndex);
+			}}
+			onMouseDownCapture={() => {
+				setNoteOnePosition({
+					string: stringIndex,
+					position: absoluteNoteIndex,
+				});
+			}}
+			onMouseUpCapture={() => {
+				handleSwitchNotes(noteOnePosition, {
+					string: stringIndex,
+					position: absoluteNoteIndex,
+				});
+				setNoteOnePosition({ string: -1, position: -1 });
+			}}
+			id="note"
+			data-value={note}
+		>
+			{note}
+		</div>
+	),
 );
 
 /**
@@ -62,58 +64,42 @@ const NoteCell = ({
  * @param onToggle - Function to handle toggling note states
  * @param startNoteIndex - The starting index for this section of the tab
  */
-const StringRow = ({
-	string,
-	stringIndex,
-	onIncrement,
-	onToggle,
-	startNoteIndex,
-	handleSwitchNotes,
-	noteOnePosition,
-	setNoteOnePosition,
-}: StringRowProps) => (
-	<div id="row" className="flex">
-		{string.map((note, noteIndex) => (
-			<NoteCell
-				key={`${stringIndex}-${noteIndex}`}
-				note={note}
-				stringIndex={stringIndex}
-				absoluteNoteIndex={startNoteIndex + noteIndex}
-				onIncrement={onIncrement}
-				onToggle={onToggle}
-				handleSwitchNotes={handleSwitchNotes}
-				noteOnePosition={noteOnePosition}
-				setNoteOnePosition={setNoteOnePosition}
-			/>
-		))}
-	</div>
+const StringRow = React.memo(
+	({
+		string,
+		stringIndex,
+		onIncrement,
+		onToggle,
+		startNoteIndex,
+		handleSwitchNotes,
+		noteOnePosition,
+		setNoteOnePosition,
+	}: StringRowProps) => (
+		<div id="row" className="flex">
+			{string.map((note, noteIndex) => (
+				<NoteCell
+					key={`${stringIndex}-${noteIndex}`}
+					note={note}
+					stringIndex={stringIndex}
+					absoluteNoteIndex={startNoteIndex + noteIndex}
+					onIncrement={onIncrement}
+					onToggle={onToggle}
+					handleSwitchNotes={handleSwitchNotes}
+					noteOnePosition={noteOnePosition}
+					setNoteOnePosition={setNoteOnePosition}
+				/>
+			))}
+		</div>
+	),
 );
 
-/**
- * LoadingState component - Shows a spinner while data is loading
- */
 const LoadingState = () => (
 	<div className="flex items-center justify-center p-8">
 		<div className="animate-spin rounded-full h-8 w-8 border-b-2 border-tab"></div>
 	</div>
 );
 
-/**
- * ErrorState component - Displays error messages
- * @param error - The error object to display
- */
-// const ErrorState = ({ error }: { error: Error }) => (
-// 	<div className="flex items-center justify-center p-8 text-tab">
-// 		<p>Error: {error.message}</p>
-// 	</div>
-// );
-
-/**
- * GuitarTabCreator - Main component for creating and editing guitar tabs
- * Provides an interactive interface for inputting and visualizing guitar tablature
- */
 export default function GuitarTabCreator() {
-	// Get tab data and helper functions from custom hook
 	const {
 		tab,
 		isLoading,
@@ -124,43 +110,41 @@ export default function GuitarTabCreator() {
 		handleSwitchNotes,
 	} = useGuitarTab();
 
-	// Constants and state for pagination
 	const [sectionsCount, setSectionsCount] = useState(1);
 	const [noteOnePositon, setNoteOnePosition] = useState({
 		position: -1,
 		string: -1,
 	});
 
-	// Calculate number of sections needed based on tab length
 	useEffect(() => {
 		if (tab.length > 0 && tab[0].length > 0) {
 			setSectionsCount(Math.ceil(tab[0].length / NOTES_PER_SECTION || 1));
 		}
 	}, [tab]);
 
-	// Show loading or error states when appropriate
-	if (isLoading) return <LoadingState />;
+	const sections = useMemo(() => {
+		const result = [];
+		for (let i = 0; i < sectionsCount; i++) {
+			const startIndex = i * NOTES_PER_SECTION;
+			const endIndex = Math.min(
+				startIndex + NOTES_PER_SECTION,
+				tab[0]?.length || 0,
+			);
 
-	// Divide the tab into manageable sections for display
-	const sections = [];
-	for (let i = 0; i < sectionsCount; i++) {
-		const startIndex = i * NOTES_PER_SECTION;
-		const endIndex = Math.min(
-			startIndex + NOTES_PER_SECTION,
-			tab[0]?.length || 0,
-		);
-
-		if (startIndex < (tab[0]?.length || 0)) {
-			sections.push({
-				data: tab.map((string) => string.slice(startIndex, endIndex)),
-				startNoteIndex: startIndex,
-			});
+			if (startIndex < (tab[0]?.length || 0)) {
+				result.push({
+					data: tab.map((string) => string.slice(startIndex, endIndex)),
+					startNoteIndex: startIndex,
+				});
+			}
 		}
-	}
+		return result;
+	}, [tab, sectionsCount]);
+
+	if (isLoading) return <LoadingState />;
 
 	return (
 		<div className="container p-4 flex flex-col items-center max-w-full">
-			{/* Tab sections container with horizontal scroll */}
 			<div className="w-full overflow-x-scroll">
 				{sections.map((section, index) => (
 					<div className="flex" key={index}>
@@ -198,7 +182,6 @@ export default function GuitarTabCreator() {
 					</div>
 				))}
 			</div>
-			{/* Button to add a new line to the tab */}
 			<Button
 				variant="shallow"
 				className="flex justify-center"

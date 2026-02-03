@@ -1,283 +1,289 @@
 import download from "downloadjs";
-import { useEffect, useState } from "react";
-import { useLocation, useNavigate, useParams } from "react-router";
+import { useCallback, useMemo, useState } from "react";
+import { useNavigate } from "react-router";
 import {
-	DEFAULT_NOTE,
-	MAX_FRET,
-	MUTED_STRING,
-	NOTES_PER_SECTION,
-	OPEN_STRING,
-	STRINGS,
+    DEFAULT_NOTE,
+    MAX_FRET,
+    MUTED_STRING,
+    NOTES_PER_SECTION,
+    OPEN_STRING,
 } from "@/constants/guitar-tab";
 import { useLock } from "@/contexts/LockContext";
 import { exportTabs } from "@/db/crud/Export";
-import { getTabsByPosition } from "@/db/crud/GetTab";
 import { ImportTabs } from "@/db/crud/Import";
 import {
-	switchTwoNotesByPosition,
-	updateCurrentTabs,
+    switchTwoNotesByPosition,
+    updateCurrentTabs,
 } from "@/db/crud/UpdateTab";
 import type {
-	NoteCellPosition,
-	Tab,
-	TabInfo,
-	TabOperations,
-	TabState,
+    NoteCellPosition,
+    Tab,
+    TabInfo,
+    TabOperations,
+    TabState,
 } from "@/types/guitar-tab";
+import { useCurrentTab } from "./useCurrentTab";
 
 export const useGuitarTab = (): TabState & TabOperations => {
-	const { tabPositionFromParam } = useParams<{
-		tabPositionFromParam: string;
-	}>();
-	const location = useLocation();
-	const navigate = useNavigate();
-	const [tab, setTab] = useState<Tab>(
-		Array(STRINGS)
-			.fill(null)
-			.map(() => Array(NOTES_PER_SECTION).fill(DEFAULT_NOTE)),
-	);
-	const [isLoading, setIsLoading] = useState(false);
-	const [error, setError] = useState<Error | null>(null);
-	const { locked, triggerLockFeedback } = useLock();
+    const navigate = useNavigate();
+    const { currentTab, position } = useCurrentTab();
+    const tab = useMemo(() => currentTab?.tabs || [], [currentTab]);
 
-	const handleCellClick = async (
-		string: number,
-		note: number,
-	): Promise<void> => {
-		if (locked) {
-			triggerLockFeedback();
-			return;
-		}
-		try {
-			const newTab = tab.map((row: string[], i: number) =>
-				row.map((cell: string, j: number) =>
-					i === string && j === note
-						? cell === DEFAULT_NOTE
-							? OPEN_STRING
-							: cell === OPEN_STRING
-								? MUTED_STRING
-								: DEFAULT_NOTE
-						: cell,
-				),
-			);
-			setTab(newTab);
-			await updateCurrentTabs(newTab, tabPositionFromParam || "0");
-		} catch (err) {
-			setError(err instanceof Error ? err : new Error("Failed to update tab"));
-		}
-	};
+    const [isLoading, setIsLoading] = useState(false);
+    const [error, setError] = useState<Error | null>(null);
+    const { locked, triggerLockFeedback } = useLock();
 
-	const handleNewLineClick = () => {
-		if (locked) {
-			triggerLockFeedback();
-			return;
-		}
-		try {
-			const newTab = [...tab];
-			// Add a new DEFAULT_NOTE to each string in the tab
-			newTab.forEach((string) => {
-				for (let i = 0; i < NOTES_PER_SECTION; i++) {
-					string.push(DEFAULT_NOTE);
-				}
-			});
-			setTab(newTab);
-			updateCurrentTabs(newTab, tabPositionFromParam || "0");
-		} catch (err) {
-			setError(
-				err instanceof Error ? err : new Error("Failed to add new line"),
-			);
-		}
-	};
+    const handleCellClick = useCallback(
+        async (string: number, note: number): Promise<void> => {
+            if (locked) {
+                triggerLockFeedback();
+                return;
+            }
+            try {
+                const newTab = tab.map((row: string[], i: number) =>
+                    row.map((cell: string, j: number) =>
+                        i === string && j === note
+                            ? cell === DEFAULT_NOTE
+                                ? OPEN_STRING
+                                : cell === OPEN_STRING
+                                  ? MUTED_STRING
+                                  : DEFAULT_NOTE
+                            : cell,
+                    ),
+                );
+                await updateCurrentTabs(newTab || [], position || "0");
+            } catch (err) {
+                setError(
+                    err instanceof Error
+                        ? err
+                        : new Error("Failed to update tab"),
+                );
+            }
+        },
+        [locked, triggerLockFeedback, tab, position],
+    );
 
-	const incrementNotesNumber = (string: number, note: number): void => {
-		if (locked) {
-			triggerLockFeedback();
-			return;
-		}
-		try {
-			const newTab = [...tab];
-			const currentValue = newTab[string][note];
-			switch (true) {
-				case currentValue === DEFAULT_NOTE:
-					newTab[string][note] = "1";
-					break;
-				case currentValue === MUTED_STRING:
-					newTab[string][note] = DEFAULT_NOTE;
-					break;
-				default: {
-					const nextValue = Number.parseInt(currentValue) + 1;
-					newTab[string][note] =
-						nextValue > MAX_FRET ? DEFAULT_NOTE : nextValue.toString();
-					break;
-				}
-			}
-			setTab(newTab);
-			updateCurrentTabs(newTab, tabPositionFromParam || "0");
-		} catch (err) {
-			setError(
-				err instanceof Error ? err : new Error("Failed to increment note"),
-			);
-		}
-	};
+    const handleNewLineClick = useCallback(() => {
+        if (locked) {
+            triggerLockFeedback();
+            return;
+        }
+        try {
+            const newTab = tab.map((row: string[]) => [...row]) || [];
+            // Add a new DEFAULT_NOTE to each string in the tab
+            newTab.forEach((string) => {
+                for (let i = 0; i < NOTES_PER_SECTION; i++) {
+                    string.push(DEFAULT_NOTE);
+                }
+            });
+            updateCurrentTabs(newTab, position || "0");
+        } catch (err) {
+            setError(
+                err instanceof Error
+                    ? err
+                    : new Error("Failed to add new line"),
+            );
+            throw new Error("Failed to add new line");
+        }
+    }, [locked, triggerLockFeedback, tab, position]);
 
-	const handleRemoveSection = (section: {
-		data: Tab;
-		startNoteIndex: number;
-	}): void => {
-		if (locked) {
-			triggerLockFeedback();
-			return;
-		}
-		if (tab[0].length !== NOTES_PER_SECTION) {
-			try {
-				const sectionLength = section.data[0]?.length || 0;
-				const newTab = tab.map((string) => {
-					const newString = [...string];
-					newString.splice(section.startNoteIndex, sectionLength);
-					return newString;
-				});
-				setTab(newTab);
-				updateCurrentTabs(newTab, tabPositionFromParam || "0");
-			} catch (err) {
-				setError(
-					err instanceof Error ? err : new Error("Failed to remove section"),
-				);
-			}
-		} else {
-			console.error("Cannot remove section: tab has only one section");
-		}
-	};
+    const incrementNotesNumber = useCallback(
+        (string: number, note: number): void => {
+            if (locked) {
+                triggerLockFeedback();
+                return;
+            }
+            try {
+                const newTab = tab.map((row: string[]) => [...row]) || [];
+                const currentValue = newTab[string][note];
+                switch (true) {
+                    case currentValue === DEFAULT_NOTE:
+                        newTab[string][note] = "1";
+                        break;
+                    case currentValue === MUTED_STRING:
+                        newTab[string][note] = DEFAULT_NOTE;
+                        break;
+                    default: {
+                        const nextValue = Number.parseInt(currentValue) + 1;
+                        newTab[string][note] =
+                            nextValue > MAX_FRET
+                                ? DEFAULT_NOTE
+                                : nextValue.toString();
+                        break;
+                    }
+                }
+                updateCurrentTabs(newTab, position || "0");
+            } catch (err) {
+                setError(
+                    err instanceof Error
+                        ? err
+                        : new Error("Failed to increment note"),
+                );
+                throw new Error("Failed to increment note");
+            }
+        },
+        [locked, triggerLockFeedback, tab, position],
+    );
 
-	useEffect(() => {
-		const fetchTab = async () => {
-			if (!tabPositionFromParam) return;
+    const handleRemoveSection = useCallback(
+        (section: { data: Tab; startNoteIndex: number }): void => {
+            if (locked) {
+                triggerLockFeedback();
+                return;
+            }
+            if (tab.length !== NOTES_PER_SECTION) {
+                try {
+                    const sectionLength = section.data[0]?.length || 0;
+                    const newTab = tab.map((string) => {
+                        const newString = [...string];
+                        newString.splice(section.startNoteIndex, sectionLength);
+                        return newString;
+                    });
+                    updateCurrentTabs(newTab || [], position || "0");
+                } catch (err) {
+                    setError(
+                        err instanceof Error
+                            ? err
+                            : new Error("Failed to remove section"),
+                    );
+                    throw new Error("Failed to remove section");
+                }
+            } else {
+                console.error(
+                    "Cannot remove section: tab has only one section",
+                );
+                throw new Error(
+                    "Cannot remove section: tab has only one section",
+                );
+            }
+        },
+        [locked, triggerLockFeedback, tab, position],
+    );
 
-			setIsLoading(true);
-			setError(null);
+    const handleExport = useCallback(
+        async (position: string) => {
+            setIsLoading(true);
+            try {
+                const exportedData = await exportTabs(position);
+                if (exportedData) {
+                    const tabName =
+                        exportedData.tabName || `Tab-Unnamed-${position}`;
+                    const tabs = exportedData.tabs || [];
+                    const capo = exportedData.capo || -1;
+                    const jsonData = JSON.stringify(
+                        {
+                            tabName,
+                            tabs,
+                            capo,
+                        },
+                        null,
+                        2,
+                    );
+                    download(
+                        jsonData,
+                        `Tab-${tabName}.json`,
+                        "application/json",
+                    );
+                } else {
+                    throw new Error("Export failed - no data returned");
+                }
+            } catch (err) {
+                setError(
+                    err instanceof Error
+                        ? err
+                        : new Error("Failed to export tab"),
+                );
+                throw new Error("Failed to export tab");
+            } finally {
+                setIsLoading(false);
+            }
+        },
+        [setIsLoading, setError],
+    );
 
-			try {
-				const tabs = await getTabsByPosition(tabPositionFromParam);
-				if (tabs) {
-					setTab(tabs);
-				}
-			} catch (err) {
-				setError(err instanceof Error ? err : new Error("Failed to fetch tab"));
-			} finally {
-				setIsLoading(false);
-			}
-		};
+    const handleImport = useCallback(
+        async (jsonData: Partial<TabInfo>) => {
+            setError(null);
+            try {
+                if (!jsonData) {
+                    throw new Error("No data provided for import");
+                }
 
-		fetchTab();
-	}, [tabPositionFromParam, location.key]);
+                setIsLoading(true);
 
-	const handleExport = async (position: string) => {
-		setIsLoading(true);
-		try {
-			const exportedData = await exportTabs(position);
-			if (exportedData) {
-				const tabName = exportedData.tabName || `Tab-Unnamed-${position}`;
-				const tabs = exportedData.tabs || [];
-				const capo = exportedData.capo || -1;
-				const jsonData = JSON.stringify(
-					{
-						tabName,
-						tabs,
-						capo,
-					},
-					null,
-					2,
-				);
-				download(jsonData, `Tab-${tabName}.json`, "application/json");
-			} else {
-				throw new Error("Export failed - no data returned");
-			}
-		} catch (err) {
-			setError(err instanceof Error ? err : new Error("Failed to export tab"));
-		} finally {
-			setIsLoading(false);
-		}
-	};
+                if (Object.keys(jsonData).length === 0) {
+                    throw new Error("No data to import");
+                }
 
-	const handleImport = async (jsonData: Partial<TabInfo>) => {
-		setError(null);
+                // Check if the JSON data has the expected type (Partial<TabInfo>)
+                if (
+                    !(
+                        "tabName" in jsonData &&
+                        "tabs" in jsonData &&
+                        "capo" in jsonData &&
+                        Array.isArray(jsonData.tabs) &&
+                        jsonData.tabs.every((row) => Array.isArray(row))
+                    )
+                ) {
+                    throw new Error("Invalid data format for import");
+                }
 
-		try {
-			if (!jsonData) {
-				throw new Error("No data provided for import");
-			}
+                const importedTabPosition = await ImportTabs(jsonData);
+                navigate(`/sheet/${importedTabPosition}`);
+                return importedTabPosition;
+            } catch (err) {
+                setError(
+                    err instanceof Error ? err : new Error("Failed to import"),
+                );
+                throw new Error("Failed to import");
+            } finally {
+                setIsLoading(false);
+            }
+        },
+        [navigate, setIsLoading, setError],
+    );
 
-			setIsLoading(true);
+    const handleSwitchNotes = useCallback(
+        async (
+            NoteOnePosition: NoteCellPosition,
+            NoteTwoPosition: NoteCellPosition,
+        ) => {
+            if (locked) {
+                triggerLockFeedback();
+                return;
+            }
+            if (
+                NoteOnePosition.position == -1 ||
+                NoteOnePosition.string == -1
+            ) {
+                return;
+            }
+            if (
+                NoteOnePosition.string == NoteTwoPosition.string &&
+                NoteOnePosition.position == NoteTwoPosition.position
+            ) {
+                throw new Error("Invalid data format for import");
+            }
 
-			if (Object.keys(jsonData).length === 0) {
-				throw new Error("No data to import");
-			}
+            await switchTwoNotesByPosition(
+                position || "0",
+                NoteOnePosition,
+                NoteTwoPosition,
+            );
+        },
+        [locked, triggerLockFeedback, position],
+    );
 
-			// Check if the JSON data has the expected type (Partial<TabInfo>)
-			if (
-				!(
-					"tabName" in jsonData &&
-					"tabs" in jsonData &&
-					"capo" in jsonData &&
-					Array.isArray(jsonData.tabs) &&
-					jsonData.tabs.every((row) => Array.isArray(row))
-				)
-			) {
-				throw new Error("Invalid data format for import");
-			}
-
-			const importedTabPosition = await ImportTabs(jsonData);
-			navigate(`/sheet/${importedTabPosition}`);
-			return importedTabPosition;
-		} catch (err) {
-			console.error(
-				"%cDEBUG:%c Import error:",
-				"background: #2c3e50; color: white; padding: 2px 5px;",
-				"color: #22dce6;",
-				err,
-			);
-			setError(err instanceof Error ? err : new Error("Failed to import"));
-			return null;
-		} finally {
-			setIsLoading(false);
-		}
-	};
-
-	const handleSwitchNotes = async (
-		NoteOnePosition: NoteCellPosition,
-		NoteTwoPosition: NoteCellPosition,
-	) => {
-		if (locked) {
-			triggerLockFeedback();
-			return;
-		}
-		if (NoteOnePosition.position == -1 || NoteOnePosition.string == -1) {
-			return;
-		}
-		if (
-			NoteOnePosition.string == NoteTwoPosition.string &&
-			NoteOnePosition.position == NoteTwoPosition.position
-		) {
-			return;
-		}
-
-		await switchTwoNotesByPosition(
-			tabPositionFromParam || "0",
-			NoteOnePosition,
-			NoteTwoPosition,
-		);
-		navigate(`/sheet/${tabPositionFromParam}`);
-	};
-
-	return {
-		tab,
-		handleNewLineClick,
-		isLoading,
-		error,
-		handleCellClick,
-		incrementNotesNumber,
-		handleRemoveSection,
-		handleImport,
-		handleExport,
-		handleSwitchNotes,
-	};
+    return {
+        tab,
+        handleNewLineClick,
+        isLoading,
+        error,
+        handleCellClick,
+        incrementNotesNumber,
+        handleRemoveSection,
+        handleImport,
+        handleExport,
+        handleSwitchNotes,
+    };
 };

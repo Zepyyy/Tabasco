@@ -1,9 +1,8 @@
 import addTab from "@/db/crud/AddTab";
 import { getTabsByPosition } from "@/db/crud/GetTab";
-import { TabInfo } from "@/types/guitar-tab";
 
 export const useTabCreation = () => {
-	const handleAddTab = () => addTab({} as TabInfo);
+	const handleAddTab = () => addTab({});
 
 	const handleDuplicate = async (props: {
 		name: string;

@@ -1,4 +1,8 @@
-import { NOTES_PER_SECTION } from "@/constants/guitar-tab";
+import {
+	DEFAULT_NOTE,
+	NOTES_PER_SECTION,
+	STRINGS,
+} from "@/constants/guitar-tab";
 import { TabInfo } from "@/types/guitar-tab";
 import { db } from "../db";
 
@@ -20,9 +24,9 @@ export default async function addTab({
 			tabName: tabName || "Unnamed",
 			tabs:
 				tabs ||
-				Array(6)
-					.fill(null)
-					.map(() => Array(NOTES_PER_SECTION).fill("-")),
+				Array.from({ length: STRINGS }, () =>
+					Array.from({ length: NOTES_PER_SECTION }, () => DEFAULT_NOTE),
+				),
 			position: maxPosition.toString(), // Increment the position
 			capo: capo || -1,
 		});

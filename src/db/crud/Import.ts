@@ -13,9 +13,9 @@ export async function ImportTabs(tabData: Partial<TabInfo>) {
 			tabName: (tabData.tabName as string) || "Imported Tab",
 			tabs:
 				(tabData.tabs as string[][]) ||
-				Array(STRINGS)
-					.fill(null)
-					.map(() => Array(NOTES_PER_SECTION).fill(DEFAULT_NOTE)),
+				Array.from({ length: STRINGS }, () =>
+					Array.from({ length: NOTES_PER_SECTION }, () => DEFAULT_NOTE),
+				),
 			capo: (tabData.capo as number) || -1,
 		};
 

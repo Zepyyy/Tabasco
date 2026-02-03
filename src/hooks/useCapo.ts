@@ -1,25 +1,11 @@
-import { useLiveQuery } from "dexie-react-hooks";
-import { useParams } from "react-router";
 import { MAX_FRET } from "@/constants/guitar-tab";
 import { useLock } from "@/contexts/LockContext";
 import { updateTabCapoByPosition } from "@/db/crud/UpdateTab";
-import { db } from "@/db/db";
+import { useCurrentTab } from "./useCurrentTab";
 
 export const useCapo = () => {
 	const { locked, triggerLockFeedback } = useLock();
-	const { tabPositionFromParam } = useParams<{
-		tabPositionFromParam: string;
-	}>();
-
-	// Use useLiveQuery to reactively get the current tab
-	const currentTab = useLiveQuery(async () => {
-		if (tabPositionFromParam) {
-			return await db.TabInfo.where("position")
-				.equals(tabPositionFromParam)
-				.first();
-		}
-		return null;
-	}, [tabPositionFromParam]);
+	const { currentTab, position } = useCurrentTab();
 
 	const capo = currentTab?.capo || "";
 
@@ -28,8 +14,8 @@ export const useCapo = () => {
 			triggerLockFeedback();
 			return;
 		}
-		if (tabPositionFromParam && capo && capo >= -1 && capo <= MAX_FRET) {
-			updateTabCapoByPosition(tabPositionFromParam, capo);
+		if (position && capo && capo >= -1 && capo <= MAX_FRET) {
+			updateTabCapoByPosition(position, capo);
 		}
 	};
 

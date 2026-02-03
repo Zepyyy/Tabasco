@@ -1,10 +1,10 @@
 import { ImportIcon, Moon, Share, Sun } from "lucide-react";
 import { ChangeEvent, useRef } from "react";
-import { useParams } from "react-router";
 import { useTheme } from "@/contexts/ThemeContext";
 import { useGuitarTab } from "@/hooks/useGuitarTab";
 import LiftedButton from "./LiftedButton";
 import { Input } from "./ui/input";
+import { useCurrentTab } from "@/hooks/useCurrentTab";
 
 export default function Gui() {
 	const { handleImport, handleExport } = useGuitarTab();
@@ -30,9 +30,7 @@ export default function Gui() {
 		}
 	};
 
-	const { tabPositionFromParam } = useParams<{
-		tabPositionFromParam: string;
-	}>();
+	const { position } = useCurrentTab();
 	const fileInputRef = useRef<HTMLInputElement>(null);
 
 	const { theme, toggleTheme } = useTheme();
@@ -53,7 +51,7 @@ export default function Gui() {
 				/>
 				<LiftedButton
 					svg={<Share />}
-					onClick={() => handleExport(tabPositionFromParam || "0")}
+					onClick={() => handleExport(position || "0")}
 				/>
 				<LiftedButton
 					svg={theme === "light" ? <Moon /> : <Sun />}

@@ -6,9 +6,9 @@ import {
 import { updateCurrentTabs } from "./UpdateTab";
 
 export const clearTab = async (tabId = "0") => {
-	const newTab = Array(STRINGS)
-		.fill(null)
-		.map(() => Array(NOTES_PER_SECTION).fill(DEFAULT_NOTE));
+	const newTab = Array.from({ length: STRINGS }, () =>
+		Array.from({ length: NOTES_PER_SECTION }, () => DEFAULT_NOTE),
+	);
 	await updateCurrentTabs(newTab, tabId);
 	return newTab;
 };

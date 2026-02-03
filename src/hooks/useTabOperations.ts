@@ -1,27 +1,14 @@
-import { useLiveQuery } from "dexie-react-hooks";
-import { useNavigate, useParams } from "react-router";
+import { useNavigate } from "react-router";
 import { useLock } from "@/contexts/LockContext";
 import deleteTabById from "@/db/crud/DeleteTab";
 import updateTabNameById, { updateTabPositionById } from "@/db/crud/UpdateTab";
-import { db } from "@/db/db";
 import { TabInfo } from "@/types/guitar-tab";
+import { useCurrentTab } from "./useCurrentTab";
 
 export const useTabOperations = (tabs: TabInfo[] = []) => {
 	const { locked, triggerLockFeedback } = useLock();
 	const navigate = useNavigate();
-	const { tabPositionFromParam } = useParams<{
-		tabPositionFromParam: string;
-	}>();
-
-	// Use useLiveQuery to reactively get the current tab
-	const currentTab = useLiveQuery(async () => {
-		if (tabPositionFromParam) {
-			return await db.TabInfo.where("position")
-				.equals(tabPositionFromParam)
-				.first();
-		}
-		return null;
-	}, [tabPositionFromParam]);
+	const { currentTab, position } = useCurrentTab();
 
 	const tabName = currentTab?.tabName || "";
 
@@ -30,7 +17,7 @@ export const useTabOperations = (tabs: TabInfo[] = []) => {
 			triggerLockFeedback();
 			return;
 		}
-		if (tabPositionFromParam && currentTab?.id) {
+		if (position && currentTab?.id) {
 			updateTabNameById(currentTab.id, newName);
 		}
 	};
@@ -62,8 +49,6 @@ export const useTabOperations = (tabs: TabInfo[] = []) => {
 		if (position && id) {
 			const newPosition = await deleteTabById(id);
 
-			console.log("Delete operation returned position:", newPosition);
-
 			tabs.forEach((tab: TabInfo) => {
 				if (
 					tab.position !== undefined &&
@@ -78,11 +63,9 @@ export const useTabOperations = (tabs: TabInfo[] = []) => {
 			});
 
 			if (newPosition) {
-				console.log("Navigating to position:", newPosition);
 				navigate(`/sheet/${newPosition}`);
-			} else {
-				console.log("No valid position returned, staying on current page");
 			}
+			return;
 		}
 	};
 
