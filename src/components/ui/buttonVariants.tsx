@@ -1,7 +1,7 @@
 import { cva } from "class-variance-authority";
 
 const buttonVariants = cva(
-	"inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-sm text-sm font-semibold transition-all duration-150 focus-visible:outline-hidden focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 inset-shadow-[0_-3px_0_rgba(0,0,0,0.2)] shadow-[0_4px_4px_rgba(0,0,0,0.2)] active:inset-shadow-[0_-1px_0_rgba(0,0,0,0.2)] active:shadow-[0_4px_4px_rgba(0,0,0,0.2)] [&>*]:transform [&>*]:-translate-y-0.5 [&>*]:transition-transform [&>*]:duration-150 active:[&>*]:translate-y-0",
+	"inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-lg text-sm font-semibold transition-all duration-150 focus-visible:outline-hidden focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
 	{
 		variants: {
 			variant: {
@@ -14,13 +14,15 @@ const buttonVariants = cva(
 				shallow: "bg-secondary text-secondary-foreground",
 				transparent:
 					"bg-background text-foreground border-none shadow-none inset-shadow-none active:shadow-none active:inset-shadow-none",
+				link: "bg-background text-foreground border-none shadow-none inset-shadow-none active:shadow-none active:inset-shadow-none flex items-center justify-center rounded-[12px] font-serif-text underline active:no-underline hover:cursor-pointer text-xl font-normal bg-red-500",
 			},
 			size: {
-				default: "h-9 px-4 py-2",
+				default: "h-9 px-4 py-3",
 				sm: "h-8 rounded-sm px-3 text-xs",
 				lg: "h-10 rounded-sm px-8",
 				icon: "h-9 w-9 rounded-sm p-0 aspect-square",
 				bigIcon: "p-3 aspect-square",
+				link: "rounded-[12px] font-serif-text underline active:no-underline hover:cursor-pointer text-xl font-normal",
 			},
 		},
 		defaultVariants: {

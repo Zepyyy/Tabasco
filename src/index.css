@@ -1,5 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,200..900;1,200..900&family=Oregano:ital@0;1&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=Marck+Script&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..800&family=Crimson+Pro:ital,wght@0,200..900;1,200..900&family=Crimson+Text:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Marck+Script&family=Oregano:ital@0;1&display=swap");
 @import "tailwindcss";
 @plugin 'tailwindcss-animate';
 
@@ -9,14 +8,18 @@
     --font-*: initial;
     --font-serif-text: "Crimson Pro", serif;
     --font-serif-title: "Oregano", serif;
-    --font-sans: "Inter", sans-serif;
+    --font-Inter: "Inter", sans-serif;
+    --font-Script: "Marck Script", sans-serif;
+    --font-Bricolage: "Bricolage Grotesque", sans-serif;
 
     --radius-lg: var(--radius);
     --radius-md: calc(var(--radius) - 2px);
     --radius-sm: calc(var(--radius) - 4px);
 
     --color-background: hsl(var(--background));
+    --color-background-light: hsl(var(--background-light));
     --color-foreground: hsl(var(--foreground));
+    --color-shadow: hsl(var(--shadow));
 
     --color-card: hsl(var(--card));
     --color-card-foreground: hsl(var(--card-foreground));
@@ -87,8 +90,6 @@
         font-optical-sizing: auto;
         font-weight: 400;
         font-style: normal;
-        /* line-height: 1.5; */
-        /* letter-spacing: 0.5px; */
 
         background-color: var(--background);
         color-scheme: light dark;
@@ -98,39 +99,20 @@
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
     }
-
-    ::selection {
-        background-color: hsl(var(--primary));
-        color: hsl(var(--primary-foreground));
-        opacity: 0.9;
-    }
-
-    ::selection[data-value*="-"] {
-        background-color: hsl(var(--muted));
-        color: hsl(var(--muted-foreground));
-    }
-
-    /* For light mode */
-    :root[data-mantine-color-scheme="light"] body {
-        --mantine-color-body: hsl(248, 12.3%, 88.9%);
-    }
-
-    /* For dark mode */
-    :root[data-mantine-color-scheme="dark"] body {
-        --mantine-color-body: hsl(240, 3%, 13%);
-    }
 }
 
 @layer base {
     :root {
-        --background: 248, 12.3%, 88.9%;
+        --background: 248 12.3% 88.9%;
+        --background-light: 248 22.58% 93.92%;
         --foreground: 240 3% 13%;
+        --shadow: 250 4% 71%;
         --card: 0 0% 100%;
         --card-foreground: 0 0% 3.9%;
         --popover: 0 0% 100%;
         --popover-foreground: 0 0% 3.9%;
         --primary: 238 30% 39%;
-        --primary-foreground: 249 24% 94%;
+        --primary-foreground: 249 23% 94%;
         --secondary: 239 69% 86%;
         --secondary-foreground: 240 3% 13%;
         --muted: 0 0% 96.1%;
@@ -153,17 +135,19 @@
         --chart-3: 197 37% 24%;
         --chart-4: 43 74% 66%;
         --chart-5: 27 87% 67%;
-        --radius: 0.5rem;
+        --radius: 0.25rem;
     }
     .dark {
         --background: 240 3% 13%;
+        --background-light: 240 2.5% 15.69%;
         --foreground: 249 24% 94%;
+        --shadow: 240 2% 10%;
         --card: 0 0% 3.9%;
         --card-foreground: 0 0% 98%;
         --popover: 0 0% 3.9%;
         --popover-foreground: 0 0% 98%;
-        --primary: 239 69% 86%;
-        --primary-foreground: 240 3% 13%;
+        --primary: 240 29% 41%;
+        --primary-foreground: 249 23% 94%;
         --secondary: 238 30% 39%;
         --secondary-foreground: 249 24% 94%;
         --muted: 236 27% 24%;
@@ -186,6 +170,7 @@
         --chart-3: 30 80% 55%;
         --chart-4: 280 65% 60%;
         --chart-5: 340 75% 55%;
+        --radius: 0.25rem;
     }
 }
 @layer base {
@@ -218,10 +203,8 @@
 }
 
 .tab-active {
-    /* color: hsl(var(--primary-foreground)); */
-    /* background-color: hsl(var(--primary)); */
-    background-color: hsl(var(--secondary));
-    color: hsl(var(--secondary-foreground));
+    background-color: hsl(var(--primary));
+    color: hsl(var(--primary-foreground));
 }
 
 .tab-pending {
@@ -230,14 +213,16 @@
 }
 
 @theme {
-    --animate-wiggle-once: wiggle-once 2s ease-in-out;
+    --animate-wiggle-once: wiggle-once 0.5s ease-in-out;
     @keyframes wiggle-once {
         0%,
+        50%,
         100% {
-            transform: rotate(-20deg);
+            transform: rotate(-12deg);
         }
-        50% {
-            transform: rotate(20deg);
+        25%,
+        75% {
+            transform: rotate(12deg);
         }
     }
 }

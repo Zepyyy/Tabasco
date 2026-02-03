@@ -10,12 +10,5 @@ export const clearTab = async (tabId = "0") => {
 		.fill(null)
 		.map(() => Array(NOTES_PER_SECTION).fill(DEFAULT_NOTE));
 	await updateCurrentTabs(newTab, tabId);
-	console.log(
-		"%c DEBUG: %c Tab Clear Successfully cleared tab content for tab %c%s",
-		"background: #2c3e50; color: white;",
-		"background: inherit; color: white;",
-		"color: #22e66a;",
-		tabId,
-	);
 	return newTab;
 };

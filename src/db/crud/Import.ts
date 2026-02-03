@@ -19,34 +19,11 @@ export async function ImportTabs(tabData: Partial<TabInfo>) {
 			capo: (tabData.capo as number) || -1,
 		};
 
-		const position = await addTab(importedData as Partial<TabInfo>);
-
-		if (!position) {
-			const errorMsg = "Import failed - no position returned";
-			console.log(
-				"%cDEBUG:%c " + errorMsg,
-				"background: #2c3e50; color: white; padding: 2px 5px;",
-				"background: inherit; color: white;",
-				"color: #22e66a;",
-			);
-			throw new Error(errorMsg);
+		const position = await addTab(importedData as Partial<TabInfo>);		if (!position) {
+			throw new Error("Failed to import tab.");
 		}
-
-		console.log(
-			"%cDEBUG:%c Successfully imported tab at position: %c" + position,
-			"background: #2c3e50; color: white; padding: 2px 5px;",
-			"background: inherit; color: white;",
-			"color: #22e66a;",
-		);
 		return position;
 	} catch (error) {
-		console.log(
-			"%cDEBUG:%c Failed to import tab Error: ",
-			"background: #2c3e50; color: white; padding: 2px 5px;",
-			"background: inherit; color: white;",
-			"color: #22dce6;",
-			error,
-		);
-		throw error;
+		throw new Error("Failed to import tab. Error: " + error);
 	}
 }
