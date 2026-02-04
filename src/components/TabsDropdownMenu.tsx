@@ -135,7 +135,7 @@ export default function TabsDropdownMenu() {
 					<DropdownMenu onOpenChange={() => setUpPosition(!upPosition)}>
 						<DropdownMenuTrigger
 							asChild
-							className="appearance-none border-none inline-flex items-center justify-center rounded-md text-tab text-xl font-serif-text w-full h-full m-0 p-0"
+							className="appearance-none border-none inline-flex items-center justify-center rounded-md text-tab text-4xl font-serif-text w-full h-full m-0 p-0"
 						>
 							<button
 								aria-label="Customise options"
@@ -143,9 +143,9 @@ export default function TabsDropdownMenu() {
 							>
 								{tabName || "Unnamed"}
 								<ChevronUp
-									size={16}
+									size={32}
 									strokeWidth={2}
-									className={`transition-transform duration-200 text-tab pb-0.5 ${
+									className={`transition-transform duration-200 text-tab pb-1.5 ${
 										upPosition ? "rotate-0" : "rotate-180"
 									}`}
 								/>
@@ -153,11 +153,11 @@ export default function TabsDropdownMenu() {
 						</DropdownMenuTrigger>
 						<DropdownMenuPortal>
 							<DropdownMenuContent
-								className="flex flex-col p-0 m-0 shadow-lg ml-10 z-40 font-serif-text text-2xl"
+								className="flex flex-col p-0 m-0 shadow-lg z-40 font-serif-text text-2xl w-150"
 								sideOffset={4}
 							>
 								<DropdownMenuLabel>
-									<div className="flex justify-between w-full relative items-center rounded-sm text-tab gap-8 text-2xl font-normal">
+									<div className="flex justify-between w-full relative items-center rounded-sm text-tab gap-8 text-2xl font-normal h-12 px-2">
 										Your tabs
 										<Plus
 											className="w-4 h-4 cursor-pointer"
@@ -185,7 +185,7 @@ export default function TabsDropdownMenu() {
 										}
 									>
 										<DropdownMenuSub key={tab.id}>
-											<DropdownMenuSubTrigger className="group relative flex h-8 select-none items-center pr-2 outline-hidden data-disabled:pointer-events-none my-1 last:my-0 gap-9 text-2xl data-[state=open]:bg-foreground/10 focus:bg-foreground/10 font-normal">
+											<DropdownMenuSubTrigger className="group relative flex h-12 select-none items-center pr-2 outline-hidden data-disabled:pointer-events-none my-1 last:my-0 gap-9 text-2xl data-[state=open]:bg-foreground/10 focus:bg-foreground/10 font-normal">
 												<span className=" p-2">{tab.tabName || "Unnamed"}</span>
 												<div className="ml-auto group-data-highlighted:text-tab/50"></div>
 											</DropdownMenuSubTrigger>

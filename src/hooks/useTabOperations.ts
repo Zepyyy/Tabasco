@@ -23,21 +23,10 @@ export const useTabOperations = (tabs: TabInfo[] = []) => {
 	};
 
 	const handleMove = (currentId: number, currentPosition: string) => {
-		console.log(
-			"Starting the move function with id: ",
-			currentId,
-			"at: ",
-			currentPosition,
-		);
 		const newPosition = Number.parseInt(currentPosition) + 1;
-		if (newPosition >= tabs.length) {
-			console.log("oups, last tab I hope");
-			return;
-		}
+		if (newPosition >= tabs.length) return;
 
 		tabs?.forEach((tab: TabInfo) => {
-			console.log("tabid: ", tab.id);
-			console.log("tabposition :", tab.position);
 			// If a tab is present at the position, use this tab's position
 			if (tab.position === newPosition.toString()) {
 				updateTabPositionById(newPosition.toString(), currentId);

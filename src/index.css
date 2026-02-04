@@ -20,6 +20,7 @@
     --color-background-light: hsl(var(--background-light));
     --color-foreground: hsl(var(--foreground));
     --color-shadow: hsl(var(--shadow));
+    --color-tag: hsl(var(--tag));
 
     --color-card: hsl(var(--card));
     --color-card-foreground: hsl(var(--card-foreground));
@@ -115,7 +116,7 @@
         --primary-foreground: 249 23% 94%;
         --secondary: 239 69% 86%;
         --secondary-foreground: 240 3% 13%;
-        --muted: 0 0% 96.1%;
+        --muted: 240 6% 54%;
         --muted-foreground: 0 0% 14%;
         --accent: 238 30% 39%;
         --accent-foreground: 249 24% 94%;
@@ -136,6 +137,7 @@
         --chart-4: 43 74% 66%;
         --chart-5: 27 87% 67%;
         --radius: 0.25rem;
+        --tag: 249 8% 83%;
     }
     .dark {
         --background: 240 3% 13%;
@@ -150,7 +152,7 @@
         --primary-foreground: 249 23% 94%;
         --secondary: 238 30% 39%;
         --secondary-foreground: 249 24% 94%;
-        --muted: 236 27% 24%;
+        --muted: 249 4% 65%; /* a2a1a8*/
         --muted-foreground: 0 0% 78%;
         --accent: 239 69% 86%;
         --accent-foreground: 240 3% 13%;
@@ -171,6 +173,7 @@
         --chart-4: 280 65% 60%;
         --chart-5: 340 75% 55%;
         --radius: 0.25rem;
+        --tag: 240 2% 21%;
     }
 }
 @layer base {
@@ -208,8 +211,8 @@
 }
 
 .tab-pending {
-    color: hsl(var(--muted-foreground));
-    background-color: hsl(var(--muted));
+    color: hsl(var(--foreground-foreground));
+    background-color: hsl(var(--foreground));
 }
 
 @theme {

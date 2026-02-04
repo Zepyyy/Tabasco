@@ -1,12 +1,11 @@
 import { Analytics } from "@vercel/analytics/react";
 import { AlertCircleIcon } from "lucide-react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import BreadCrumbs from "./components/breadcrumb";
 import Capo from "./components/Capo";
 import GuitarTabCreator from "./components/guitar-tab-creator";
 import LockButton from "./components/LockSwitcher";
 import Gui from "./components/SettingsMenu";
-import TabName from "./components/TabName";
+import TabsDropdownMenuModern from "./components/TabsDropdownMenuModern";
 import Providers from "./providers/Providers";
 
 const AppContent = () => {
@@ -23,15 +22,17 @@ const AppContent = () => {
 			</div>
 			<main className="flex min-h-screen transition ease-out pointer-events-auto! text-xl flex-col">
 				<Gui />
-				<div className="flex items-center justify-between w-full pt-4 px-4">
-					<BreadCrumbs />
-					<div className="flex w-fit p-2 rounded-lg">
+				<div className="inline-flex items-center justify-between w-full p-6">
+					<div className="flex w-fit ">
+						<TabsDropdownMenuModern />
+					</div>
+					<div className="flex w-fit rounded-lg">
 						<LockButton rounded />
 					</div>
 				</div>
 				<div className="flex flex-col justify-start w-full px-4 py-4">
 					<div className="flex flex-row gap-4">
-						<TabName />
+						{/*<TabName />*/}
 						<Capo />
 					</div>
 					<div className="px-4">
