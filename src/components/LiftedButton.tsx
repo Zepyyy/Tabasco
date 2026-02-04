@@ -9,10 +9,7 @@ export default function LiftedButton(props: {
 }) {
 	return (
 		<div
-			className={cn(
-				"relative group inline-block font-serif-text text-xl z-10",
-				props.className,
-			)}
+			className={cn("relative group inline-block font-serif-text text-xl z-10")}
 			style={{ width: "fit-content", minWidth: "fit-content" }}
 		>
 			<span className="flex items-center justify-center px-2 py-1 whitespace-nowrap opacity-0 pointer-events-none gap-4">
@@ -37,6 +34,7 @@ export default function LiftedButton(props: {
 					"flex items-center justify-center absolute top-0 left-0 bg-background-light text-foreground px-2 py-1 group-hover:top-1 group-hover:left-1 z-20 rounded-lg transition-all duration-150 whitespace-nowrap gap-1",
 					props.children && "py-2",
 					!props.children && "w-12 h-12",
+					props.className,
 				)}
 			>
 				{props.svg}

@@ -5,7 +5,7 @@ import img from "@/assets/QS_dark_round.png";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import GuitarTabCreator from "./components/guitar-tab-creator";
 import LockSwitcher from "./components/LockSwitcher";
-import TabsDropdownMenu from "./components/TabsDropdownMenu";
+import TabsDropdownMenuModern from "./components/TabsDropdownMenuModern";
 import ThemeSwitcher from "./components/ThemeSwitcher";
 import Providers from "./providers/Providers";
 
@@ -48,7 +48,7 @@ const ModernAppContent = () => {
 						</NavLink>
 					</div>
 					<div className="flex h-15 w-full items-center justify-center border-y border-r border-foreground bg-background cursor-pointer hover:bg-primary/10 transition">
-						<TabsDropdownMenu />
+						<TabsDropdownMenuModern />
 					</div>
 					<div
 						className={

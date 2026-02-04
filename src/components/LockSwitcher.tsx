@@ -1,16 +1,13 @@
 import { ArrowRight, LockIcon, LockOpen } from "lucide-react";
 import { useLock } from "@/contexts/LockContext";
 
-// Lock.tsx
 export default function LockSwitcher({ rounded }: { rounded?: boolean }) {
 	const { locked, trigger, toggleLock, showText } = useLock();
 
 	return (
 		<div
-			className={`w-full h-full cursor-pointer flex z-50 relative ${rounded ? "rounded-lg p-2" : "rounded-none p-2"} flex items-center justify-center ${
-				locked
-					? "bg-primary text-primary-foreground"
-					: "bg-background text-foreground"
+			className={`w-full h-full cursor-pointer flex relative ${rounded ? "rounded-lg p-2" : "rounded-none p-2"} flex items-center justify-center ${
+				locked ? "bg-primary text-primary-foreground" : ""
 			}`}
 		>
 			<div className={`relative flex items-center gap-2 whitespace-nowrap `}>

@@ -3,7 +3,6 @@ import { AlertCircleIcon } from "lucide-react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import Capo from "./components/Capo";
 import GuitarTabCreator from "./components/guitar-tab-creator";
-import LockButton from "./components/LockSwitcher";
 import Gui from "./components/SettingsMenu";
 import TabsDropdownMenuModern from "./components/TabsDropdownMenuModern";
 import Providers from "./providers/Providers";
@@ -26,13 +25,9 @@ const AppContent = () => {
 					<div className="flex w-fit ">
 						<TabsDropdownMenuModern />
 					</div>
-					<div className="flex w-fit rounded-lg">
-						<LockButton rounded />
-					</div>
 				</div>
 				<div className="flex flex-col justify-start w-full px-4 py-4">
 					<div className="flex flex-row gap-4">
-						{/*<TabName />*/}
 						<Capo />
 					</div>
 					<div className="px-4">
