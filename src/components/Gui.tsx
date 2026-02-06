@@ -76,7 +76,7 @@ export default function Gui() {
 							variant="soft"
 							size="lifted"
 							onClick={toggleLock}
-							className={locked ? "bg-primary text-primary-foreground" : ""}
+							className={`${locked ? "bg-primary text-primary-foreground" : ""} ${showText ? "[&_svg]:animate-wiggle-once" : ""}`}
 							aria-label={locked ? "Unlock editing" : "Lock editing"}
 						>
 							{locked ? <Lock /> : <LockOpen />}
@@ -102,7 +102,7 @@ export default function Gui() {
 					</Button>
 					<Button
 						lifted
-						variant="shallow"
+						variant="default"
 						size="lifted"
 						onClick={() => handleExport(position || "0")}
 						aria-label="Export tab"
@@ -111,7 +111,7 @@ export default function Gui() {
 					</Button>
 					<Button
 						lifted
-						variant="outline"
+						variant="default"
 						size="lifted"
 						onClick={() => setIsDialogOpen(true)}
 						aria-label="Clear tab"

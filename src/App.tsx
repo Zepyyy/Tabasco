@@ -2,8 +2,8 @@ import { Analytics } from "@vercel/analytics/react";
 import { AlertCircleIcon } from "lucide-react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import Capo from "./components/Capo";
+import Gui from "./components/Gui";
 import GuitarTabCreator from "./components/guitar-tab-creator";
-import Gui from "./components/SettingsMenu";
 import TabsDropdownMenuModern from "./components/TabsDropdownMenuModern";
 import Providers from "./providers/Providers";
 

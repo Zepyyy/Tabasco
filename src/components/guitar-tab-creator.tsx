@@ -152,14 +152,16 @@ export default function GuitarTabCreator() {
 							className="flex justify-center items-center mr-6"
 							key={`div-${index}`}
 						>
-							<Button
-								variant="soft"
-								className="flex justify-center"
-								onClick={() => handleRemoveSection(section)}
-								key={`delete-section-${index}`}
-							>
-								<Trash />
-							</Button>
+							<div>
+								<Button
+									lifted
+									variant="destructive"
+									onClick={() => handleRemoveSection(section)}
+									key={`delete-section-${index}`}
+								>
+									<Trash />
+								</Button>
+							</div>
 						</div>
 						<div
 							key={`tab-section-${index}`}
@@ -182,13 +184,15 @@ export default function GuitarTabCreator() {
 					</div>
 				))}
 			</div>
-			<Button
-				variant="shallow"
-				className="flex justify-center"
-				onClick={() => handleNewLineClick(tab)}
-			>
-				<span className="text-xl font-serif-text">+</span>
-			</Button>
+			<div>
+				<Button
+					lifted
+					variant="shallow"
+					onClick={() => handleNewLineClick(tab)}
+				>
+					<span className="text-xl font-serif-text">+</span>
+				</Button>
+			</div>
 		</div>
 	);
 }
