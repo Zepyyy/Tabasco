@@ -4,8 +4,8 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import Capo from "./components/Capo";
 import GuitarTabCreator from "./components/guitar-tab-creator";
 import Gui from "./components/SettingsMenu";
-import Providers from "./providers/Providers";
 import TabsDropdownMenuModern from "./components/TabsDropdownMenuModern";
+import Providers from "./providers/Providers";
 
 const AppContent = () => {
 	return (
@@ -19,7 +19,7 @@ const AppContent = () => {
 					</AlertDescription>
 				</Alert>
 			</div>
-			<main className="flex min-h-screen transition ease-out pointer-events-auto! text-xl flex-col pt-20 sm:pt-24">
+			<main className="flex min-h-screen transition ease-out pointer-events-auto! text-xl flex-col">
 				<Gui />
 				<div className="inline-flex items-center justify-between w-full p-6">
 					<div className="flex w-fit">
