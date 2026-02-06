@@ -32,7 +32,17 @@ export default function Gui() {
 	const fileInputRef = useRef<HTMLInputElement>(null);
 	const [isDialogOpen, setIsDialogOpen] = useState(false);
 	const { theme, toggleTheme } = useTheme();
-	const { locked, toggleLock } = useLock();
+	const { locked, toggleLock, showText } = useLock();
+
+	const LockedTooltip = () => (
+		<span
+			className={`absolute right-full mr-3 top-1/2 -translate-y-1/2 whitespace-nowrap rounded-md bg-foreground px-2 py-1 text-xs font-semibold text-background shadow-sm transition-opacity duration-200 font-Bricolage ${
+				showText ? "opacity-100" : "opacity-0 pointer-events-none"
+			}`}
+		>
+			Unlock to modify
+		</span>
+	);
 
 	const handleFileChange = async (e: ChangeEvent<HTMLInputElement>) => {
 		if (e.target.files && e.target.files[0]) {
@@ -59,70 +69,27 @@ export default function Gui() {
 			></Input>
 			<div className="flex flex-row gap-6 fixed right-6 top-1/2 -translate-y-1/2 z-40 ">
 				<div className="flex flex-col gap-3">
-					<Button
-						lifted
-						variant="soft"
-						size="lifted"
-						onClick={toggleLock}
-						aria-label={locked ? "Unlock editing" : "Lock editing"}
-					>
-						soft {locked ? <Lock /> : <LockOpen />}
-					</Button>
-					<Button
-						lifted
-						variant="deep"
-						size="lifted"
-						onClick={() => toggleTheme()}
-						aria-label="Toggle theme"
-					>
-						qsqsqssqqsqssqsq {theme === "light" ? <Moon /> : <Sun />}
-					</Button>
-					<Button
-						lifted
-						variant="default"
-						size="lifted"
-						onClick={() => fileInputRef.current?.click()}
-						aria-label="Import tab"
-					>
-						default <FolderInput />
-					</Button>
-					<Button
-						lifted
-						variant="shallow"
-						size="lifted"
-						onClick={() => handleExport(position || "0")}
-						aria-label="Export tab"
-					>
-						shallow <Share />
-					</Button>
+					<div className="relative w-fit">
+						<LockedTooltip />
+						<Button
+							lifted
+							variant="soft"
+							size="lifted"
+							onClick={toggleLock}
+							className={locked ? "bg-primary text-primary-foreground" : ""}
+							aria-label={locked ? "Unlock editing" : "Lock editing"}
+						>
+							{locked ? <Lock /> : <LockOpen />}
+						</Button>
+					</div>
 					<Button
 						lifted
 						variant="outline"
 						size="lifted"
-						onClick={() => setIsDialogOpen(true)}
-						aria-label="Clear tab"
-					>
-						Outline <Eraser />
-					</Button>
-				</div>
-				<div className="flex flex-col gap-3">
-					<Button
-						lifted
-						variant="soft"
-						size="lifted"
-						onClick={toggleLock}
-						aria-label={locked ? "Unlock editing" : "Lock editing"}
-					>
-						soft {locked ? <Lock /> : <LockOpen />}
-					</Button>
-					<Button
-						lifted
-						variant="deep"
-						size="lifted"
 						onClick={() => toggleTheme()}
 						aria-label="Toggle theme"
 					>
-						deep {theme === "light" ? <Moon /> : <Sun />}
+						{theme === "light" ? <Moon /> : <Sun />}
 					</Button>
 					<Button
 						lifted
@@ -131,7 +98,7 @@ export default function Gui() {
 						onClick={() => fileInputRef.current?.click()}
 						aria-label="Import tab"
 					>
-						default <FolderInput />
+						<FolderInput />
 					</Button>
 					<Button
 						lifted
@@ -140,7 +107,7 @@ export default function Gui() {
 						onClick={() => handleExport(position || "0")}
 						aria-label="Export tab"
 					>
-						shallow <Share />
+						<Share />
 					</Button>
 					<Button
 						lifted
