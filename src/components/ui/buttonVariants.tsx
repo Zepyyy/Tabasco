@@ -5,10 +5,10 @@ const buttonVariants = cva(
 	{
 		variants: {
 			variant: {
-				default: "bg-primary text-primary-foreground",
+				default: "bg-background-light text-foreground",
 				destructive:
 					"bg-destructive text-destructive-foreground hover:bg-destructive",
-				soft: "bg-soft/25 text-soft-foreground",
+				soft: "bg-background-light text-foreground",
 				outline: "bg-background text-primary border-2 border-primary",
 				deep: "bg-primary text-primary-foreground",
 				shallow: "bg-secondary text-secondary-foreground",
@@ -22,6 +22,7 @@ const buttonVariants = cva(
 				lg: "h-10 rounded-sm px-8",
 				icon: "h-9 w-9 rounded-sm p-0 aspect-square",
 				bigIcon: "p-3 aspect-square",
+				lifted: "p-2",
 				link: "rounded-[12px] font-serif-text underline active:no-underline hover:cursor-pointer text-xl font-normal",
 			},
 		},

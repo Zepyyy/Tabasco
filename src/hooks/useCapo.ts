@@ -7,14 +7,14 @@ export const useCapo = () => {
 	const { locked, triggerLockFeedback } = useLock();
 	const { currentTab, position } = useCurrentTab();
 
-	const capo = currentTab?.capo || "";
+	const capo = currentTab?.capo ?? -1;
 
 	const HandleSetCapos = (capo: number) => {
 		if (locked) {
 			triggerLockFeedback();
 			return;
 		}
-		if (position && capo && capo >= -1 && capo <= MAX_FRET) {
+		if (position && capo >= -1 && capo <= MAX_FRET) {
 			updateTabCapoByPosition(position, capo);
 		}
 	};

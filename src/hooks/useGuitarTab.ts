@@ -122,13 +122,12 @@ export const useGuitarTab = (): TabState & TabOperations => {
 			if (locked) {
 				triggerLockFeedback();
 				return;
-			}
-			if (tab.length !== NOTES_PER_SECTION) {
+            }
+			if (tab[0]?.length >= NOTES_PER_SECTION) {
 				try {
-					const sectionLength = section.data[0]?.length || 0;
 					const newTab = tab.map((string) => {
 						const newString = [...string];
-						newString.splice(section.startNoteIndex, sectionLength);
+						newString.splice(section.startNoteIndex, NOTES_PER_SECTION);
 						return newString;
 					});
 					updateCurrentTabs(newTab || [], position || "0");
@@ -217,7 +216,7 @@ export const useGuitarTab = (): TabState & TabOperations => {
 				setIsLoading(false);
 			}
 		},
-		[navigate, setIsLoading, setError],
+		[navigate, setIsLoading],
 	);
 
 	const handleSwitchNotes = useCallback(
@@ -236,7 +235,7 @@ export const useGuitarTab = (): TabState & TabOperations => {
 				NoteOnePosition.string == NoteTwoPosition.string &&
 				NoteOnePosition.position == NoteTwoPosition.position
 			) {
-				throw new Error("Invalid data format for import");
+                return;
 			}
 
 			await switchTwoNotesByPosition(
