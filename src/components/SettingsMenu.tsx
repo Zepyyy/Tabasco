@@ -1,4 +1,12 @@
-import { Eraser, FolderInput, Lock, LockOpen, Moon, Share, Sun } from "lucide-react";
+import {
+	Eraser,
+	FolderInput,
+	Lock,
+	LockOpen,
+	Moon,
+	Share,
+	Sun,
+} from "lucide-react";
 import { ChangeEvent, useRef, useState } from "react";
 import { useLock } from "@/contexts/LockContext";
 import { useTheme } from "@/contexts/ThemeContext";
@@ -48,102 +56,103 @@ export default function Gui() {
 				accept="application/json"
 				className="hidden"
 				onChange={handleFileChange}
-            ></Input>
-			<div className="flex flex-col">
-			<div className="fixed right-6 top-1/2 -translate-y-1/2 z-40 flex flex-col gap-3">
-                <Button
-                    lifted
-					variant="soft"
-					size="lifted"
-					onClick={toggleLock}
-					aria-label={locked ? "Unlock editing" : "Lock editing"}
-				>
-					soft {locked ? <Lock /> : <LockOpen />}
-				</Button>
-                <Button
-                    lifted
-                    variant="deep"
-					size="lifted"
-					onClick={() => toggleTheme()}
-					aria-label="Toggle theme"
-				>
-					qsqsqssqqsqssqsq {theme === "light" ? <Moon /> : <Sun />}
-				</Button>
-                <Button
-                    lifted
-					variant="default"
-					size="lifted"
-					onClick={() => fileInputRef.current?.click()}
-					aria-label="Import tab"
-				>
-					default <FolderInput />
-                </Button>
-                <Button
-                    lifted
-					variant="shallow"
-					size="lifted"
-					onClick={() => handleExport(position || "0")}
-					aria-label="Export tab"
-				>
-					shallow <Share />
-				</Button>
-                <Button
-                    lifted
-					variant="outline"
-					size="lifted"
-					onClick={() => setIsDialogOpen(true)}
-					aria-label="Clear tab"
-				>
-					Outline <Eraser />
-				</Button>
+			></Input>
+			<div className="flex flex-row gap-6 fixed right-6 top-1/2 -translate-y-1/2 z-40 ">
+				<div className="flex flex-col gap-3">
+					<Button
+						lifted
+						variant="soft"
+						size="lifted"
+						onClick={toggleLock}
+						aria-label={locked ? "Unlock editing" : "Lock editing"}
+					>
+						soft {locked ? <Lock /> : <LockOpen />}
+					</Button>
+					<Button
+						lifted
+						variant="deep"
+						size="lifted"
+						onClick={() => toggleTheme()}
+						aria-label="Toggle theme"
+					>
+						qsqsqssqqsqssqsq {theme === "light" ? <Moon /> : <Sun />}
+					</Button>
+					<Button
+						lifted
+						variant="default"
+						size="lifted"
+						onClick={() => fileInputRef.current?.click()}
+						aria-label="Import tab"
+					>
+						default <FolderInput />
+					</Button>
+					<Button
+						lifted
+						variant="shallow"
+						size="lifted"
+						onClick={() => handleExport(position || "0")}
+						aria-label="Export tab"
+					>
+						shallow <Share />
+					</Button>
+					<Button
+						lifted
+						variant="outline"
+						size="lifted"
+						onClick={() => setIsDialogOpen(true)}
+						aria-label="Clear tab"
+					>
+						Outline <Eraser />
+					</Button>
+				</div>
+				<div className="flex flex-col gap-3">
+					<Button
+						lifted
+						variant="soft"
+						size="lifted"
+						onClick={toggleLock}
+						aria-label={locked ? "Unlock editing" : "Lock editing"}
+					>
+						soft {locked ? <Lock /> : <LockOpen />}
+					</Button>
+					<Button
+						lifted
+						variant="deep"
+						size="lifted"
+						onClick={() => toggleTheme()}
+						aria-label="Toggle theme"
+					>
+						deep {theme === "light" ? <Moon /> : <Sun />}
+					</Button>
+					<Button
+						lifted
+						variant="default"
+						size="lifted"
+						onClick={() => fileInputRef.current?.click()}
+						aria-label="Import tab"
+					>
+						default <FolderInput />
+					</Button>
+					<Button
+						lifted
+						variant="shallow"
+						size="lifted"
+						onClick={() => handleExport(position || "0")}
+						aria-label="Export tab"
+					>
+						shallow <Share />
+					</Button>
+					<Button
+						lifted
+						variant="outline"
+						size="lifted"
+						onClick={() => setIsDialogOpen(true)}
+						aria-label="Clear tab"
+					>
+						<Eraser />
+					</Button>
+				</div>
 			</div>
-			<div className="fixed right-6 top-1/2 -translate-y-1/2 z-40 flex flex-col gap-3">
-                <Button
-                    lifted
-					variant="soft"
-					size="lifted"
-					onClick={toggleLock}
-					aria-label={locked ? "Unlock editing" : "Lock editing"}
-				>
-					soft {locked ? <Lock /> : <LockOpen />}
-				</Button>
-                <Button
-                    lifted
-                    variant="deep"
-					size="lifted"
-					onClick={() => toggleTheme()}
-					aria-label="Toggle theme"
-				>
-					deep {theme === "light" ? <Moon /> : <Sun />}
-				</Button>
-                <Button
-                    lifted
-					variant="default"
-					size="lifted"
-					onClick={() => fileInputRef.current?.click()}
-					aria-label="Import tab"
-				>
-					default <FolderInput />
-                </Button>
-                <Button
-                    lifted
-					variant="shallow"
-					size="lifted"
-					onClick={() => handleExport(position || "0")}
-					aria-label="Export tab"
-				>
-					shallow <Share />
-				</Button>
-                <Button
-                    lifted
-					variant="outline"
-					size="lifted"
-					onClick={() => setIsDialogOpen(true)}
-					aria-label="Clear tab"
-				>
-					<Eraser />
-				</Button>
-			</div></div>
 
 			<AlertDialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
 				<AlertDialogContent>
