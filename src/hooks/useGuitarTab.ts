@@ -122,7 +122,7 @@ export const useGuitarTab = (): TabState & TabOperations => {
 			if (locked) {
 				triggerLockFeedback();
 				return;
-            }
+			}
 			if (tab[0]?.length >= NOTES_PER_SECTION) {
 				try {
 					const newTab = tab.map((string) => {
@@ -235,7 +235,7 @@ export const useGuitarTab = (): TabState & TabOperations => {
 				NoteOnePosition.string == NoteTwoPosition.string &&
 				NoteOnePosition.position == NoteTwoPosition.position
 			) {
-                return;
+				return;
 			}
 
 			await switchTwoNotesByPosition(

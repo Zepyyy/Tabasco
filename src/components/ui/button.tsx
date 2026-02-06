@@ -7,12 +7,24 @@ import { cn } from "@/lib/utils";
 export interface ButtonProps
 	extends React.ButtonHTMLAttributes<HTMLButtonElement>,
 		VariantProps<typeof buttonVariants> {
-    asChild?: boolean;
-    lifted?: boolean;
+	asChild?: boolean;
+	lifted?: boolean;
 }
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-	({ className, variant, size, asChild = false, lifted = false, children, disabled, ...props }, ref) => {
+	(
+		{
+			className,
+			variant,
+			size,
+			asChild = false,
+			lifted = false,
+			children,
+			disabled,
+			...props
+		},
+		ref,
+	) => {
 		const Comp = asChild ? Slot : "button";
 		const baseClassName = cn(buttonVariants({ variant, size, className }));
 
@@ -25,7 +37,12 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 		}
 
 		return (
-			<div className={cn("relative inline-block", !disabled && "group")}>
+			<div
+				className={cn(
+					"relative inline-block w-fit self-start",
+					!disabled && "group",
+				)}
+			>
 				<span className={cn(baseClassName, "invisible pointer-events-none")}>
 					{children}
 				</span>
