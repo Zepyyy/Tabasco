@@ -2,6 +2,7 @@ import { Eraser, FolderInput, Settings } from "lucide-react";
 import { ChangeEvent, useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router";
 import { clearTab } from "@/db/crud/ClearTab";
+import { useCurrentTab } from "@/hooks/useCurrentTab";
 import { useGuitarTab } from "@/hooks/useGuitarTab";
 import {
 	AlertDialog,
@@ -21,7 +22,6 @@ import {
 	DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
 import { Input } from "./ui/input";
-import { useCurrentTab } from "@/hooks/useCurrentTab";
 
 export default function SettingsDropdownMenu() {
 	const { position } = useCurrentTab();

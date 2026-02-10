@@ -1,8 +1,8 @@
-import { ArrowRight, LockIcon, LockOpen } from "lucide-react";
+import { LockIcon, LockOpen } from "lucide-react";
 import { useLock } from "@/contexts/LockContext";
 
 export default function LockSwitcher({ rounded }: { rounded?: boolean }) {
-	const { locked, trigger, toggleLock, showText } = useLock();
+	const { locked, trigger, toggleLock } = useLock();
 
 	return (
 		<div
@@ -10,14 +10,6 @@ export default function LockSwitcher({ rounded }: { rounded?: boolean }) {
 				locked ? "bg-primary text-primary-foreground" : ""
 			}`}
 		>
-			<div className={`relative flex items-center gap-2 whitespace-nowrap `}>
-				<div
-					className={`absolute right-2 flex items-center gap-1 font-bold text-foreground whitespace-nowrap transition-opacity duration-200 ${showText ? "opacity-100" : "opacity-0 pointer-events-none"}`}
-				>
-					Unlock to modify
-					<ArrowRight size={18} strokeWidth={2.5} />
-				</div>
-			</div>
 			<button
 				className={`w-full h-full flex items-center justify-center`}
 				onClick={() => toggleLock()}

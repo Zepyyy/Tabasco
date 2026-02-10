@@ -154,7 +154,6 @@ export default function GuitarTabCreator() {
 						>
 							<div>
 								<Button
-									lifted
 									variant="destructive"
 									onClick={() => handleRemoveSection(section)}
 									key={`delete-section-${index}`}
@@ -185,11 +184,7 @@ export default function GuitarTabCreator() {
 				))}
 			</div>
 			<div>
-				<Button
-					lifted
-					variant="shallow"
-					onClick={() => handleNewLineClick(tab)}
-				>
+				<Button variant="deep" onClick={() => handleNewLineClick(tab)}>
 					<span className="text-xl font-serif-text">+</span>
 				</Button>
 			</div>

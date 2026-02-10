@@ -31,6 +31,7 @@ import {
 	DropdownMenuSeparator,
 	DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
+import { Button } from "./ui/button";
 
 // Reusable component for the rename input
 const RenameInput = ({
@@ -43,7 +44,7 @@ const RenameInput = ({
 	Escape: () => void;
 }) => (
 	<input
-		className="bg-background text-foreground px-2 py-1 rounded-md w-full border border-tab/20 focus:border-primary/50 focus:ring-1 focus:ring-primary/50 outline-hidden transition-all text-xl "
+		className="bg-background text-foreground px-2 py-1 rounded-md w-full border border-tab/20 focus:border-primary/50 focus:ring-1 focus:ring-primary/50 outline-hidden transition text-xl "
 		type="text"
 		defaultValue={initialValue}
 		autoFocus
@@ -73,12 +74,14 @@ function HoverButton({
 	destructive?: boolean;
 }) {
 	return (
-		<button
+		<Button
+			variant={destructive ? "destructive" : "soft"}
+			size="bigIcon"
 			onClick={() => action && action()}
-			className={`${destructive ? "hover:bg-red-800 dark:hover:text-foreground hover:text-background" : "hover:bg-background/70"} bg-background text-muted aspect-square h-fit mx-1 p-2 group-hover:visible invisible flex items-center justify-center rounded-lg`}
+			className={`aspect-square h-fit mx-1 p-1 group-hover:visible invisible flex items-center justify-center rounded-lg [&_svg]:size-5 [&_svg]:shrink-0`}
 		>
 			{children}
-		</button>
+		</Button>
 	);
 }
 
@@ -114,7 +117,7 @@ export default function TabsDropdownMenuModern() {
 					<DropdownMenu onOpenChange={() => setUpPosition(!upPosition)}>
 						<DropdownMenuTrigger
 							asChild
-							className="appearance-none border-none inline-flex items-center justify-center rounded-md text-tab text-4xl font-serif-text w-full h-full m-0 p-0"
+							className="appearance-none border-none inline-flex items-center justify-center rounded-md text-tab text-4xl font-serif-title w-full h-full m-0 p-0"
 						>
 							<button
 								aria-label="Customise options"
@@ -139,14 +142,14 @@ export default function TabsDropdownMenuModern() {
 									<div className="flex justify-between w-full relative items-center rounded-md text-foreground gap-8 text-2xl font-normal h-10 px-2">
 										Your tabs
 										<div className="flex flex-row items-center gap-2 group">
-											<div className="transition-opacity group-hover:opacity-100 opacity-0">
-												add a tab
-											</div>
-											<Plus
-												className="pt-0.5 cursor-pointer opacity-100 bg-background text-muted group-hover:bg-background/70 rounded-lg p-1"
-												size={24}
+											<Button
+												variant="transparent"
+												size="icon"
+												tooltip="Add a new tab"
 												onClick={() => handleAddTab()}
-											/>
+											>
+												<Plus />
+											</Button>
 										</div>
 									</div>
 								</DropdownMenuLabel>
@@ -154,21 +157,22 @@ export default function TabsDropdownMenuModern() {
 								{tabs.map((tab: TabInfo) => (
 									<div
 										key={tab.id}
-										className="flex flex-row group w-full h-12 items-center justify-center text-foreground"
+										className="flex flex-row group w-full h-10 items-center justify-center text-foreground"
 									>
 										<NavLink
 											to={`/sheet/${tab.position}`}
 											key={tab.id}
 											className={({ isActive, isPending }) =>
 												[
-													"h-full w-full group-hover:visible flex items-center justify-start gap-2 rounded-md",
-													"transition-all",
+													"h-full w-full group-hover:visible flex items-center justify-start gap-1 rounded-md",
+													"hover:bg-background/80",
+													"transition",
 													"duration-300",
 													"ease-out",
 													isActive
-														? "tab-active"
+														? "bg-primary/90 text-background-light dark:text-foreground hover:bg-primary"
 														: isPending
-															? "tab-pending"
+															? "text-foreground bg-foreground/10 hover:bg-foreground/20"
 															: "",
 												].join(" ")
 											}
@@ -181,7 +185,7 @@ export default function TabsDropdownMenuModern() {
 														setConcernedTab(tab);
 													}}
 												>
-													<Trash2 />
+													<Trash2 size={20} />
 												</HoverButton>
 											</div>
 
@@ -197,7 +201,7 @@ export default function TabsDropdownMenuModern() {
 														})
 													}
 												>
-													<PenIcon />
+													<PenIcon size={20} />
 												</HoverButton>
 
 												<HoverButton
@@ -209,12 +213,12 @@ export default function TabsDropdownMenuModern() {
 														})
 													}
 												>
-													<CopyPlus />
+													<CopyPlus size={20} />
 												</HoverButton>
 												<HoverButton
 													action={() => handleMove(tab.id, tab.position)}
 												>
-													<CornerRightDown />
+													<CornerRightDown size={20} />
 												</HoverButton>
 											</div>
 										</NavLink>

@@ -40,7 +40,7 @@ const RenameInput = ({
 	onCancel: () => void;
 }) => (
 	<input
-		className="bg-background text-foreground px-2 py-1 rounded-md w-full border border-tab/20 focus:border-primary/50 focus:ring-1 focus:ring-primary/50 outline-hidden transition-all text-xl"
+		className="bg-background text-foreground px-2 py-1 rounded-md w-full border border-tab/20 focus:border-primary/50 focus:ring-1 focus:ring-primary/50 outline-hidden transition-colors text-xl"
 		type="text"
 		defaultValue={initialValue}
 		autoFocus
@@ -173,7 +173,7 @@ export default function TabsDropdownMenu() {
 										className={({ isActive, isPending }) =>
 											[
 												"text-tab",
-												"transition-all",
+												"transition-colors",
 												"duration-300",
 												"ease-out",
 												isActive
