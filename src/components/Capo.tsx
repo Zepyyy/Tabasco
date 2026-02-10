@@ -18,7 +18,7 @@ export default function Capo() {
 	};
 
 	return (
-		<div className="flex items-center justify-end gap-2 text-tab font-serif-title antialiased md:text-3xl text-2xl sm:text-2xl">
+		<div className="flex text-start items-start justify-end gap-2 text-tab font-serif-title antialiased md:text-3xl text-2xl sm:text-2xl">
 			<p className="text-tab md:text-3xl text-2xl sm:text-2xl">
 				{capo !== -1 ? "Capo:" : ""}
 			</p>
@@ -31,7 +31,7 @@ export default function Capo() {
 				value={capo === -1 ? "" : capo}
 				onChange={(e) => handleChange(e)}
 				placeholder="Add capo"
-				className="flex font-semibold border-none shadow-none focus-visible:ring-0 py-0 h-fit w-20 md:w-24 md:text-3xl text-2xl sm:text-2xl"
+				className="text-start flex font-semibold border-none shadow-none focus-visible:ring-0 py-0 h-fit w-20 md:w-32 md:text-3xl text-2xl sm:text-2xl"
 			/>
 		</div>
 	);

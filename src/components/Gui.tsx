@@ -9,6 +9,7 @@ import {
 	Sun,
 } from "lucide-react";
 import { ChangeEvent, useRef, useState } from "react";
+import { useNavigate } from "react-router";
 import { useLock } from "@/contexts/LockContext";
 import { useTheme } from "@/contexts/ThemeContext";
 import { clearTab } from "@/db/crud/ClearTab";
@@ -26,7 +27,6 @@ import {
 } from "./ui/alert-dialog";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
-import { useNavigate } from "react-router";
 
 export default function Gui() {
 	const { handleImport, handleExport } = useGuitarTab();
