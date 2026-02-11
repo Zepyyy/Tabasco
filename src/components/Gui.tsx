@@ -87,7 +87,10 @@ export default function Gui() {
 							{locked ? <Lock /> : <LockOpen />}
 						</Button>
 					</div>
-					<Separator orientation="horizontal" className="bg-primary" />
+					<Separator
+						orientation="horizontal"
+						className="border-t border-primary"
+					/>
 					<div className="flex flex-col gap-3">
 						<Button
 							lifted
@@ -118,7 +121,10 @@ export default function Gui() {
 							<Eraser />
 						</Button>
 					</div>
-					<Separator orientation="horizontal" className="bg-primary" />
+					<Separator
+						orientation="horizontal"
+						className="border-t border-primary"
+					/>
 					<div className="flex flex-col gap-3">
 						<Button
 							lifted
