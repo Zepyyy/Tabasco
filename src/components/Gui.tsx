@@ -28,6 +28,8 @@ import {
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 
+import { Separator } from "./ui/separator";
+
 export default function Gui() {
 	const { handleImport, handleExport } = useGuitarTab();
 	const { position } = useCurrentTab();
@@ -70,8 +72,8 @@ export default function Gui() {
 				className="hidden"
 				onChange={handleFileChange}
 			></Input>
-			<div className="flex flex-row gap-6 fixed right-6 top-1/2 -translate-y-1/2 z-40">
-				<div className="flex flex-col gap-3">
+			<div className="flex flex-row gap-6 fixed right-5 top-1/2 -translate-y-1/2 z-40">
+				<div className="flex flex-col gap-5">
 					<div className="relative w-fit group/tooltip">
 						<LockedTooltip />
 						<Button
@@ -85,52 +87,58 @@ export default function Gui() {
 							{locked ? <Lock /> : <LockOpen />}
 						</Button>
 					</div>
-					<Button
-						lifted
-						tooltip="toggle theme"
-						size="lifted"
-						onClick={() => toggleTheme()}
-						aria-label="Toggle theme"
-					>
-						{theme === "light" ? <Moon /> : <Sun />}
-					</Button>
-					<Button
-						lifted
-						tooltip="import"
-						size="lifted"
-						onClick={() => fileInputRef.current?.click()}
-						aria-label="Import tab"
-					>
-						<FolderInput />
-					</Button>
+					<Separator orientation="horizontal" className="bg-primary" />
+					<div className="flex flex-col gap-3">
+						<Button
+							lifted
+							tooltip="Import"
+							size="lifted"
+							onClick={() => fileInputRef.current?.click()}
+							aria-label="Import tab"
+						>
+							<FolderInput />
+						</Button>
 
-					<Button
-						lifted
-						tooltip="Export"
-						size="lifted"
-						onClick={() => handleExport(position || "0")}
-						aria-label="Export tab"
-					>
-						<Share />
-					</Button>
-					<Button
-						lifted
-						tooltip="Clear tab"
-						size="lifted"
-						onClick={() => setIsDialogOpen(true)}
-						aria-label="Clear tab"
-					>
-						<Eraser />
-					</Button>
-					<Button
-						lifted
-						tooltip="design system"
-						size="lifted"
-						onClick={() => navigate("/design-system")}
-						aria-label="design system"
-					>
-						<ArrowRightCircle />
-					</Button>
+						<Button
+							lifted
+							tooltip="Export"
+							size="lifted"
+							onClick={() => handleExport(position || "0")}
+							aria-label="Export tab"
+						>
+							<Share />
+						</Button>
+						<Button
+							lifted
+							tooltip="Clear tab"
+							size="lifted"
+							onClick={() => setIsDialogOpen(true)}
+							aria-label="Clear tab"
+						>
+							<Eraser />
+						</Button>
+					</div>
+					<Separator orientation="horizontal" className="bg-primary" />
+					<div className="flex flex-col gap-3">
+						<Button
+							lifted
+							tooltip="Toggle theme"
+							size="lifted"
+							onClick={() => toggleTheme()}
+							aria-label="Toggle theme"
+						>
+							{theme === "light" ? <Moon /> : <Sun />}
+						</Button>
+						<Button
+							lifted
+							tooltip="-> Design system"
+							size="lifted"
+							onClick={() => navigate("/design-system")}
+							aria-label="design system"
+						>
+							<ArrowRightCircle />
+						</Button>
+					</div>
 				</div>
 			</div>
 
