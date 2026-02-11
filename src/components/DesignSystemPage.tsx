@@ -43,7 +43,7 @@ const tokenDefinitions = [
 	{ key: "shadow", label: "Shadow" },
 	{ key: "primary", label: "Primary" },
 	{ key: "primary-foreground", label: "Primary Foreground" },
-	{ key: "primary-hovered", label: "Primary Hovered" },
+	{ key: "secondary", label: "Secondary" },
 	{ key: "accent", label: "Accent" },
 	{ key: "accent-foreground", label: "Accent Foreground" },
 	{ key: "muted", label: "Muted" },

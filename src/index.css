@@ -30,7 +30,7 @@
 
     --color-primary: hsl(var(--primary));
     --color-primary-foreground: hsl(var(--primary-foreground));
-    --color-primary-hovered: hsl(var(--primary-hovered));
+    --color-secondary: hsl(var(--secondary));
 
     --color-muted: hsl(var(--muted));
     --color-muted-foreground: hsl(var(--muted-foreground));
@@ -114,22 +114,25 @@
     :root {
         --background: 248 12.3% 88.9%;
         --background-light: 248 22.58% 93.92%;
-
         --foreground: 240 3% 13%;
         --shadow: 250 4% 71%;
+
         --card: 0 0% 100%;
         --card-foreground: 0 0% 3.9%;
         --popover: 0 0% 100%;
         --popover-foreground: 0 0% 3.9%;
+
         --primary: 238 30% 39%;
         --primary-foreground: 249 23% 94%;
-        --primary-hovered: 243 17% 79%;
+        --secondary: 243 17% 79%;
+
         --muted: 240 6% 54%;
         --muted-foreground: 0 0% 14%;
         --accent: 238 30% 39%;
         --accent-foreground: 249 23% 94%;
         --popover: 50 0% 20%;
         --popover-foreground: 0 0% 3.9%;
+
         --tab: 0 0% 14%;
         --tab-subtle: 250 7% 84%;
 
@@ -156,6 +159,7 @@
         --chart-4: 43 74% 66%;
         --chart-5: 27 87% 67%;
         --radius: 0.25rem;
+
         --tag: 249 8% 83%;
     }
     .dark {
@@ -163,19 +167,23 @@
         --background-light: 240 2.5% 15.69%;
         --foreground: 249 24% 94%;
         --shadow: 240 2% 10%;
+
         --card: 0 0% 3.9%;
         --card-foreground: 0 0% 98%;
         --popover: 0 0% 3.9%;
         --popover-foreground: 0 0% 98%;
+
         --primary: 240 29% 41%;
         --primary-foreground: 249 23% 94%;
-        --primary-hovered: 240 14% 19%;
+        --secondary: 240 14% 19%;
+
         --muted: 249 4% 65%; /* a2a1a8*/
         --muted-foreground: 0 0% 78%;
         --accent: 240 29% 41%;
         --accent-foreground: 249 23% 94%;
         --popover: 0 0% 100%;
         --popover-foreground: 0 0% 3.9%;
+
         --tab: 0 0% 78%;
         --tab-subtle: 240 2% 23%;
 
@@ -202,6 +210,7 @@
         --chart-4: 280 65% 60%;
         --chart-5: 340 75% 55%;
         --radius: 0.25rem;
+
         --tag: 240 2% 21%;
     }
 }
