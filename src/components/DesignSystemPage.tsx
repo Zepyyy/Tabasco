@@ -1,7 +1,6 @@
-import { CheckCircle2, LayoutGrid, Sparkles } from "lucide-react";
+import { CheckCircle2, LayoutGrid, Moon, Sparkles, Sun } from "lucide-react";
 import { type CSSProperties, useEffect, useMemo, useState } from "react";
 import { Link } from "react-router";
-import ThemeSwitcher from "@/components/ThemeSwitcher";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import {
 	AlertDialog,
@@ -121,6 +120,8 @@ export default function DesignSystemPage() {
 		setIsDirty(false);
 	};
 
+	const { toggleTheme } = useTheme();
+
 	return (
 		<div
 			className="min-h-screen bg-background text-foreground"
@@ -145,9 +146,16 @@ export default function DesignSystemPage() {
 							<Button variant="outline" size="sm" asChild>
 								<Link to="/sheet/0">Back to app</Link>
 							</Button>
-							<div className="rounded-lg border border-tab bg-background-light p-1">
-								<ThemeSwitcher />
-							</div>
+							<Button
+								lifted
+								tooltip="Toggle theme"
+								tooltipSide="right"
+								size="lifted"
+								onClick={() => toggleTheme()}
+								aria-label="Toggle theme"
+							>
+								{theme === "light" ? <Moon /> : <Sun />}
+							</Button>
 						</div>
 					</div>
 					<div className="grid gap-4 rounded-2xl border border-tab bg-background-light/70 p-6 shadow-sm sm:grid-cols-[2fr,1fr]">
@@ -276,6 +284,7 @@ export default function DesignSystemPage() {
 								<Button variant="link">link</Button>
 								<Button variant="transparent">transparent</Button>
 							</div>
+							<h3 className="text-lg font-semibold">Sizes</h3>
 							<div className="flex flex-wrap items-center gap-3">
 								<Button size="sm">Small</Button>
 								<Button size="default">Default</Button>
@@ -287,6 +296,50 @@ export default function DesignSystemPage() {
 								<Button size="lifted" lifted>
 									Lifted
 								</Button>
+							</div>
+							<h3 className="text-lg font-semibold">Tooltips</h3>
+							<div className="flex flex-wrap items-center gap-3">
+								<Button size="default" tooltipSide="top" tooltip="top">
+									Top
+								</Button>
+								<Button size="default" tooltipSide="bottom" tooltip="bottom">
+									Bottom
+								</Button>
+								<Button size="default" tooltipSide="left" tooltip="left">
+									Left
+								</Button>
+								<Button size="default" tooltipSide="right" tooltip="right">
+									Right
+								</Button>
+								<div className="flex flex-wrap items-center gap-3">
+									<Button lifted size="lifted" tooltipSide="top" tooltip="top">
+										Top
+									</Button>
+									<Button
+										lifted
+										size="lifted"
+										tooltipSide="bottom"
+										tooltip="bottom"
+									>
+										Bottom
+									</Button>
+									<Button
+										lifted
+										size="lifted"
+										tooltipSide="left"
+										tooltip="left"
+									>
+										Left
+									</Button>
+									<Button
+										lifted
+										size="lifted"
+										tooltipSide="right"
+										tooltip="right"
+									>
+										Right
+									</Button>
+								</div>
 							</div>
 						</div>
 
@@ -383,7 +436,9 @@ export default function DesignSystemPage() {
 										Tempo 92 • Key of C
 									</p>
 								</div>
-								<Button variant="deep">Play</Button>
+								<Button variant="deep" tooltip="?" tooltipSide="left">
+									Play
+								</Button>
 							</div>
 							<div className="mt-4 flex flex-wrap gap-2">
 								<Tag>Fingerstyle</Tag>

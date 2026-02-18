@@ -1,23 +1,6 @@
 import clsx from "clsx";
 import { cn } from "@/lib/utils";
 
-export const Tooltip = ({
-	children,
-	className,
-}: {
-	children: React.ReactNode;
-	className?: string;
-}) => (
-	<span
-		className={cn(
-			"whitespace-nowrap absolute right-full mr-3 top-1/2 -translate-y-1/2 rounded-lg bg-foreground/70 px-2 py-1 text-xs font-semibold text-background shadow-sm duration-200 font-Bricolage group-hover/tooltip:opacity-100 opacity-0 transition-opacity pointer-events-none",
-			className,
-		)}
-	>
-		{children}
-	</span>
-);
-
 export default function LiftedButton(props: {
 	children?: React.ReactNode;
 	svg?: React.ReactNode;

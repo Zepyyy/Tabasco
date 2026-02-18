@@ -1,9 +1,11 @@
 import { Slot } from "@radix-ui/react-slot";
 import { VariantProps } from "class-variance-authority";
+import clsx from "clsx";
 import * as React from "react";
 import { buttonVariants } from "@/components/ui/buttonVariants";
 import { cn } from "@/lib/utils";
-import { Tooltip } from "../LiftedButton";
+import { TooltipSide } from "@/types/guitar-tab";
+import { Tooltip } from "../Tooltip";
 
 export interface ButtonProps
 	extends React.ButtonHTMLAttributes<HTMLButtonElement>,
@@ -11,6 +13,7 @@ export interface ButtonProps
 	asChild?: boolean;
 	lifted?: boolean;
 	tooltip?: string;
+	tooltipSide?: TooltipSide;
 }
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
@@ -22,6 +25,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 			asChild = false,
 			lifted = false,
 			tooltip,
+			tooltipSide,
 			children,
 			disabled,
 			...props
@@ -34,7 +38,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 		if (!lifted) {
 			return (
 				<div className={"relative inline-block w-fit self-start group/tooltip"}>
-					{tooltip && <Tooltip className="mt-0">{tooltip}</Tooltip>}
+					{tooltip && <Tooltip side={tooltipSide}>{tooltip}</Tooltip>}
 					<Comp className={baseClassName} ref={ref} {...props}>
 						{children}
 					</Comp>
@@ -49,7 +53,19 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 					!disabled && "group",
 				)}
 			>
-				{tooltip && <Tooltip className="mt-1">{tooltip}</Tooltip>}
+				{tooltip && (
+					<Tooltip
+						side={tooltipSide}
+						className={clsx(
+							tooltipSide == "top" ? "mb-0.5! ml-1!" : "",
+							tooltipSide == "bottom" ? "mt-2.5! ml-1!" : "",
+							tooltipSide == "left" ? "mr-0.5! mt-1!" : "",
+							tooltipSide == "right" ? "ml-2.5! mt-1!" : "",
+						)}
+					>
+						{tooltip}
+					</Tooltip>
+				)}
 				<span className={cn(baseClassName, "invisible pointer-events-none")}>
 					{children}
 				</span>
