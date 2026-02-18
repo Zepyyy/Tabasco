@@ -41,7 +41,7 @@ export default function Gui() {
 
 	const LockedTooltip = () => (
 		<span
-			className={`absolute right-full mr-3 top-1/2 -translate-y-1/2 whitespace-nowrap rounded-lg bg-foreground/70 px-2 py-1 text-xs font-semibold text-background shadow-sm transition-opacity duration-200 font-Bricolage ${
+			className={`absolute right-full mt-0.5 mr-3 top-1/2 -translate-y-1/2 whitespace-nowrap rounded-lg bg-foreground/70 px-2 py-1 text-xs font-semibold text-background shadow-sm transition-opacity duration-200 font-Bricolage ${
 				showText ? "opacity-100" : "opacity-0 pointer-events-none"
 			}`}
 		>
@@ -81,7 +81,7 @@ export default function Gui() {
 							size="lifted"
 							tooltip={locked ? "Unlock editing" : "Lock editing"}
 							lifted
-							className={`${locked ? "bg-primary! text-primary-foreground!" : ""} ${showText ? "[&_svg]:animate-wiggle-once" : ""}`}
+							className={`${locked ? "bg-primary! text-primary-foreground! border-transparent hover:bg-primary/85!" : ""} ${showText ? "[&_svg]:animate-wiggle-once" : ""}`}
 							aria-label={locked ? "Unlock editing" : "Lock editing"}
 						>
 							{locked ? <Lock /> : <LockOpen />}

@@ -281,8 +281,11 @@ export default function DesignSystemPage() {
 								<Button variant="outline">Outline</Button>
 								<Button variant="soft">Soft</Button>
 								<Button variant="destructive">Destructive</Button>
-								<Button variant="link">link</Button>
-								<Button variant="transparent">transparent</Button>
+								<Button variant="link">Link</Button>
+								<Button variant="transparent">Transparent</Button>
+								<Button lifted size="lifted">
+									Lifted
+								</Button>
 							</div>
 							<h3 className="text-lg font-semibold">Sizes</h3>
 							<div className="flex flex-wrap items-center gap-3">
@@ -290,7 +293,7 @@ export default function DesignSystemPage() {
 								<Button size="default">Default</Button>
 								<Button size="lg">Large</Button>
 								<Button size="icon">★</Button>
-								<Button size="bigIcon" variant="deep">
+								<Button size="bigIcon">
 									<Sparkles className="h-4 w-4" />
 								</Button>
 								<Button size="lifted" lifted>

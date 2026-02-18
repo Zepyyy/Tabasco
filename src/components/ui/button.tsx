@@ -25,7 +25,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 			asChild = false,
 			lifted = false,
 			tooltip,
-			tooltipSide,
+			tooltipSide = "left",
 			children,
 			disabled,
 			...props
