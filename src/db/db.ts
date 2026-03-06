@@ -1,5 +1,3 @@
-// db.ts
-
 import Dexie, { type EntityTable } from "dexie";
 import {
 	DEFAULT_NOTE,

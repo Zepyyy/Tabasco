@@ -80,7 +80,7 @@ export default function Gui() {
 							onClick={toggleLock}
 							size="lifted"
 							tooltip={locked ? "Unlock editing" : "Lock editing"}
-							lifted
+							// lifted
 							className={`${locked ? "bg-primary! text-primary-foreground! border-transparent hover:bg-primary/85!" : ""} ${showText ? "[&_svg]:animate-wiggle-once" : ""}`}
 							aria-label={locked ? "Unlock editing" : "Lock editing"}
 						>
@@ -89,11 +89,11 @@ export default function Gui() {
 					</div>
 					<Separator
 						orientation="horizontal"
-						className="border-t border-primary"
+						className="border-t border-secondary"
 					/>
 					<div className="flex flex-col gap-3">
 						<Button
-							lifted
+							// lifted
 							tooltip="Import"
 							size="lifted"
 							onClick={() => fileInputRef.current?.click()}
@@ -103,7 +103,7 @@ export default function Gui() {
 						</Button>
 
 						<Button
-							lifted
+							// lifted
 							tooltip="Export"
 							size="lifted"
 							onClick={() => handleExport(position || "0")}
@@ -112,7 +112,7 @@ export default function Gui() {
 							<Share />
 						</Button>
 						<Button
-							lifted
+							// lifted
 							tooltip="Clear tab"
 							size="lifted"
 							onClick={() => setIsDialogOpen(true)}
@@ -123,11 +123,11 @@ export default function Gui() {
 					</div>
 					<Separator
 						orientation="horizontal"
-						className="border-t border-primary"
+						className="border-t border-secondary"
 					/>
 					<div className="flex flex-col gap-3">
 						<Button
-							lifted
+							// lifted
 							tooltip="Toggle theme"
 							size="lifted"
 							onClick={() => toggleTheme()}
@@ -136,7 +136,7 @@ export default function Gui() {
 							{theme === "light" ? <Moon /> : <Sun />}
 						</Button>
 						<Button
-							lifted
+							// lifted
 							tooltip="-> Design system"
 							size="lifted"
 							onClick={() => navigate("/design-system")}

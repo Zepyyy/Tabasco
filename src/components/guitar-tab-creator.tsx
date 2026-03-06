@@ -154,6 +154,9 @@ export default function GuitarTabCreator() {
 						>
 							<div>
 								<Button
+									lifted
+									tooltip="Remove section"
+									tooltipSide="right"
 									variant="destructive"
 									onClick={() => handleRemoveSection(section)}
 									key={`delete-section-${index}`}
@@ -184,8 +187,14 @@ export default function GuitarTabCreator() {
 				))}
 			</div>
 			<div>
-				<Button variant="deep" onClick={() => handleNewLineClick(tab)}>
-					<span className="text-xl font-serif-text">+</span>
+				<Button
+					lifted
+					size="icon"
+					tooltip="Add new section"
+					tooltipSide="right"
+					onClick={() => handleNewLineClick(tab)}
+				>
+					<span className="text-xl pb-1 font-serif-text">+</span>
 				</Button>
 			</div>
 		</div>
