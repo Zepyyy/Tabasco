@@ -12,7 +12,7 @@ const buttonVariants = cva(
 					"hover:bg-danger-000 hover:text-danger-900 text-danger-000 border-1 border-secondary bg-tag hover:border-transparent",
 				soft: "bg-background text-foreground hover:bg-background-light border-none hover:border-none",
 				outline:
-					"bg-background text-primary border-2 border-secondary dark:bg-background dark:text-primary-foreground hover:border-transparent hover:bg-primary/20",
+					"bg-background text-primary border-1 border-secondary dark:bg-background dark:text-primary-foreground hover:border-transparent hover:bg-primary/20",
 				transparent:
 					"text-foreground border-none shadow-none inset-shadow-none active:shadow-none active:inset-shadow-none",
 				link: "bg-background text-foreground border-none shadow-none inset-shadow-none active:shadow-none active:inset-shadow-none font-serif-text underline active:no-underline hover:underline-offset-3 transition-opacity duration-100 hover:cursor-pointer text-xl font-normal",
