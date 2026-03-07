@@ -1,4 +1,3 @@
-import TabsDropdownMenu from "./TabsDropdownMenu";
 import {
 	Breadcrumb,
 	BreadcrumbItem,
@@ -19,9 +18,7 @@ export default function BreadCrumbs() {
 				<BreadcrumbSeparator>
 					<p className="text-2xl font-serif-title">/</p>
 				</BreadcrumbSeparator>
-				<BreadcrumbItem>
-					<TabsDropdownMenu />
-				</BreadcrumbItem>
+				<BreadcrumbItem>{/*<TabsDropdownMenu />*/}</BreadcrumbItem>
 			</BreadcrumbList>
 		</Breadcrumb>
 	);
