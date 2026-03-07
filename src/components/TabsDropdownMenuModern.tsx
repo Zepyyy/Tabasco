@@ -1,3 +1,4 @@
+import clsx from "clsx";
 import { useLiveQuery } from "dexie-react-hooks";
 import {
 	ChevronUp,
@@ -67,18 +68,18 @@ const RenameInput = ({
 function HoverButton({
 	children,
 	action,
-	destructive,
+	className,
 }: {
 	children?: React.ReactNode;
 	action?: () => void;
-	destructive?: boolean;
+	className?: string;
 }) {
 	return (
 		<Button
-			variant={destructive ? "destructive" : "soft"}
+			variant={"soft"}
 			size="bigIcon"
 			onClick={() => action && action()}
-			className={`aspect-square h-fit mx-1 p-1 group-hover:visible invisible flex items-center justify-center rounded-lg [&_svg]:size-5 [&_svg]:shrink-0 border-none`}
+			className={`aspect-square h-fit mx-1 p-1 group-hover:visible invisible flex items-center justify-center rounded [&_svg]:size-5 [&_svg]:shrink-0 border-none transition duration-200 ease-in ${className}`}
 		>
 			{children}
 		</Button>
@@ -135,17 +136,18 @@ export default function TabsDropdownMenuModern() {
 						</DropdownMenuTrigger>
 						<DropdownMenuPortal>
 							<DropdownMenuContent
-								className="flex flex-col p-0 m-0 ml-6 z-40 font-serif-text text-2xl w-150 min-w-fit backdrop-blur-2xl bg-background-light border-tag shadow-[0_4px_4px_rgba(0,0,0,0.25)]"
+								className="flex flex-col p-2 m-0 ml-6 z-40 font-serif-text text-2xl w-150 min-w-fit bg-background border-secondary shadow-lg rounded-xl"
 								sideOffset={4}
 							>
 								<DropdownMenuLabel>
-									<div className="flex justify-between w-full relative items-center rounded-md text-foreground gap-8 text-2xl font-normal h-10 px-2">
+									<div className="flex justify-between w-full relative items-center rounded-md text-foreground text-2xl font-normal h-6 px-2">
 										Your tabs
 										<div className="flex flex-row items-center gap-2 group">
 											<Button
 												variant="transparent"
 												size="icon"
 												tooltip="Add a new tab"
+												className="bg-background"
 												onClick={() => handleAddTab()}
 											>
 												<Plus />
@@ -153,33 +155,29 @@ export default function TabsDropdownMenuModern() {
 										</div>
 									</div>
 								</DropdownMenuLabel>
-								<DropdownMenuSeparator className="m-0 bg-tag" />
+								<DropdownMenuSeparator className="my-2 bg-tag" />
 								{tabs.map((tab: TabInfo) => (
 									<div
 										key={tab.id}
-										className="flex flex-row group w-full h-10 items-center justify-center text-foreground"
+										className="flex flex-row group h-12 items-center justify-center text-foreground bg-background hover:bg-secondary transition-all duration-75 rounded-lg"
 									>
 										<NavLink
 											to={`/sheet/${tab.position}`}
 											key={tab.id}
 											className={({ isActive, isPending }) =>
-												[
-													"h-full w-full group-hover:visible flex items-center justify-start gap-1 rounded-md",
-													"hover:bg-background/80",
-													"transition",
-													"duration-300",
-													"ease-out",
+												clsx(
+													"h-full w-full group-hover:visible flex items-center justify-start gap-1 rounded-lg",
 													isActive
 														? "bg-primary/90 text-background-light dark:text-foreground hover:bg-primary"
 														: isPending
 															? "text-foreground bg-foreground/10 hover:bg-foreground/20"
 															: "",
-												].join(" ")
+												)
 											}
 										>
-											<div className="flex justify-start">
+											<div className="flex justify-start ml-2">
 												<HoverButton
-													destructive
+													className="hover:bg-destructive bg-background text-danger-000 transition-colors duration-150"
 													action={() => {
 														setIsDialogOpen(true);
 														setConcernedTab(tab);
@@ -216,6 +214,7 @@ export default function TabsDropdownMenuModern() {
 													<CopyPlus size={20} />
 												</HoverButton>
 												<HoverButton
+													className="mr-2"
 													action={() => handleMove(tab.id, tab.position)}
 												>
 													<CornerRightDown size={20} />

@@ -12,9 +12,8 @@
     --font-Script: "Marck Script", sans-serif;
     --font-Bricolage: "Bricolage Grotesque", sans-serif;
 
-    --radius-lg: var(--radius);
-    --radius-md: calc(var(--radius) - 2px);
-    --radius-sm: calc(var(--radius) - 4px);
+    /*--radius-md: calc(var(--radius) - 2px);*/
+    /*--radius-sm: calc(var(--radius) - 4px);*/
 
     --color-background: hsl(var(--background));
     --color-background-light: hsl(var(--background-light));
