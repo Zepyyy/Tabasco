@@ -23,6 +23,7 @@ import {
 	AlertDialogHeader,
 	AlertDialogTitle,
 } from "./ui/alert-dialog";
+import { Button } from "./ui/button";
 import {
 	DropdownMenu,
 	DropdownMenuContent,
@@ -31,7 +32,6 @@ import {
 	DropdownMenuSeparator,
 	DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
-import { Button } from "./ui/button";
 
 // Reusable component for the rename input
 const RenameInput = ({
@@ -78,7 +78,7 @@ function HoverButton({
 			variant={destructive ? "destructive" : "soft"}
 			size="bigIcon"
 			onClick={() => action && action()}
-			className={`aspect-square h-fit mx-1 p-1 group-hover:visible invisible flex items-center justify-center rounded-lg [&_svg]:size-5 [&_svg]:shrink-0`}
+			className={`aspect-square h-fit mx-1 p-1 group-hover:visible invisible flex items-center justify-center rounded-lg [&_svg]:size-5 [&_svg]:shrink-0 border-none`}
 		>
 			{children}
 		</Button>
