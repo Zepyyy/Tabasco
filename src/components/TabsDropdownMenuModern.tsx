@@ -136,7 +136,7 @@ export default function TabsDropdownMenuModern() {
 						</DropdownMenuTrigger>
 						<DropdownMenuPortal>
 							<DropdownMenuContent
-								className="flex flex-col p-2 m-0 ml-6 z-40 font-serif-text text-2xl w-150 min-w-fit bg-background border-secondary shadow-lg rounded-xl"
+								className="flex flex-col p-2 m-0 ml-6 z-40 font-serif-text text-2xl w-150 min-w-fit bg-background-light dark:border dark:border-foreground/30 border-secondary shadow-lg rounded-lg"
 								sideOffset={4}
 							>
 								<DropdownMenuLabel>
@@ -147,7 +147,7 @@ export default function TabsDropdownMenuModern() {
 												variant="transparent"
 												size="icon"
 												tooltip="Add a new tab"
-												className="bg-background"
+												// className="bg-background"
 												onClick={() => handleAddTab()}
 											>
 												<Plus />
@@ -159,16 +159,16 @@ export default function TabsDropdownMenuModern() {
 								{tabs.map((tab: TabInfo) => (
 									<div
 										key={tab.id}
-										className="flex flex-row group h-12 items-center justify-center text-foreground bg-background hover:bg-secondary transition-all duration-75 rounded-lg"
+										className="flex flex-row group h-12 items-center justify-center text-foreground bg-background-light hover:bg-secondary transition-all duration-75 rounded-md"
 									>
 										<NavLink
 											to={`/sheet/${tab.position}`}
 											key={tab.id}
 											className={({ isActive, isPending }) =>
 												clsx(
-													"h-full w-full group-hover:visible flex items-center justify-start gap-1 rounded-lg",
+													"h-full w-full group-hover:visible flex items-center justify-start gap-1 rounded-lg hover:dark:bg-primary/30",
 													isActive
-														? "bg-primary/90 text-background-light dark:text-foreground hover:bg-primary"
+														? "bg-primary/90 text-background-light dark:text-foreground hover:bg-primary "
 														: isPending
 															? "text-foreground bg-foreground/10 hover:bg-foreground/20"
 															: "",

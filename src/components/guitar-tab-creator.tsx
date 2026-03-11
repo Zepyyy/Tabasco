@@ -154,7 +154,6 @@ export default function GuitarTabCreator() {
 						>
 							<div>
 								<Button
-									lifted
 									tooltip="Remove section"
 									tooltipSide="right"
 									variant="destructive"
@@ -188,7 +187,6 @@ export default function GuitarTabCreator() {
 			</div>
 			<div>
 				<Button
-					lifted
 					size="icon"
 					tooltip="Add new section"
 					tooltipSide="right"

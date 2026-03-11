@@ -19,7 +19,7 @@ export const Tooltip = ({
 }) => (
 	<span
 		className={cn(
-			"whitespace-nowrap absolute rounded-lg bg-foreground/70 px-2 py-1 text-xs font-semibold text-background shadow-sm duration-200 font-Bricolage group-hover/tooltip:opacity-100 opacity-0 transition-opacity pointer-events-none z-50",
+			"whitespace-nowrap absolute rounded-sm bg-foreground/70 px-2 py-1 text-xs font-semibold text-background shadow-sm duration-200 font-Bricolage group-hover/tooltip:opacity-100 opacity-0 transition-opacity pointer-events-none z-50",
 			tooltipSideClasses[side],
 			className,
 		)}
