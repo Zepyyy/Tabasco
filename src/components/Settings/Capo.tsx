@@ -1,5 +1,5 @@
 import { useCapo } from "@/hooks/useCapo";
-import { Input } from "./ui/input";
+import { Input } from "../ui/input";
 
 export default function Capo() {
 	const { capo, HandleSetCapos } = useCapo();

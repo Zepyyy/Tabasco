@@ -1,10 +1,10 @@
 import { Analytics } from "@vercel/analytics/react";
 import { AlertCircleIcon } from "lucide-react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import Capo from "./components/Capo";
-import Gui from "./components/Gui";
-import GuitarTabCreator from "./components/guitar-tab-creator";
-import TabsDropdownMenuModern from "./components/TabsDropdownMenuModern";
+import TabsDropdownMenuModern from "./components/Navigation/TabsDropdownMenuModern";
+import GuitarTabCreator from "./components/Page/guitar-tab-creator";
+import Capo from "./components/Settings/Capo";
+import Gui from "./components/Settings/Gui";
 import Providers from "./providers/Providers";
 
 const AppContent = () => {

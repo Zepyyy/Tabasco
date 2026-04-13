@@ -23,8 +23,8 @@ import {
 	AlertDialogFooter,
 	AlertDialogHeader,
 	AlertDialogTitle,
-} from "./ui/alert-dialog";
-import { Button } from "./ui/button";
+} from "../ui/alert-dialog";
+import { Button } from "../ui/button";
 import {
 	DropdownMenu,
 	DropdownMenuContent,
@@ -32,7 +32,7 @@ import {
 	DropdownMenuPortal,
 	DropdownMenuSeparator,
 	DropdownMenuTrigger,
-} from "./ui/dropdown-menu";
+} from "../ui/dropdown-menu";
 
 // Reusable component for the rename input
 const RenameInput = ({
@@ -115,7 +115,10 @@ export default function TabsDropdownMenuModern() {
 				/>
 			) : (
 				<>
-					<DropdownMenu onOpenChange={() => setUpPosition(!upPosition)}>
+					<DropdownMenu
+						onOpenChange={() => setUpPosition(!upPosition)}
+						defaultOpen
+					>
 						<DropdownMenuTrigger
 							asChild
 							className="appearance-none border-none inline-flex items-center justify-center rounded-md text-tab text-4xl font-serif-title w-full h-full m-0 p-0"
@@ -128,7 +131,7 @@ export default function TabsDropdownMenuModern() {
 								<ChevronUp
 									size={32}
 									strokeWidth={2}
-									className={`transition-transform duration-200 text-tab pb-1.5 ${
+									className={`transition-transform duration-100 text-tab pb-1.5 ${
 										upPosition ? "rotate-0" : "rotate-180"
 									}`}
 								/>
@@ -156,73 +159,75 @@ export default function TabsDropdownMenuModern() {
 									</div>
 								</DropdownMenuLabel>
 								<DropdownMenuSeparator className="my-2 bg-tag" />
-								{tabs.map((tab: TabInfo) => (
-									<div
-										key={tab.id}
-										className="flex flex-row group h-12 items-center justify-center text-foreground bg-background-light hover:bg-secondary transition-all duration-75 rounded-md"
-									>
-										<NavLink
-											to={`/sheet/${tab.position}`}
+								<div className="flex flex-col gap-1">
+									{tabs.map((tab: TabInfo) => (
+										<div
 											key={tab.id}
-											className={({ isActive, isPending }) =>
-												clsx(
-													"h-full w-full group-hover:visible flex items-center justify-start gap-1 rounded-lg hover:dark:bg-primary/30",
-													isActive
-														? "bg-primary/90 text-background-light dark:text-foreground hover:bg-primary "
-														: isPending
-															? "text-foreground bg-foreground/10 hover:bg-foreground/20"
-															: "",
-												)
-											}
+											className="flex flex-row group h-12 items-center justify-center text-foreground bg-background-light hover:bg-secondary transition-all duration-75 rounded-md"
 										>
-											<div className="flex justify-start ml-2">
-												<HoverButton
-													className="hover:bg-destructive bg-background text-danger-000 transition-colors duration-150"
-													action={() => {
-														setIsDialogOpen(true);
-														setConcernedTab(tab);
-													}}
-												>
-													<Trash2 size={20} />
-												</HoverButton>
-											</div>
+											<NavLink
+												to={`/sheet/${tab.position}`}
+												key={tab.id}
+												className={({ isActive, isPending }) =>
+													clsx(
+														"h-full w-full group-hover:visible flex items-center justify-start gap-1 rounded-lg hover:dark:bg-primary/30",
+														isActive
+															? "bg-primary/90 text-background-light dark:text-foreground hover:bg-primary "
+															: isPending
+																? "text-foreground bg-foreground/10 hover:bg-foreground/20"
+																: "",
+													)
+												}
+											>
+												<div className="flex justify-start ml-2">
+													<HoverButton
+														className="hover:bg-destructive bg-background text-danger-000 transition-colors duration-150"
+														action={() => {
+															setIsDialogOpen(true);
+															setConcernedTab(tab);
+														}}
+													>
+														<Trash2 size={20} />
+													</HoverButton>
+												</div>
 
-											<div className="flex flex-row h-full w-full items-center">
-												{tab.tabName || "Unnamed"}
-											</div>
-											<div className="flex justify-end">
-												<HoverButton
-													action={() =>
-														setEditingTab({
-															id: tab.id,
-															name: tab.tabName || "Unnamed",
-														})
-													}
-												>
-													<PenIcon size={20} />
-												</HoverButton>
+												<div className="flex flex-row h-full w-full items-center">
+													{tab.tabName || "Unnamed"}
+												</div>
+												<div className="flex justify-end">
+													<HoverButton
+														action={() =>
+															setEditingTab({
+																id: tab.id,
+																name: tab.tabName || "Unnamed",
+															})
+														}
+													>
+														<PenIcon size={20} />
+													</HoverButton>
 
-												<HoverButton
-													action={() =>
-														handleDuplicate({
-															position: tab.position,
-															name: tab.tabName,
-															capo: tab.capo,
-														})
-													}
-												>
-													<CopyPlus size={20} />
-												</HoverButton>
-												<HoverButton
-													className="mr-2"
-													action={() => handleMove(tab.id, tab.position)}
-												>
-													<CornerRightDown size={20} />
-												</HoverButton>
-											</div>
-										</NavLink>
-									</div>
-								))}
+													<HoverButton
+														action={() =>
+															handleDuplicate({
+																position: tab.position,
+																name: tab.tabName,
+																capo: tab.capo,
+															})
+														}
+													>
+														<CopyPlus size={20} />
+													</HoverButton>
+													<HoverButton
+														className="mr-2"
+														action={() => handleMove(tab.id, tab.position)}
+													>
+														<CornerRightDown size={20} />
+													</HoverButton>
+												</div>
+											</NavLink>
+										</div>
+									))}
+								</div>
 							</DropdownMenuContent>
 						</DropdownMenuPortal>
 					</DropdownMenu>

@@ -1,5 +1,4 @@
 import {
-	ArrowRightCircle,
 	Eraser,
 	FolderInput,
 	Lock,
@@ -9,7 +8,6 @@ import {
 	Sun,
 } from "lucide-react";
 import { ChangeEvent, useRef, useState } from "react";
-import { useNavigate } from "react-router";
 import { useLock } from "@/contexts/LockContext";
 import { useTheme } from "@/contexts/ThemeContext";
 import { clearTab } from "@/db/crud/ClearTab";
@@ -24,11 +22,10 @@ import {
 	AlertDialogFooter,
 	AlertDialogHeader,
 	AlertDialogTitle,
-} from "./ui/alert-dialog";
-import { Button } from "./ui/button";
-import { Input } from "./ui/input";
-
-import { Separator } from "./ui/separator";
+} from "../ui/alert-dialog";
+import { Button } from "../ui/button";
+import { Input } from "../ui/input";
+import { Separator } from "../ui/separator";
 
 export default function Gui() {
 	const { handleImport, handleExport } = useGuitarTab();
@@ -37,7 +34,6 @@ export default function Gui() {
 	const [isDialogOpen, setIsDialogOpen] = useState(false);
 	const { theme, toggleTheme } = useTheme();
 	const { locked, toggleLock, showText } = useLock();
-	const navigate = useNavigate();
 
 	const LockedTooltip = () => (
 		<span
@@ -134,15 +130,6 @@ export default function Gui() {
 							aria-label="Toggle theme"
 						>
 							{theme === "light" ? <Moon /> : <Sun />}
-						</Button>
-						<Button
-							// lifted
-							tooltip="-> Design system"
-							size="lifted"
-							onClick={() => navigate("/design-system")}
-							aria-label="design system"
-						>
-							<ArrowRightCircle />
 						</Button>
 					</div>
 				</div>

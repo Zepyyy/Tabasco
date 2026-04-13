@@ -5,7 +5,7 @@ import React, { useEffect, useMemo, useState } from "react";
 import { NOTES_PER_SECTION } from "@/constants/guitar-tab";
 import { useGuitarTab } from "@/hooks/useGuitarTab";
 import { NoteCellProps, StringRowProps } from "@/types/guitar-tab";
-import { Button } from "./ui/button";
+import { Button } from "../ui/button";
 
 /**
  * NoteCell component - Renders an individual note cell in the guitar tab
@@ -187,7 +187,8 @@ export default function GuitarTabCreator() {
 			</div>
 			<div>
 				<Button
-					size="icon"
+					size="default"
+					variant={"outline"}
 					tooltip="Add new section"
 					tooltipSide="right"
 					onClick={() => handleNewLineClick(tab)}
