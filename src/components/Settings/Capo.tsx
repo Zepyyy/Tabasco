@@ -18,7 +18,7 @@ export default function Capo() {
 	};
 
 	return (
-		<div className="flex items-center justify-end gap-2 text-tab font-serif-title antialiased md:text-3xl text-2xl sm:text-2xl">
+		<div className="text-tab font-serif-title antialiased md:text-3xl text-2xl sm:text-2xl">
 			<p className="text-tab md:text-3xl text-2xl sm:text-2xl">
 				{capo !== -1 ? "Capo:" : ""}
 			</p>

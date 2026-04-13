@@ -118,7 +118,7 @@ export default function TabsDropdownMenuModern() {
 					<DropdownMenu onOpenChange={() => setUpPosition(!upPosition)}>
 						<DropdownMenuTrigger
 							asChild
-							className="appearance-none border-none inline-flex items-center justify-center rounded-md text-tab text-4xl font-serif-title w-full h-full m-0 p-0"
+							className="rounded-md text-tab text-4xl font-serif-title m-0 p-0 appearance-none "
 						>
 							<button
 								aria-label="Customise options"

@@ -17,6 +17,11 @@ import { Button } from "../ui/button";
  * @param absoluteNoteIndex - The absolute index of the note in the entire tab
  */
 
+const label = (index: number) => {
+	const labels = ["e", "B", "G", "D", "A", "E"];
+	return labels[index];
+};
+
 const NoteCell = React.memo(
 	({
 		note,
@@ -75,7 +80,10 @@ const StringRow = React.memo(
 		noteOnePosition,
 		setNoteOnePosition,
 	}: StringRowProps) => (
-		<div id="row" className="flex">
+		<div id="row" className="flex relative">
+			<p className="text-xs absolute top-1/2 -left-2 -translate-1/2">
+				{label(stringIndex)}
+			</p>
 			{string.map((note, noteIndex) => (
 				<NoteCell
 					key={`${stringIndex}-${noteIndex}`}
@@ -144,12 +152,12 @@ export default function GuitarTabCreator() {
 	if (isLoading) return <LoadingState />;
 
 	return (
-		<div className="container p-4 flex flex-col items-center max-w-full">
+		<div className="container flex flex-col items-center min-w-full">
 			<div className="w-full overflow-x-scroll">
 				{sections.map((section, index) => (
 					<div className="flex" key={index}>
 						<div
-							className="flex justify-center items-center mr-6"
+							className="flex justify-center items-center mr-8"
 							key={`div-${index}`}
 						>
 							<div>
@@ -168,19 +176,24 @@ export default function GuitarTabCreator() {
 							key={`tab-section-${index}`}
 							className="mb-4 flex flex-col items-start rounded-md"
 						>
-							{section.data.map((string, stringIndex) => (
-								<StringRow
-									key={`row-${stringIndex}-section-${index}`}
-									string={string}
-									stringIndex={stringIndex}
-									startNoteIndex={section.startNoteIndex}
-									onIncrement={incrementNotesNumber}
-									onToggle={handleCellClick}
-									handleSwitchNotes={handleSwitchNotes}
-									noteOnePosition={noteOnePositon}
-									setNoteOnePosition={setNoteOnePosition}
-								/>
-							))}
+							{section.data.map(
+								(string, stringIndex) => (
+									console.log(stringIndex),
+									(
+										<StringRow
+											key={`row-${stringIndex}-section-${index}`}
+											string={string}
+											stringIndex={stringIndex}
+											startNoteIndex={section.startNoteIndex}
+											onIncrement={incrementNotesNumber}
+											onToggle={handleCellClick}
+											handleSwitchNotes={handleSwitchNotes}
+											noteOnePosition={noteOnePositon}
+											setNoteOnePosition={setNoteOnePosition}
+										/>
+									)
+								),
+							)}
 						</div>
 					</div>
 				))}

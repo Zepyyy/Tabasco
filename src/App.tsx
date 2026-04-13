@@ -1,5 +1,5 @@
 import { Analytics } from "@vercel/analytics/react";
-import { AlertCircleIcon } from "lucide-react";
+import { AlertCircleIcon, MouseLeft, MouseRight } from "lucide-react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import TabsDropdownMenuModern from "./components/Navigation/TabsDropdownMenuModern";
 import GuitarTabCreator from "./components/Page/guitar-tab-creator";
@@ -20,25 +20,33 @@ const AppContent = () => {
 				</Alert>
 			</div>
 			<main className="flex min-h-screen transition ease-out pointer-events-auto! text-xl flex-col">
-				<Gui />
-				<div className="inline-flex items-center justify-between w-full p-6">
-					<div className="flex w-fit">
+				<div className="flex flex-row gap-6 fixed right-5 top-1/2 -translate-y-1/2 z-40">
+					<Gui />
+				</div>
+
+				<div className="flex flex-row justify-center w-full p-6 gap-12">
+					<div className="border-none flex items-center justify-start flex-nowrap w-full h-full">
 						<TabsDropdownMenuModern />
 					</div>
-					<Capo />
+					<div className="flex flex-col items-start justify-center min-w-fit flex-nowrap text-sm font-Bricolage gap-2">
+						<div className="flex flex-row gap-1 items-center">
+							<MouseLeft className="size-5" />
+							<p> Increment fret number</p>
+						</div>
+
+						<div className="flex flex-row gap-1 items-center">
+							<MouseRight className="size-5" />
+							<p>Switch note open/mute/off</p>
+						</div>
+					</div>
+
+					<div className="flex items-center justify-end gap-2">
+						<Capo />
+					</div>
 				</div>
-				<div className="flex flex-col justify-start w-full px-4 py-4">
-					<div className="px-4">
-						<GuitarTabCreator />
-					</div>
-					<div className="flex flex-col justify-between gap-1">
-						<p className="text-xl text-tab font-serif-text">
-							Click to increment fret number
-						</p>
-						<p className="text-xl text-tab font-serif-text">
-							Right-click to switch note open/mute/off
-						</p>
-					</div>
+
+				<div className="flex flex-col justify-start w-full p-4">
+					<GuitarTabCreator />
 				</div>
 			</main>
 		</>
