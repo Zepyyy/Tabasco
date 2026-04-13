@@ -176,24 +176,19 @@ export default function GuitarTabCreator() {
 							key={`tab-section-${index}`}
 							className="mb-4 flex flex-col items-start rounded-md"
 						>
-							{section.data.map(
-								(string, stringIndex) => (
-									console.log(stringIndex),
-									(
-										<StringRow
-											key={`row-${stringIndex}-section-${index}`}
-											string={string}
-											stringIndex={stringIndex}
-											startNoteIndex={section.startNoteIndex}
-											onIncrement={incrementNotesNumber}
-											onToggle={handleCellClick}
-											handleSwitchNotes={handleSwitchNotes}
-											noteOnePosition={noteOnePositon}
-											setNoteOnePosition={setNoteOnePosition}
-										/>
-									)
-								),
-							)}
+							{section.data.map((string, stringIndex) => (
+								<StringRow
+									key={`row-${stringIndex}-section-${index}`}
+									string={string}
+									stringIndex={stringIndex}
+									startNoteIndex={section.startNoteIndex}
+									onIncrement={incrementNotesNumber}
+									onToggle={handleCellClick}
+									handleSwitchNotes={handleSwitchNotes}
+									noteOnePosition={noteOnePositon}
+									setNoteOnePosition={setNoteOnePosition}
+								/>
+							))}
 						</div>
 					</div>
 				))}
