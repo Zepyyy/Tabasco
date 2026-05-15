@@ -25,7 +25,6 @@ import {
 } from "../ui/alert-dialog";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
-import { Separator } from "../ui/separator";
 
 export default function Gui() {
 	const { handleImport, handleExport } = useGuitarTab();

@@ -162,8 +162,6 @@ export default function GuitarTabCreator() {
 						>
 							<div>
 								<Button
-									tooltip="Remove section"
-									tooltipSide="right"
 									variant="destructive"
 									onClick={() => handleRemoveSection(section)}
 									key={`delete-section-${index}`}
