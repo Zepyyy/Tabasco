@@ -13,8 +13,6 @@ export type NoteValue =
 export type TabString = NoteValue[];
 export type Tab = TabString[];
 
-export type TooltipSide = "top" | "bottom" | "left" | "right";
-
 // Contexts
 export type LockContextType = {
 	locked: boolean;
@@ -29,12 +27,13 @@ export type NameContextType = {
 	setTabName: (tabName: string) => void;
 };
 
+export type Theme = "light" | "dark";
+
 export type ThemeContextType = {
-	theme: string;
+	theme: Theme;
 	toggleTheme: () => void;
 };
 
-// Interfaces
 export interface TabState {
 	tab: Tab;
 	isLoading: boolean;

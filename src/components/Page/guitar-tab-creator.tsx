@@ -194,13 +194,7 @@ export default function GuitarTabCreator() {
 				))}
 			</div>
 			<div>
-				<Button
-					size="default"
-					variant={"outline"}
-					tooltip="Add new section"
-					tooltipSide="right"
-					onClick={() => handleNewLineClick(tab)}
-				>
+				<Button variant="outline" onClick={() => handleNewLineClick(tab)}>
 					<span className="text-xl pb-1 font-serif-text">+</span>
 				</Button>
 			</div>
