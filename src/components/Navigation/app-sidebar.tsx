@@ -20,10 +20,10 @@ export function AppSidebar() {
 
 	return (
 		<Sidebar>
-			<SidebarHeader>
-				<span>Your tabs</span>
+			<SidebarHeader className="bg-sidebar">
+				<span className="px-2 py-1 text-sm">Your tabs</span>
 			</SidebarHeader>
-			<SidebarContent>
+			<SidebarContent className="bg-sidebar noise">
 				<SidebarGroup>
 					<SidebarMenu>
 						{tabs.map((tab) => (
@@ -35,9 +35,8 @@ export function AppSidebar() {
 						))}
 					</SidebarMenu>
 				</SidebarGroup>
-				<SidebarGroup> </SidebarGroup>
 			</SidebarContent>
-			<SidebarFooter>
+			<SidebarFooter className="bg-sidebar">
 				<Button
 					variant="ghost"
 					size="lg"

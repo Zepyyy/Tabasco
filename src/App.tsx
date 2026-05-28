@@ -52,9 +52,9 @@ const AppContent = () => {
 						</div>
 					</div>
 
-					<div className="flex items-center justify-end gap-2">
+					{/*<div className="flex items-center justify-end gap-2">
 						<Capo />
-					</div>
+					</div>*/}
 				</div>
 				<div className="flex flex-col justify-start w-full p-4">
 					<GuitarTabCreator />
