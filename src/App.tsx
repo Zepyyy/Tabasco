@@ -3,7 +3,6 @@ import { AlertCircleIcon, MouseLeft, MouseRight } from "lucide-react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { AppSidebar } from "./components/Navigation/app-sidebar";
 import GuitarTabCreator from "./components/Page/guitar-tab-creator";
-import Capo from "./components/Settings/Capo";
 import Gui from "./components/Settings/Gui";
 import { Separator } from "./components/ui/separator";
 import {
