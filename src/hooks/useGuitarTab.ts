@@ -61,7 +61,7 @@ export const useGuitarTab = (): TabState & TabOperations => {
 		[locked, triggerLockFeedback, tab, position],
 	);
 
-	const handleNewLineClick = useCallback(() => {
+	const handleAddSection = useCallback(() => {
 		if (locked) {
 			triggerLockFeedback();
 			return;
@@ -82,6 +82,37 @@ export const useGuitarTab = (): TabState & TabOperations => {
 			throw new Error("Failed to add new line");
 		}
 	}, [locked, triggerLockFeedback, tab, position]);
+
+	const handleDuplicateSection = useCallback(
+		// section: { data: Tab; startNoteIndex: number } -> The section to duplicate (data is the section, startNoteIndex is the index of the section to duplicate)
+		// tab: Tab -> The current tab to duplicate from (Array<Array<string>> -> contains all the notes, no sections here. each array is one string, each string is one note)
+		// This function inserts a duplicated section of the tab at the specified position
+		(section: { data: Tab; startNoteIndex: number }): void => {
+			if (locked) {
+				triggerLockFeedback();
+				return;
+			}
+			try {
+				// Insert a copy of each string's section notes right after the section
+				const newTab = tab.map((row: string[], i: number) => {
+					const newRow = [...row];
+					newRow.splice(
+						section.startNoteIndex + NOTES_PER_SECTION,
+						0,
+						...section.data[i],
+					);
+					return newRow;
+				});
+				updateCurrentTabs(newTab || [], position || "0");
+			} catch (err) {
+				setError(
+					err instanceof Error ? err : new Error("Failed to duplicate section"),
+				);
+				throw new Error("Failed to duplicate section");
+			}
+		},
+		[locked, triggerLockFeedback, tab, position],
+	);
 
 	const incrementNotesNumber = useCallback(
 		(string: number, note: number): void => {
@@ -123,23 +154,26 @@ export const useGuitarTab = (): TabState & TabOperations => {
 				triggerLockFeedback();
 				return;
 			}
-			if (tab[0]?.length >= NOTES_PER_SECTION) {
-				try {
-					const newTab = tab.map((string) => {
-						const newString = [...string];
+			try {
+				const newTab = tab.map((string) => {
+					const newString = [...string];
+					if (newString.length > NOTES_PER_SECTION) {
+						// More than one section: drop this section's notes
 						newString.splice(section.startNoteIndex, NOTES_PER_SECTION);
-						return newString;
-					});
-					updateCurrentTabs(newTab || [], position || "0");
-				} catch (err) {
-					setError(
-						err instanceof Error ? err : new Error("Failed to remove section"),
-					);
-					throw new Error("Failed to remove section");
-				}
-			} else {
-				console.error("Cannot remove section: tab has only one section");
-				throw new Error("Cannot remove section: tab has only one section");
+					} else {
+						// Last remaining section: clear it instead of deleting
+						for (let i = 0; i < newString.length; i++) {
+							newString[i] = DEFAULT_NOTE;
+						}
+					}
+					return newString;
+				});
+				updateCurrentTabs(newTab || [], position || "0");
+			} catch (err) {
+				setError(
+					err instanceof Error ? err : new Error("Failed to remove section"),
+				);
+				throw new Error("Failed to remove section");
 			}
 		},
 		[locked, triggerLockFeedback, tab, position],
@@ -249,7 +283,8 @@ export const useGuitarTab = (): TabState & TabOperations => {
 
 	return {
 		tab,
-		handleNewLineClick,
+		handleAddSection,
+		handleDuplicateSection,
 		isLoading,
 		error,
 		handleCellClick,

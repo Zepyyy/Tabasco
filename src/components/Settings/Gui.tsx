@@ -26,7 +26,11 @@ import {
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 
-export default function Gui() {
+export default function Gui({
+	toggleEditingSections,
+}: {
+	toggleEditingSections: () => void;
+}) {
 	const { handleImport, handleExport } = useGuitarTab();
 	const { position } = useCurrentTab();
 	const fileInputRef = useRef<HTMLInputElement>(null);
@@ -87,7 +91,6 @@ export default function Gui() {
 				<FolderInput className="size-3.5" />
 				<span className="ml-1">Import</span>
 			</Button>
-
 			<Button
 				variant="outline"
 				size="xs"
@@ -118,6 +121,15 @@ export default function Gui() {
 					<Sun aria-hidden="true" className="size-3.5" />
 				)}
 				<span className="ml-1">Theme</span>
+			</Button>
+			<Button
+				variant="default"
+				size="xs"
+				onClick={() => toggleEditingSections()}
+				aria-label="Edit sections"
+			>
+				<Eraser className="size-3.5" />
+				<span className="ml-1">Edit sections</span>
 			</Button>
 			<AlertDialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
 				<AlertDialogContent>

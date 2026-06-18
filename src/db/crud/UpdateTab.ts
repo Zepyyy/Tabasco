@@ -37,10 +37,15 @@ export async function updateTabNameByPosition(
 		);
 	}
 }
-export async function updateCurrentTabs(tabs: string[][], activeTab: string) {
+export async function updateCurrentTabs(
+	newTabs: string[][],
+	activeTab: string,
+) {
 	activeTab = activeTab || "0";
 	try {
-		await db.TabInfo.where("position").equals(activeTab).modify({ tabs: tabs });
+		await db.TabInfo.where("position")
+			.equals(activeTab)
+			.modify({ tabs: newTabs });
 	} catch (error) {
 		throw new Error(
 			"Failed to update tabs at position: " + activeTab + " Error: " + error,

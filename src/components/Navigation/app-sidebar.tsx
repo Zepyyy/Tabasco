@@ -1,4 +1,4 @@
-import { Moon, Sun } from "lucide-react";
+import { Moon, Plus, Sun } from "lucide-react";
 import { NavLink } from "react-router";
 import {
 	Sidebar,
@@ -11,11 +11,13 @@ import {
 	SidebarMenuItem,
 } from "@/components/ui/sidebar";
 import { useTheme } from "@/contexts/ThemeContext";
+import { useTabCreation } from "@/hooks/useTabCreation";
 import { useTabs } from "@/hooks/useTabs";
 import { Button } from "../ui/button";
 
 export function AppSidebar() {
 	const { tabs } = useTabs();
+	const { handleAddTab } = useTabCreation();
 	const { theme, toggleTheme } = useTheme();
 
 	return (
@@ -45,6 +47,15 @@ export function AppSidebar() {
 				>
 					{theme === "dark" ? <Moon /> : <Sun />}
 					<span>Toggle Theme</span>
+				</Button>
+				<Button
+					variant="ghost"
+					size="lg"
+					className="justify-start items-center gap-4"
+					onClick={() => handleAddTab()}
+				>
+					<Plus />
+					<span>Add Tab</span>
 				</Button>
 			</SidebarFooter>
 		</Sidebar>

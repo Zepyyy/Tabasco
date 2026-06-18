@@ -1,5 +1,6 @@
 import { Analytics } from "@vercel/analytics/react";
 import { AlertCircleIcon, MouseLeft, MouseRight } from "lucide-react";
+import { useState } from "react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { AppSidebar } from "./components/Navigation/app-sidebar";
 import GuitarTabCreator from "./components/Page/guitar-tab-creator";
@@ -13,8 +14,12 @@ import {
 import Providers from "./providers/Providers";
 
 const AppContent = () => {
+	const [editingSections, setEditingSections] = useState(false);
+	const toggleEditingSections = () => {
+		setEditingSections(!editingSections);
+	};
 	return (
-		<SidebarProvider>
+		<SidebarProvider defaultOpen={true}>
 			<AppSidebar />
 			<SidebarInset className="min-h-screen transition ease-out pointer-events-auto! text-sm">
 				<div className="sm:hidden grid w-full items-start m-4 max-w-max">
@@ -33,30 +38,38 @@ const AppContent = () => {
 							orientation="vertical"
 							className="mr-2 data-[orientation=vertical]:h-4"
 						/>
-						<Gui />
+						<Gui toggleEditingSections={toggleEditingSections} />
 					</div>
 				</div>
+				<div className="flex flex-col justify-start w-full h-full p-4 relative">
+					{editingSections && (
+						<>
+							{/* Background overlay for editing sections */}
+							<div
+								className={`absolute top-0 left-0 w-full h-full ${editingSections ? "bg-foreground opacity-15 pointer-events-none z-15 border border-foreground" : ""}`}
+							/>
+							<div className="absolute top-5 left-5">
+								<span className="uppercase text-xl py-4">Editing sections</span>
+							</div>
+						</>
+					)}
+					<div className="flex flex-row justify-center w-full p-6 gap-12">
+						<div className="border-none flex items-center justify-start flex-nowrap w-full h-full" />
+						<div className="flex flex-col items-start justify-center min-w-fit flex-nowrap text-sm font-Bricolage gap-2">
+							<div className="flex flex-row gap-1 items-center">
+								<MouseLeft className="size-5" />
+								<p> Increment fret number </p>
+							</div>
 
-				<div className="flex flex-row justify-center w-full p-6 gap-12">
-					<div className="border-none flex items-center justify-start flex-nowrap w-full h-full"></div>
-					<div className="flex flex-col items-start justify-center min-w-fit flex-nowrap text-sm font-Bricolage gap-2">
-						<div className="flex flex-row gap-1 items-center">
-							<MouseLeft className="size-5" />
-							<p> Increment fret number </p>
-						</div>
-
-						<div className="flex flex-row gap-1 items-center">
-							<MouseRight className="size-5" />
-							<p>Switch note open/mute/off</p>
+							<div className="flex flex-row gap-1 items-center">
+								<MouseRight className="size-5" />
+								<p>Switch note open/mute/off</p>
+							</div>
 						</div>
 					</div>
-
-					{/*<div className="flex items-center justify-end gap-2">
-						<Capo />
-					</div>*/}
-				</div>
-				<div className="flex flex-col justify-start w-full p-4">
-					<GuitarTabCreator />
+					<div className="flex flex-col justify-start w-full p-4">
+						<GuitarTabCreator editingSections={editingSections} />
+					</div>
 				</div>
 			</SidebarInset>
 		</SidebarProvider>
