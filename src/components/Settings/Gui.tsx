@@ -25,9 +25,12 @@ import {
 } from "../ui/alert-dialog";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
-import { Separator } from "../ui/separator";
 
-export default function Gui() {
+export default function Gui({
+	toggleEditingSections,
+}: {
+	toggleEditingSections: () => void;
+}) {
 	const { handleImport, handleExport } = useGuitarTab();
 	const { position } = useCurrentTab();
 	const fileInputRef = useRef<HTMLInputElement>(null);
@@ -37,7 +40,7 @@ export default function Gui() {
 
 	const LockedTooltip = () => (
 		<span
-			className={`absolute right-full mr-3 top-1/2 -translate-y-1/2 whitespace-nowrap rounded-md bg-foreground/70 px-2 py-1 text-xs font-semibold text-background shadow-sm transition-opacity duration-200 font-Bricolage ${
+			className={`absolute top-12 left-1/2 -translate-x-1/2 ml-8 whitespace-nowrap rounded-md bg-foreground/70 px-2 py-1 text-xs font-semibold text-background shadow-sm transition-opacity duration-200 font-Bricolage ${
 				showText ? "opacity-100" : "opacity-0 pointer-events-none"
 			}`}
 		>
@@ -60,7 +63,7 @@ export default function Gui() {
 	};
 
 	return (
-		<>
+		<div className="flex gap-2">
 			<Input
 				ref={fileInputRef}
 				type="file"
@@ -68,71 +71,66 @@ export default function Gui() {
 				className="hidden"
 				onChange={handleFileChange}
 			></Input>
-			<div className="flex flex-col gap-5">
-				<div className="relative w-fit group/tooltip">
-					<LockedTooltip />
-					<Button
-						onClick={toggleLock}
-						size="lifted"
-						tooltip={locked ? "Unlock editing" : "Lock editing"}
-						// lifted
-						className={`${locked ? "bg-primary! text-primary-foreground! border-transparent hover:bg-primary/85!" : ""} ${showText ? "[&_svg]:animate-wiggle-once" : ""}`}
-						aria-label={locked ? "Unlock editing" : "Lock editing"}
-					>
-						{locked ? <Lock /> : <LockOpen />}
-					</Button>
-				</div>
-				<Separator
-					orientation="horizontal"
-					className="border-t border-secondary"
-				/>
-				<div className="flex flex-col gap-3">
-					<Button
-						// lifted
-						tooltip="Import"
-						size="lifted"
-						onClick={() => fileInputRef.current?.click()}
-						aria-label="Import tab"
-					>
-						<FolderInput />
-					</Button>
-
-					<Button
-						// lifted
-						tooltip="Export"
-						size="lifted"
-						onClick={() => handleExport(position || "0")}
-						aria-label="Export tab"
-					>
-						<Share />
-					</Button>
-					<Button
-						// lifted
-						tooltip="Clear tab"
-						size="lifted"
-						onClick={() => setIsDialogOpen(true)}
-						aria-label="Clear tab"
-					>
-						<Eraser />
-					</Button>
-				</div>
-				<Separator
-					orientation="horizontal"
-					className="border-t border-secondary"
-				/>
-				<div className="flex flex-col gap-3">
-					<Button
-						// lifted
-						tooltip="Toggle theme"
-						size="lifted"
-						onClick={() => toggleTheme()}
-						aria-label="Toggle theme"
-					>
-						{theme === "light" ? <Moon /> : <Sun />}
-					</Button>
-				</div>
-			</div>
-
+			<LockedTooltip />
+			<Button
+				variant="outline"
+				size="xs"
+				onClick={toggleLock}
+				className={`${locked ? "bg-primary! text-primary-foreground! border-transparent hover:bg-primary/85!" : ""} ${showText ? "[&_svg]:animate-wiggle-once" : ""}`}
+				aria-label={locked ? "Unlock editing" : "Lock editing"}
+			>
+				{locked ? <Lock /> : <LockOpen />}
+				<span className="ml-1">Lock</span>
+			</Button>
+			<Button
+				variant="outline"
+				size="xs"
+				onClick={() => fileInputRef.current?.click()}
+				aria-label="Import tab"
+			>
+				<FolderInput className="size-3.5" />
+				<span className="ml-1">Import</span>
+			</Button>
+			<Button
+				variant="outline"
+				size="xs"
+				onClick={() => handleExport(position || "0")}
+				aria-label="Export tab"
+			>
+				<Share className="size-3.5" />
+				<span className="ml-1">Export</span>
+			</Button>
+			<Button
+				variant="outline"
+				size="xs"
+				onClick={() => setIsDialogOpen(true)}
+				aria-label="Clear tab"
+			>
+				<Eraser className="size-3.5" />
+				<span className="ml-1">Clear</span>
+			</Button>
+			<Button
+				variant="outline"
+				size="xs"
+				onClick={() => toggleTheme()}
+				aria-label="Toggle theme"
+			>
+				{theme === "light" ? (
+					<Moon aria-hidden="true" className="size-3.5" />
+				) : (
+					<Sun aria-hidden="true" className="size-3.5" />
+				)}
+				<span className="ml-1">Theme</span>
+			</Button>
+			<Button
+				variant="default"
+				size="xs"
+				onClick={() => toggleEditingSections()}
+				aria-label="Edit sections"
+			>
+				<Eraser className="size-3.5" />
+				<span className="ml-1">Edit sections</span>
+			</Button>
 			<AlertDialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
 				<AlertDialogContent>
 					<AlertDialogHeader>
@@ -153,6 +151,6 @@ export default function Gui() {
 					</AlertDialogFooter>
 				</AlertDialogContent>
 			</AlertDialog>
-		</>
+		</div>
 	);
 }

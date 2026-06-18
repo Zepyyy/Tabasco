@@ -19,9 +19,6 @@ export default function Capo() {
 
 	return (
 		<div className="flex flex-nowrap w-fit text-tab font-serif-title antialiased md:text-3xl text-2xl sm:text-2xl">
-			<p className="text-tab md:text-3xl text-2xl sm:text-2xl">
-				{capo !== -1 ? "Capo:" : ""}
-			</p>
 			<Input
 				type="number"
 				inputMode="numeric"

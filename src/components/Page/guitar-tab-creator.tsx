@@ -1,6 +1,6 @@
 "use client";
 
-import { Trash } from "lucide-react";
+import { CopyPlus, Plus, X } from "lucide-react";
 import React, { useEffect, useMemo, useState } from "react";
 import { NOTES_PER_SECTION } from "@/constants/guitar-tab";
 import { useGuitarTab } from "@/hooks/useGuitarTab";
@@ -34,7 +34,7 @@ const NoteCell = React.memo(
 		setNoteOnePosition,
 	}: NoteCellProps) => (
 		<div
-			className="border-r-2 last:border-none w-4 h-4 sm:w-6 sm:h-6 xl:w-8 xl:h-8 flex items-center justify-center cursor-grabbing font-bold text-foreground z-10 sm:text-md xl:text-xl font-serif-text nth-[6n]:border-tab border-tabsubtle data-[value='-']:text-tab/30 data-[value='X']:text-tab/50 select-none"
+			className="border-r-2 last:border-none w-4 h-4 sm:w-6 sm:h-6 xl:w-8 xl:h-8 flex items-center justify-center hover:bg-primary/15 dark:hover:bg-primary/20 cursor-pointer font-bold text-foreground z-10 sm:text-md xl:text-xl font-serif-text nth-[6n]:border-tab border-tabsubtle data-[value='-']:text-tab/30 data-[value='X']:text-tab/50 select-none"
 			onClick={() => onIncrement(stringIndex, absoluteNoteIndex)}
 			onContextMenu={(e) => {
 				e.preventDefault(); // Prevent default context menu
@@ -107,13 +107,18 @@ const LoadingState = () => (
 	</div>
 );
 
-export default function GuitarTabCreator() {
+export default function GuitarTabCreator({
+	editingSections,
+}: {
+	editingSections: boolean;
+}) {
 	const {
 		tab,
 		isLoading,
 		handleCellClick,
 		incrementNotesNumber,
-		handleNewLineClick,
+		handleAddSection,
+		handleDuplicateSection,
 		handleRemoveSection,
 		handleSwitchNotes,
 	} = useGuitarTab();
@@ -124,6 +129,7 @@ export default function GuitarTabCreator() {
 		string: -1,
 	});
 
+	// This effect updates the sections count based on the tab's length
 	useEffect(() => {
 		if (tab.length > 0 && tab[0].length > 0) {
 			setSectionsCount(Math.ceil(tab[0].length / NOTES_PER_SECTION || 1));
@@ -155,27 +161,41 @@ export default function GuitarTabCreator() {
 		<div className="container flex flex-col items-center min-w-full">
 			<div className="w-full overflow-x-scroll">
 				{sections.map((section, index) => (
-					<div className="flex" key={index}>
-						<div
-							className="flex justify-center items-center mr-8"
-							key={`div-${index}`}
-						>
-							<div>
-								<Button
-									tooltip="Remove section"
-									tooltipSide="right"
-									variant="destructive"
-									onClick={() => handleRemoveSection(section)}
-									key={`delete-section-${index}`}
-								>
-									<Trash />
-								</Button>
-							</div>
-						</div>
+					<div className="flex items-center ml-4" key={index}>
 						<div
 							key={`tab-section-${index}`}
-							className="mb-4 flex flex-col items-start rounded-md"
+							className="mb-4 flex flex-col items-start rounded-md relative group/highlight"
 						>
+							{editingSections && (
+								<>
+									{/* Section highlight on hover */}
+									<div className="absolute top-0 left-0 w-full h-full transition-colors duration-50 group-hover/highlight:bg-primary/35 opacity-50 rounded group-hover/highlight:border ease-in-out" />
+
+									{/* Buttons on hover while in editing mode */}
+									<div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-15">
+										<div className="flex justify-center items-center gap-4">
+											<Button
+												variant="destructive"
+												onClick={() => handleRemoveSection(section)}
+												key={`delete-section-${index}`}
+												className="flex group-hover/highlight:opacity-100 opacity-25"
+											>
+												<X strokeWidth={3} />
+												<span className="ml-0.5">Remove section</span>
+											</Button>
+											<Button
+												variant="outline-fill"
+												onClick={() => handleDuplicateSection(section)}
+												key={`duplicate-section-${index}`}
+												className="flex group-hover/highlight:opacity-100 opacity-25"
+											>
+												<CopyPlus strokeWidth={3} />
+												<span className="ml-0.5">Duplicate section</span>
+											</Button>
+										</div>
+									</div>
+								</>
+							)}
 							{section.data.map((string, stringIndex) => (
 								<StringRow
 									key={`row-${stringIndex}-section-${index}`}
@@ -193,15 +213,10 @@ export default function GuitarTabCreator() {
 					</div>
 				))}
 			</div>
-			<div>
-				<Button
-					size="default"
-					variant={"outline"}
-					tooltip="Add new section"
-					tooltipSide="right"
-					onClick={() => handleNewLineClick(tab)}
-				>
-					<span className="text-xl pb-1 font-serif-text">+</span>
+			<div className="flex gap-2 mt-4">
+				<Button variant="outline" size={"lg"} onClick={() => handleAddSection()}>
+                    <Plus />
+                    <span>Add section</span>
 				</Button>
 			</div>
 		</div>

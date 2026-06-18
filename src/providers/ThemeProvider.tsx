@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { ThemeContext } from "@/contexts/ThemeContext";
+import type { Theme } from "@/types/guitar-tab";
 
 export default function ThemeProvider({
 	children,
@@ -7,7 +8,7 @@ export default function ThemeProvider({
 	toggleTheme,
 }: {
 	children: React.ReactNode;
-	theme: string;
+	theme: Theme;
 	toggleTheme: () => void;
 }) {
 	useEffect(() => {

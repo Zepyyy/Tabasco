@@ -10,10 +10,8 @@ export type NoteValue =
 	| typeof OPEN_STRING
 	| typeof MUTED_STRING
 	| string;
-export type TabString = NoteValue[];
-export type Tab = TabString[];
-
-export type TooltipSide = "top" | "bottom" | "left" | "right";
+export type TabString = NoteValue[]; // Array<NoteValue> -> All the notes on the string (all sections) (0 - 53 * NbSections) (Use startNoteIndex to get the section (0 = section 1, 54 = section 2, etc...))
+export type Tab = TabString[]; // Array<Array<NoteValue>> -> All the strings on the tab (all sections) Array<(0 - 53 * NbSections)> (one string per array)
 
 // Contexts
 export type LockContextType = {
@@ -29,12 +27,13 @@ export type NameContextType = {
 	setTabName: (tabName: string) => void;
 };
 
+export type Theme = "light" | "dark";
+
 export type ThemeContextType = {
-	theme: string;
+	theme: Theme;
 	toggleTheme: () => void;
 };
 
-// Interfaces
 export interface TabState {
 	tab: Tab;
 	isLoading: boolean;
@@ -52,7 +51,11 @@ export interface TabInfo {
 export interface TabOperations {
 	handleCellClick: (string: number, note: number) => Promise<void>;
 	incrementNotesNumber: (string: number, note: number) => void;
-	handleNewLineClick: (newTab: Tab) => void;
+	handleAddSection: () => void;
+	handleDuplicateSection: (section: {
+		data: Tab;
+		startNoteIndex: number;
+	}) => void;
 	handleRemoveSection: (section: { data: Tab; startNoteIndex: number }) => void;
 	handleExport: (id: string) => Promise<void>;
 	handleImport: (jsonData: Partial<TabInfo>) => Promise<number | null>;
