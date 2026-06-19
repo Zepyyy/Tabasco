@@ -58,10 +58,17 @@ export const useTabOperations = (tabs: TabInfo[] = []) => {
 		}
 	};
 
+	const handleDeleteCurrentTab = () => {
+		if (position && currentTab?.id) {
+			handleDelete(currentTab.id, position);
+		}
+	};
+
 	return {
 		tabName,
 		handleRename,
 		handleMove,
 		handleDelete,
+		handleDeleteCurrentTab,
 	};
 };

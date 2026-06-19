@@ -214,9 +214,13 @@ export default function GuitarTabCreator({
 				))}
 			</div>
 			<div className="flex gap-2 mt-4">
-				<Button variant="outline" size={"lg"} onClick={() => handleAddSection()}>
-                    <Plus />
-                    <span>Add section</span>
+				<Button
+					variant="outline"
+					size={"lg"}
+					onClick={() => handleAddSection()}
+				>
+					<Plus />
+					<span>Add section</span>
 				</Button>
 			</div>
 		</div>

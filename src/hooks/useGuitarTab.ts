@@ -28,6 +28,7 @@ export const useGuitarTab = (): TabState & TabOperations => {
 	const navigate = useNavigate();
 	const { currentTab, position } = useCurrentTab();
 	const tab = useMemo(() => currentTab?.tabs || [], [currentTab]);
+	const name = useMemo(() => currentTab?.tabName || "", [currentTab]);
 
 	const [isLoading, setIsLoading] = useState(false);
 	const [error, setError] = useState<Error | null>(null);
@@ -283,6 +284,7 @@ export const useGuitarTab = (): TabState & TabOperations => {
 
 	return {
 		tab,
+		name,
 		handleAddSection,
 		handleDuplicateSection,
 		isLoading,

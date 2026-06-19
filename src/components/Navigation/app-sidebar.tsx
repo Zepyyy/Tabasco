@@ -1,4 +1,4 @@
-import { Moon, Plus, Sun } from "lucide-react";
+import { Moon, Plus, Sun, Trash } from "lucide-react";
 import { NavLink } from "react-router";
 import {
 	Sidebar,
@@ -12,12 +12,14 @@ import {
 } from "@/components/ui/sidebar";
 import { useTheme } from "@/contexts/ThemeContext";
 import { useTabCreation } from "@/hooks/useTabCreation";
+import { useTabOperations } from "@/hooks/useTabOperations";
 import { useTabs } from "@/hooks/useTabs";
 import { Button } from "../ui/button";
 
 export function AppSidebar() {
 	const { tabs } = useTabs();
 	const { handleAddTab } = useTabCreation();
+	const { handleDeleteCurrentTab } = useTabOperations();
 	const { theme, toggleTheme } = useTheme();
 
 	return (
@@ -40,22 +42,31 @@ export function AppSidebar() {
 			</SidebarContent>
 			<SidebarFooter className="bg-sidebar">
 				<Button
-					variant="ghost"
-					size="lg"
-					onClick={() => toggleTheme()}
-					className="justify-start items-center gap-4"
-				>
-					{theme === "dark" ? <Moon /> : <Sun />}
-					<span>Toggle Theme</span>
-				</Button>
-				<Button
-					variant="ghost"
+					variant="outline-fill"
 					size="lg"
 					className="justify-start items-center gap-4"
 					onClick={() => handleAddTab()}
 				>
 					<Plus />
-					<span>Add Tab</span>
+					<span>Add tab</span>
+				</Button>
+				<Button
+					variant="destructive"
+					size="lg"
+					className="justify-start items-center gap-4"
+					onClick={() => handleDeleteCurrentTab()}
+				>
+					<Trash />
+					<span>Delete this tab</span>
+				</Button>
+				<Button
+					variant="ghost"
+					size="lg"
+					onClick={() => toggleTheme()}
+					className="justify-start items-center gap-4 mt-6"
+				>
+					{theme === "dark" ? <Moon /> : <Sun />}
+					<span>Toggle Theme</span>
 				</Button>
 			</SidebarFooter>
 		</Sidebar>

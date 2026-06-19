@@ -36,6 +36,7 @@ export type ThemeContextType = {
 
 export interface TabState {
 	tab: Tab;
+	name: string;
 	isLoading: boolean;
 	error: Error | null;
 }

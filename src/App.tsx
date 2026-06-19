@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { AppSidebar } from "./components/Navigation/app-sidebar";
 import GuitarTabCreator from "./components/Page/guitar-tab-creator";
+import TabName from "./components/Page/TabName";
 import Gui from "./components/Settings/Gui";
 import { Separator } from "./components/ui/separator";
 import {
@@ -11,6 +12,7 @@ import {
 	SidebarProvider,
 	SidebarTrigger,
 } from "./components/ui/sidebar";
+import { useTabOperations } from "./hooks/useTabOperations";
 import Providers from "./providers/Providers";
 
 const AppContent = () => {
@@ -18,6 +20,12 @@ const AppContent = () => {
 	const toggleEditingSections = () => {
 		setEditingSections(!editingSections);
 	};
+
+	const { handleRename } = useTabOperations();
+	const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+		handleRename(e.target.value);
+	};
+
 	return (
 		<SidebarProvider defaultOpen={true}>
 			<AppSidebar />
@@ -41,7 +49,7 @@ const AppContent = () => {
 						<Gui toggleEditingSections={toggleEditingSections} />
 					</div>
 				</div>
-				<div className="flex flex-col justify-start w-full h-full p-4 relative">
+				<div className="flex flex-col justify-start w-full h-full px-4 py-2 relative">
 					{editingSections && (
 						<>
 							{/* Background overlay for editing sections */}
@@ -53,8 +61,11 @@ const AppContent = () => {
 							</div>
 						</>
 					)}
-					<div className="flex flex-row justify-center w-full p-6 gap-12">
-						<div className="border-none flex items-center justify-start flex-nowrap w-full h-full" />
+					<div className="flex flex-row justify-center items-center w-full px-6 py-2 gap-12">
+						<div className="flex flex-1 w-full flex-col">
+							<TabName handleNameChange={handleNameChange} />
+						</div>
+						{/*<div className="border-none flex items-center justify-start flex-nowrap w-full h-full" />*/}
 						<div className="flex flex-col items-start justify-center min-w-fit flex-nowrap text-sm font-Bricolage gap-2">
 							<div className="flex flex-row gap-1 items-center">
 								<MouseLeft className="size-5" />
