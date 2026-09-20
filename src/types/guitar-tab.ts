@@ -10,7 +10,7 @@ export type NoteValue =
 	| typeof OPEN_STRING
 	| typeof MUTED_STRING
 	| string;
-export type TabString = NoteValue[]; // Array<NoteValue> -> All the notes on the string (all sections) (0 - 53 * NbSections) (Use startNoteIndex to get the section (0 = section 1, 54 = section 2, etc...))
+export type TabString = NoteValue[]; // Array<NoteValue> -> All the notes on the string (all sections) (0 - (NOTES_PER_SECTION-1) * NbSections). Use startNoteIndex to get the section (0 = section 1, NOTES_PER_SECTION = section 2, etc...)
 export type Tab = TabString[]; // Array<Array<NoteValue>> -> All the strings on the tab (all sections) Array<(0 - 53 * NbSections)> (one string per array)
 
 // Contexts

@@ -85,7 +85,14 @@ export function AppSidebar() {
 			</SidebarHeader>
 			<SidebarContent>
 				<SidebarGroup>
-					<SidebarGroupLabel>Your tabs</SidebarGroupLabel>
+					<SidebarGroupLabel className="justify-between">
+						Your tabs
+						{tabs.length > 0 && (
+							<span className="font-tab tabular-nums text-sidebar-foreground/50">
+								{tabs.length}
+							</span>
+						)}
+					</SidebarGroupLabel>
 					<SidebarMenu>
 						{tabs.map((tab, index) => (
 							<SidebarMenuItem key={tab.id}>
@@ -129,22 +136,21 @@ export function AppSidebar() {
 					)}
 				</SidebarGroup>
 			</SidebarContent>
-			<SidebarFooter className="gap-3 pb-4">
-				<Button variant="default" onClick={() => handleAddTab()}>
-					<Plus />
-					<span>New tab</span>
-				</Button>
-				<div className="flex items-center justify-between px-1">
-					<span className="text-xs text-muted-foreground">
-						{tabs.length === 0
-							? "Empty"
-							: `${tabs.length} ${tabs.length === 1 ? "tab" : "tabs"}`}
-					</span>
+			<SidebarFooter className="pb-4">
+				<div className="flex items-center gap-2">
+					<Button
+						variant="default"
+						className="flex-1"
+						onClick={() => handleAddTab()}
+					>
+						<Plus />
+						<span>New tab</span>
+					</Button>
 					<Tooltip>
 						<TooltipTrigger asChild>
 							<Button
-								variant="ghost"
-								size="icon-sm"
+								variant="outline"
+								size="icon"
 								onClick={() => toggleTheme()}
 								aria-label={
 									theme === "dark"

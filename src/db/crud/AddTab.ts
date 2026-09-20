@@ -4,6 +4,7 @@ import {
 	STRINGS,
 } from "@/constants/guitar-tab";
 import { TabInfo } from "@/types/guitar-tab";
+import { normalizeTab } from "@/lib/normalizeTab";
 import { db } from "../db";
 
 export async function getLastTabPosition() {
@@ -20,13 +21,13 @@ export default async function addTab({
 		const lastTabPosition = await getLastTabPosition();
 		const maxPosition = lastTabPosition ? lastTabPosition : 0;
 
+		const emptyTabs = Array.from({ length: STRINGS }, () =>
+			Array.from({ length: NOTES_PER_SECTION }, () => DEFAULT_NOTE),
+		);
+
 		await db.TabInfo.add({
 			tabName: tabName || "Unnamed",
-			tabs:
-				tabs ||
-				Array.from({ length: STRINGS }, () =>
-					Array.from({ length: NOTES_PER_SECTION }, () => DEFAULT_NOTE),
-				),
+			tabs: tabs ? normalizeTab(tabs) : emptyTabs,
 			position: maxPosition.toString(), // Increment the position
 			capo: capo || -1,
 		});

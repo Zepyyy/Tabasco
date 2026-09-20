@@ -1,4 +1,5 @@
 import { DEFAULT_NOTE } from "@/constants/guitar-tab";
+import { normalizeTab } from "@/lib/normalizeTab";
 import type { NoteCellPosition } from "@/types/guitar-tab";
 import { db } from "../db";
 
@@ -85,7 +86,7 @@ export async function switchTwoNotesByPosition(
 				return;
 			} else {
 				// Making a deep copy of the tabs array to avoid mutating the original
-				const newTab = tab.tabs.map((row) => [...row]);
+				const newTab = normalizeTab(tab.tabs).map((row) => [...row]);
 				const temp = newTab[NoteOnePosition.string][NoteOnePosition.position];
 
 				// Swap the values

@@ -7,6 +7,7 @@ import {
 	MUTED_STRING,
 	NOTES_PER_SECTION,
 	OPEN_STRING,
+	STRINGS,
 } from "@/constants/guitar-tab";
 import { useLock } from "@/contexts/LockContext";
 import { exportTabs } from "@/db/crud/Export";
@@ -15,6 +16,7 @@ import {
 	switchTwoNotesByPosition,
 	updateCurrentTabs,
 } from "@/db/crud/UpdateTab";
+import { normalizeTab } from "@/lib/normalizeTab";
 import type {
 	NoteCellPosition,
 	Tab,
@@ -27,7 +29,7 @@ import { useCurrentTab } from "./useCurrentTab";
 export const useGuitarTab = (): TabState & TabOperations => {
 	const navigate = useNavigate();
 	const { currentTab, position } = useCurrentTab();
-	const tab = useMemo(() => currentTab?.tabs || [], [currentTab]);
+	const tab = useMemo(() => normalizeTab(currentTab?.tabs || []), [currentTab]);
 	const name = useMemo(() => currentTab?.tabName || "", [currentTab]);
 
 	const [isLoading, setIsLoading] = useState(false);
@@ -68,7 +70,10 @@ export const useGuitarTab = (): TabState & TabOperations => {
 			return;
 		}
 		try {
-			const newTab = tab.map((row: string[]) => [...row]) || [];
+			// An empty tab has no strings yet: seed them so the first section lands.
+			const newTab = tab.length
+				? tab.map((row: string[]) => [...row])
+				: Array.from({ length: STRINGS }, () => [] as string[]);
 			// Add a new DEFAULT_NOTE to each string in the tab
 			newTab.forEach((string) => {
 				for (let i = 0; i < NOTES_PER_SECTION; i++) {

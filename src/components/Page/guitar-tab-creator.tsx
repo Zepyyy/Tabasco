@@ -1,6 +1,6 @@
 import { CopyPlus, LayoutList, Plus, Trash2 } from "lucide-react";
 import React, { useEffect, useMemo, useState } from "react";
-import { NOTES_PER_SECTION } from "@/constants/guitar-tab";
+import { NOTES_PER_BAR, NOTES_PER_SECTION } from "@/constants/guitar-tab";
 import { useGuitarTab } from "@/hooks/useGuitarTab";
 import { cn } from "@/lib/utils";
 import { NoteCellProps, StringRowProps } from "@/types/guitar-tab";
@@ -22,6 +22,21 @@ const label = (index: number) => {
 	return labels[index];
 };
 
+/* Line hierarchy on the tab paper: a hairline between cells, a slightly
+   darker tick on every beat (4 sixteenths), a barline every bar, and a full
+   ink line closing the section. Computed per cell so the weights never
+   depend on CSS cascade order. */
+const cellLineClass = (absoluteNoteIndex: number) => {
+	const positionInSection = absoluteNoteIndex % NOTES_PER_SECTION;
+	const isSectionEnd = positionInSection === NOTES_PER_SECTION - 1;
+	const isBarline = positionInSection === NOTES_PER_BAR - 1;
+	const isBeat = (positionInSection + 1) % (NOTES_PER_BAR / 4) === 0;
+	if (isSectionEnd) return "border-r-2 border-tab";
+	if (isBarline) return "border-r-2 border-tab/70";
+	if (isBeat) return "border-tab/45";
+	return "border-tabsubtle";
+};
+
 const NoteCell = React.memo(
 	({
 		note,
@@ -34,7 +49,10 @@ const NoteCell = React.memo(
 		setNoteOnePosition,
 	}: NoteCellProps) => (
 		<div
-			className="font-tab flex aspect-square w-[max(16px,calc((100cqw-28px)/54))] shrink-0 cursor-pointer items-center justify-center border-r border-tabsubtle text-[clamp(11px,1.1cqw,19px)] font-medium text-tab select-none hover:bg-primary/15 last:border-none nth-[6n]:border-tab/50 last:border-r-2 last:border-tab/80 data-[value='-']:text-tab/30 data-[value='X']:text-tab/50"
+			className={cn(
+				"font-tab flex aspect-square w-[max(16px,calc((100cqw-28px)/32))] shrink-0 cursor-pointer items-center justify-center border-r text-[clamp(12px,1.9cqw,22px)] font-medium text-tab select-none hover:bg-primary/15 data-[value='-']:text-tab/30 data-[value='X']:text-tab/50",
+				cellLineClass(absoluteNoteIndex),
+			)}
 			onClick={() => onIncrement(stringIndex, absoluteNoteIndex)}
 			onContextMenu={(e) => {
 				e.preventDefault(); // Prevent default context menu

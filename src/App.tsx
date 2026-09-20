@@ -27,9 +27,9 @@ const AppContent = () => {
 	};
 
 	return (
-		<SidebarProvider defaultOpen={true} className="noise">
+		<SidebarProvider defaultOpen={true} className="noise h-full">
 			<AppSidebar />
-			<SidebarInset className="flex min-h-svh flex-col">
+			<SidebarInset className="flex h-full flex-col">
 				<header className="drag-region flex h-12 shrink-0 items-center gap-2 border-b border-border px-3">
 					<SidebarTrigger />
 					<Separator
@@ -41,8 +41,8 @@ const AppContent = () => {
 						toggleEditingSections={toggleEditingSections}
 					/>
 				</header>
-				<main className="flex flex-1 flex-col overflow-y-auto">
-					<div className="mx-auto flex w-full max-w-6xl flex-1 flex-col px-6 pt-7 pb-12 lg:px-10">
+				<div className="flex min-h-0 flex-1 flex-col overflow-y-auto">
+					<div className="mx-auto flex w-full max-w-7xl flex-1 flex-col px-6 pt-7 pb-12 lg:px-10">
 						<div className="sm:hidden">
 							<Alert variant="destructive">
 								<AlertCircleIcon />
@@ -68,7 +68,7 @@ const AppContent = () => {
 							toggleEditingSections={toggleEditingSections}
 						/>
 					</div>
-				</main>
+				</div>
 			</SidebarInset>
 		</SidebarProvider>
 	);

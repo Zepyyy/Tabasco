@@ -234,6 +234,13 @@ body {
     padding: 0;
 }
 
+/* The app shell is a fixed-height flexbox: html needs a definite height so
+   every `height: 100%` below it resolves, and scrolling happens inside
+   <main>, never on the document. */
+html {
+    height: 100%;
+}
+
 html,
 body {
     min-height: calc(100svh + env(safe-area-inset-top));
