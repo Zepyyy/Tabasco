@@ -31,13 +31,16 @@ export default function TabName({
 	}, [editingName]);
 
 	return (
-		<div className="relative flex flex-row items-center gap-4 py-2 rounded-2xl min-w-fit group/name">
+		<div className="group/name relative flex min-w-0 items-center gap-2 py-1">
 			<input
 				className={cn(
-					"text-5xl font-serif-title p-2 border-2 border-transparent",
-					editingName && "border-primary/70 rounded-sm bg-primary/20",
+					"min-w-0 flex-1 truncate rounded-md bg-transparent pb-0.5 font-title text-4xl font-medium leading-snug tracking-tight text-foreground outline-none italic transition-colors sm:text-5xl",
+					editingName
+						? "bg-primary/[0.06] ring-1 ring-primary/25"
+						: "ring-1 ring-transparent",
 				)}
 				value={editingName ? tempName : name}
+				placeholder="Untitled"
 				disabled={!editingName}
 				onChange={(e) => setTempName(e.target.value)}
 				onKeyDown={(e) => {
@@ -65,14 +68,15 @@ export default function TabName({
 				ref={inputRef}
 			/>
 			<Button
-				className="group-hover/name:flex hidden"
+				className="hidden group-hover/name:flex group-focus-within/name:flex"
 				variant={editingName ? "default" : "ghost"}
 				size={"icon-sm"}
 				onClick={() => {
 					toggleEditingName();
 				}}
+				aria-label={editingName ? "Done renaming" : "Rename tab"}
 			>
-				<Pen className="h-4 w-4" />
+				<Pen className="size-4" />
 			</Button>
 		</div>
 	);

@@ -1,4 +1,6 @@
-@import url("https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..800&family=Crimson+Pro:ital,wght@0,200..900;1,200..900&family=Crimson+Text:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Marck+Script&family=Oregano:ital@0;1&display=swap");
+@import "@fontsource-variable/recursive/full.css";
+@import "@fontsource-variable/newsreader/opsz.css";
+@import "@fontsource-variable/newsreader/opsz-italic.css";
 @import "tailwindcss";
 @plugin 'tailwindcss-animate';
 
@@ -6,16 +8,19 @@
 
 @theme inline {
     --font-*: initial;
-    --font-serif-text: "Crimson Pro", serif;
-    --font-serif-title: "Oregano", serif;
-    --font-Inter: "Inter", sans-serif;
-    --font-Script: "Marck Script", sans-serif;
-    --font-Bricolage: "Bricolage Grotesque", sans-serif;
+    /* Recursive is the app's voice: UI text, buttons, lists — and, set in
+       MONO, the tablature numbers themselves. */
+    --font-ui:
+        "Recursive Variable", "Recursive", ui-sans-serif, system-ui,
+        -apple-system, "Segoe UI", sans-serif;
+    /* Newsreader carries the editorial moments: the song title. */
+    --font-title: "Newsreader Variable", "Newsreader", Georgia, serif;
+    --font-mono:
+        ui-monospace, "SFMono-Regular", "Cascadia Mono", "Segoe UI Mono",
+        monospace;
 
     --color-background: var(--background);
-    --color-background-light: var(--background-light);
     --color-foreground: var(--foreground);
-    --color-tag: var(--tag);
 
     --color-card: var(--card);
     --color-card-foreground: var(--card-foreground);
@@ -26,6 +31,7 @@
     --color-primary: var(--primary);
     --color-primary-foreground: var(--primary-foreground);
     --color-secondary: var(--secondary);
+    --color-secondary-foreground: var(--secondary-foreground);
 
     --color-muted: var(--muted);
     --color-muted-foreground: var(--muted-foreground);
@@ -33,35 +39,29 @@
     --color-accent: var(--accent);
     --color-accent-foreground: var(--accent-foreground);
 
+    /* Destructive comes in two voices: "danger" is the quiet clay used for
+       text and icons; "destructive" is the filled clay reserved for
+       confirmation dialogs. */
     --color-destructive: var(--destructive);
     --color-destructive-foreground: var(--destructive-foreground);
-
-    --color-danger-000: var(--danger-000);
-    --color-danger-100: var(--danger-100);
-    --color-danger-200: var(--danger-200);
-    --color-danger-900: var(--danger-900);
-
-    --color-border-100: var(--border-100);
-    --color-border-200: var(--border-200);
-    --color-border-300: var(--border-300);
-    --color-border-400: var(--border-400);
-
-    --color-soft: var(--soft);
-    --color-soft-foreground: var(--soft-foreground);
+    --color-danger: var(--danger);
 
     --color-border: var(--border);
     --color-input: var(--input);
     --color-ring: var(--ring);
+
+    /* The tab paper: ink for written notes, faint rules for the grid. */
     --color-tab: var(--tab);
     --color-tabsubtle: var(--tab-subtle);
+    --color-tag: var(--tag);
 
     --color-chart-1: var(--chart-1);
     --color-chart-2: var(--chart-2);
     --color-chart-3: var(--chart-3);
     --color-chart-4: var(--chart-4);
     --color-chart-5: var(--chart-5);
-    --color-sidebar: var(--sidebar);
 
+    --color-sidebar: var(--sidebar);
     --color-sidebar-foreground: var(--sidebar-foreground);
     --color-sidebar-primary: var(--sidebar-primary);
     --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
@@ -81,17 +81,132 @@
     }
 }
 
+:root {
+    color-scheme: light;
+
+    /* One continuous paper surface — sidebar, header and sheet share it.
+       Depth comes from hairlines and white lifts, never a color step. */
+    --background: oklch(0.972 0.0045 255);
+    --foreground: oklch(0.25 0.014 260);
+
+    --card: oklch(1 0 0);
+    --card-foreground: oklch(0.25 0.014 260);
+    --popover: oklch(1 0 0);
+    --popover-foreground: oklch(0.25 0.014 260);
+
+    --primary: oklch(0.44 0.121 280);
+    --primary-foreground: oklch(0.975 0.005 280);
+    --secondary: oklch(0.9 0.018 280);
+    --secondary-foreground: oklch(0.32 0.05 280);
+
+    --muted: oklch(0.935 0.005 255);
+    --muted-foreground: oklch(0.51 0.014 260);
+    --accent: oklch(0.938 0.006 255);
+    --accent-foreground: oklch(0.25 0.014 260);
+
+    /* Clay red — warm, quiet, un-panicky. */
+    --destructive: oklch(0.545 0.135 30);
+    --destructive-foreground: oklch(0.985 0.008 80);
+    --danger: oklch(0.5 0.155 28);
+
+    /* Tab paper ink and rules. */
+    --tab: oklch(0.3 0.018 260);
+    --tab-subtle: oklch(0.878 0.008 260);
+    --tag: oklch(0.9 0.02 280);
+
+    --border: --alpha(var(--color-black) / 8%);
+    --input: oklch(0.9 0.006 255);
+    --ring: oklch(0.55 0.1 280);
+    --radius: 0.625rem;
+
+    --chart-1: oklch(0.646 0.222 41.116);
+    --chart-2: oklch(0.6 0.118 184.704);
+    --chart-3: oklch(0.398 0.07 227.392);
+    --chart-4: oklch(0.828 0.189 84.429);
+    --chart-5: oklch(0.769 0.188 70.08);
+
+    /* Sidebar tokens mirror the page — same paper, same ink. */
+    --sidebar: var(--background);
+    --sidebar-foreground: var(--foreground);
+    --sidebar-primary: var(--primary);
+    --sidebar-primary-foreground: var(--primary-foreground);
+    --sidebar-accent: var(--accent);
+    --sidebar-accent-foreground: var(--accent-foreground);
+    --sidebar-border: var(--border);
+    --sidebar-ring: var(--ring);
+}
+
+.dark {
+    color-scheme: dark;
+
+    --background: oklch(0.238 0.008 260);
+    --foreground: oklch(0.935 0.008 250);
+
+    --card: oklch(0.272 0.009 260);
+    --card-foreground: oklch(0.935 0.008 250);
+    --popover: oklch(0.282 0.01 260);
+    --popover-foreground: oklch(0.935 0.008 250);
+
+    --primary: oklch(0.66 0.128 282);
+    --primary-foreground: oklch(0.17 0.045 282);
+    --secondary: oklch(0.315 0.022 282);
+    --secondary-foreground: oklch(0.9 0.02 280);
+
+    --muted: oklch(0.285 0.008 260);
+    --muted-foreground: oklch(0.71 0.012 260);
+    --accent: oklch(0.308 0.01 260);
+    --accent-foreground: oklch(0.935 0.008 250);
+
+    --destructive: oklch(0.62 0.14 28);
+    --destructive-foreground: oklch(0.985 0.008 80);
+    --danger: oklch(0.74 0.125 27);
+
+    --tab: oklch(0.885 0.01 250);
+    --tab-subtle: oklch(0.355 0.012 260);
+    --tag: oklch(0.32 0.025 282);
+
+    --border: --alpha(var(--color-white) / 8%);
+    --input: oklch(1 0 0 / 16%);
+    --ring: oklch(0.65 0.1 282);
+
+    --chart-1: oklch(0.488 0.243 264.376);
+    --chart-2: oklch(0.696 0.17 162.48);
+    --chart-3: oklch(0.769 0.188 70.08);
+    --chart-4: oklch(0.627 0.265 303.9);
+    --chart-5: oklch(0.645 0.246 16.439);
+
+    --sidebar: var(--background);
+    --sidebar-foreground: var(--foreground);
+    --sidebar-primary: var(--primary);
+    --sidebar-primary-foreground: var(--primary-foreground);
+    --sidebar-accent: var(--accent);
+    --sidebar-accent-foreground: var(--accent-foreground);
+    --sidebar-border: var(--border);
+    --sidebar-ring: var(--ring);
+}
+
+@layer base {
+    * {
+        @apply border-border outline-ring/50;
+    }
+    html {
+        background-color: var(--background);
+    }
+    body {
+        @apply text-foreground relative;
+        background-color: var(--background);
+    }
+}
+
 @layer utilities {
     :root {
-        font-family:
-            "Inter",
-            -apple-system,
-            BlinkMacSystemFont,
-            "Segoe UI",
-            Roboto,
-            "Helvetica Neue",
-            Arial,
-            sans-serif;
+        font-family: var(--font-ui);
+        /* Recursive: crisp, upright, sans for the interface. */
+        font-variation-settings:
+            "MONO" 0,
+            "CASL" 0,
+            "CRSV" 0,
+            "slnt" 0;
         font-optical-sizing: auto;
         font-weight: 400;
         font-style: normal;
@@ -101,121 +216,20 @@
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
     }
-}
 
-:root {
-    color-scheme: light;
-    --background: oklch(0.974 0.004 240);
-    --background-light: oklch(0.95 0.005 240);
-    --foreground: oklch(0.244 0.004 240);
-
-    --card: oklch(1 0 0);
-    --card-foreground: oklch(0.145 0 0);
-    --primary: oklch(0.428 0.093 280);
-    --primary-foreground: oklch(0.946 0.009 249);
-    --secondary: oklch(0.814 0.026 288);
-
-    --muted: oklch(0.97 0 0);
-    --muted-foreground: oklch(0.556 0 0);
-    --accent: oklch(0.97 0 0);
-    --accent-foreground: oklch(0.205 0 0);
-    --popover: oklch(1 0 0);
-    --popover-foreground: oklch(0.145 0 0);
-
-    --tab: oklch(0.26 0 0);
-    --tab-subtle: oklch(0.869 0.008 250);
-
-    --danger-000: oklch(0.425 0.137 25);
-    --danger-100: oklch(0.519 0.167 25);
-    --danger-200: oklch(0.519 0.167 25);
-    --danger-900: oklch(0.943 0.029 18);
-
-    --destructive: oklch(0.892 0.029 1);
-    --destructive-foreground: oklch(0.6 0.233 28);
-    --soft: oklch(0.683 0 240);
-    --soft-foreground: oklch(0.315 0.007 240);
-    --border: --alpha(var(--color-black) / 8%);
-    --input: oklch(0.922 0 0);
-    --ring: oklch(0.708 0 0);
-    --chart-1: oklch(0.646 0.222 41.116);
-    --chart-2: oklch(0.6 0.118 184.704);
-    --chart-3: oklch(0.398 0.07 227.392);
-    --chart-4: oklch(0.828 0.189 84.429);
-    --chart-5: oklch(0.769 0.188 70.08);
-    --radius: 0.625rem;
-
-    --tag: oklch(0.86 0.01 249);
-
-    --sidebar: hsl(0 0% 98%);
-    --sidebar-foreground: hsl(240 5.3% 26.1%);
-    --sidebar-primary: hsl(240 5.9% 10%);
-    --sidebar-primary-foreground: hsl(0 0% 98%);
-    --sidebar-accent: hsl(240 4.8% 95.9%);
-    --sidebar-accent-foreground: hsl(240 5.9% 10%);
-    --sidebar-border: hsl(220 13% 91%);
-    --sidebar-ring: hsl(217.2 91.2% 59.8%);
-}
-.dark {
-    color-scheme: dark;
-    --background: oklch(0.244 0.004 240);
-    --background-light: oklch(0.274 0.004 240);
-    --foreground: oklch(0.946 0.009 249);
-
-    --card: oklch(0.205 0 0);
-    --card-foreground: oklch(0.985 0 0);
-    --popover: oklch(0.205 0 0);
-    --popover-foreground: oklch(0.985 0 0);
-
-    --primary: oklch(0.439 0.099 282);
-    --primary-foreground: oklch(0.946 0.009 249);
-    --secondary: oklch(0.291 0.024 285);
-
-    --muted: oklch(0.269 0 0);
-    --muted-foreground: oklch(0.708 0 0);
-    --accent: oklch(0.269 0 0);
-    --accent-foreground: oklch(0.985 0 0);
-
-    --tab: oklch(0.83 0 0);
-    --tab-subtle: oklch(0.346 0.005 240);
-
-    --danger-000: oklch(0.745 0.153 21);
-    --danger-100: oklch(0.626 0.173 24);
-    --danger-200: oklch(0.626 0.173 24);
-    --danger-900: oklch(0.366 0.095 23);
-
-    --destructive: oklch(0.285 0.031 19);
-    --destructive-foreground: oklch(0.636 0.209 25);
-    --soft: oklch(0.821 0.045 285);
-    --soft-foreground: oklch(0.856 0.005 240);
-    --border: --alpha(var(--color-white) / 6%);
-    --input: oklch(1 0 0 / 15%);
-    --ring: oklch(0.556 0 0);
-    --chart-1: oklch(0.488 0.243 264.376);
-    --chart-2: oklch(0.696 0.17 162.48);
-    --chart-3: oklch(0.769 0.188 70.08);
-    --chart-4: oklch(0.627 0.265 303.9);
-    --chart-5: oklch(0.645 0.246 16.439);
-
-    --tag: oklch(0.326 0.005 240);
-
-    --sidebar: hsl(240 5.9% 10%);
-    --sidebar-foreground: hsl(240 4.8% 95.9%);
-    --sidebar-primary: hsl(224.3 76.3% 48%);
-    --sidebar-primary-foreground: hsl(0 0% 100%);
-    --sidebar-accent: hsl(240 3.7% 15.9%);
-    --sidebar-accent-foreground: hsl(240 4.8% 95.9%);
-    --sidebar-border: hsl(240 3.7% 15.9%);
-    --sidebar-ring: hsl(217.2 91.2% 59.8%);
+    /* Tablature numbers: monospaced so they sit true on the string lines,
+       with a touch of Recursive's casual axis for a hand-placed feel. */
+    .font-tab {
+        font-family: var(--font-ui);
+        font-variation-settings:
+            "MONO" 1,
+            "CASL" 0.62,
+            "CRSV" 0,
+            "slnt" 0;
+    }
 }
 
 body {
-    font-family:
-        "Inter",
-        -apple-system,
-        BlinkMacSystemFont,
-        "Segoe UI",
-        system-ui,
-        sans-serif;
     margin: 0;
     padding: 0;
 }
@@ -251,41 +265,52 @@ body {
     animation-duration: 0s !important;
 }
 
-/* Noise overlay on the background */
+/* Paper grain across the whole app — one texture, no seams. */
 .noise::after {
     content: "";
     position: fixed;
     inset: 0;
+    z-index: 50;
     pointer-events: none;
-    opacity: 0.11;
+    opacity: 0.05;
     background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
     background-repeat: repeat;
     background-size: 256px 256px;
 }
 
-/* Scrollbar styling */
+::selection {
+    background: color-mix(in oklab, var(--primary) 22%, transparent);
+}
+
+/* Scrollbars stay out of the way until the surface they belong to is
+   hovered. */
 ::-webkit-scrollbar {
     width: 6px;
+    height: 6px;
 }
 
 ::-webkit-scrollbar-track {
     background: transparent;
 }
 ::-webkit-scrollbar-thumb {
-    background: rgba(0, 0, 0, 0.15);
+    background: transparent;
     border-radius: 3px;
 }
 
-::-webkit-scrollbar-thumb:hover {
-    background: rgba(0, 0, 0, 0.25);
+*:hover::-webkit-scrollbar-thumb {
+    background: color-mix(in oklab, var(--foreground) 16%, transparent);
+}
+*:hover::-webkit-scrollbar-thumb:hover {
+    background: color-mix(in oklab, var(--foreground) 28%, transparent);
 }
 
-.dark ::-webkit-scrollbar-thumb {
-    background: rgba(255, 255, 255, 0.1);
+* {
+    scrollbar-width: thin;
+    scrollbar-color: transparent transparent;
 }
-
-.dark ::-webkit-scrollbar-thumb:hover {
-    background: rgba(255, 255, 255, 0.18);
+*:hover {
+    scrollbar-color: color-mix(in oklab, var(--foreground) 18%, transparent)
+        transparent;
 }
 
 /* Hide number input spinners for a cleaner UI */
@@ -298,33 +323,6 @@ input[type="number"]::-webkit-inner-spin-button {
 input[type="number"] {
     -moz-appearance: textfield;
     appearance: textfield;
-}
-
-@layer base {
-    * {
-        @apply border-border outline-ring/50;
-    }
-    html {
-        background-color: var(--background);
-    }
-    body {
-        @apply text-foreground relative;
-        background-color: var(--background);
-    }
-}
-
-#note {
-    position: relative;
-}
-
-#note:before {
-    content: "";
-    position: absolute;
-    width: 50%;
-    height: 50%;
-    border-radius: 0.3rem;
-    z-index: -1;
-    opacity: 0;
 }
 
 #debug {

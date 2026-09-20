@@ -1,11 +1,11 @@
-"use client";
-
-import { CopyPlus, Plus, X } from "lucide-react";
+import { CopyPlus, LayoutList, Plus, Trash2 } from "lucide-react";
 import React, { useEffect, useMemo, useState } from "react";
 import { NOTES_PER_SECTION } from "@/constants/guitar-tab";
 import { useGuitarTab } from "@/hooks/useGuitarTab";
+import { cn } from "@/lib/utils";
 import { NoteCellProps, StringRowProps } from "@/types/guitar-tab";
 import { Button } from "../ui/button";
+import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
 
 /**
  * NoteCell component - Renders an individual note cell in the guitar tab
@@ -34,7 +34,7 @@ const NoteCell = React.memo(
 		setNoteOnePosition,
 	}: NoteCellProps) => (
 		<div
-			className="border-r-2 last:border-none w-4 h-4 sm:w-6 sm:h-6 xl:w-8 xl:h-8 flex items-center justify-center hover:bg-primary/15 dark:hover:bg-primary/20 cursor-pointer font-bold text-foreground z-10 sm:text-md xl:text-xl font-serif-text nth-[6n]:border-tab border-tabsubtle data-[value='-']:text-tab/30 data-[value='X']:text-tab/50 select-none"
+			className="font-tab flex aspect-square w-[max(16px,calc((100cqw-28px)/54))] shrink-0 cursor-pointer items-center justify-center border-r border-tabsubtle text-[clamp(11px,1.1cqw,19px)] font-medium text-tab select-none hover:bg-primary/15 last:border-none nth-[6n]:border-tab/50 last:border-r-2 last:border-tab/80 data-[value='-']:text-tab/30 data-[value='X']:text-tab/50"
 			onClick={() => onIncrement(stringIndex, absoluteNoteIndex)}
 			onContextMenu={(e) => {
 				e.preventDefault(); // Prevent default context menu
@@ -53,7 +53,6 @@ const NoteCell = React.memo(
 				});
 				setNoteOnePosition({ string: -1, position: -1 });
 			}}
-			id="note"
 			data-value={note}
 		>
 			{note}
@@ -80,8 +79,8 @@ const StringRow = React.memo(
 		noteOnePosition,
 		setNoteOnePosition,
 	}: StringRowProps) => (
-		<div id="row" className="flex relative">
-			<p className="text-xs absolute top-1/2 -left-2 -translate-1/2">
+		<div className="relative flex">
+			<p className="font-tab w-6 shrink-0 self-center text-center text-[11px] leading-none text-muted-foreground/80">
 				{label(stringIndex)}
 			</p>
 			{string.map((note, noteIndex) => (
@@ -103,14 +102,16 @@ const StringRow = React.memo(
 
 const LoadingState = () => (
 	<div className="flex items-center justify-center p-8">
-		<div className="animate-spin rounded-full h-8 w-8 border-b-2 border-tab"></div>
+		<div className="h-8 w-8 animate-spin rounded-full border-b-2 border-tab"></div>
 	</div>
 );
 
 export default function GuitarTabCreator({
 	editingSections,
+	toggleEditingSections,
 }: {
 	editingSections: boolean;
+	toggleEditingSections: () => void;
 }) {
 	const {
 		tab,
@@ -158,70 +159,107 @@ export default function GuitarTabCreator({
 	if (isLoading) return <LoadingState />;
 
 	return (
-		<div className="container flex flex-col items-center min-w-full">
-			<div className="w-full overflow-x-scroll">
-				{sections.map((section, index) => (
-					<div className="flex items-center ml-4" key={index}>
+		<div className="flex flex-col">
+			<div
+				className={cn(
+					"@container relative rounded-xl transition-colors",
+					editingSections &&
+						"bg-primary/[0.015] outline-1 outline-dashed outline-offset-8 outline-primary/35",
+				)}
+			>
+				{editingSections && (
+					<div className="pointer-events-none absolute inset-x-0 top-0 z-20 flex justify-center">
+						<div className="pointer-events-auto flex -translate-y-1/2 items-center gap-2 rounded-full border bg-popover py-1 pr-1 pl-3.5 shadow-md">
+							<LayoutList className="size-3.5 text-primary" />
+							<span className="text-[13px] font-medium">Editing sections</span>
+							<span className="text-[13px] text-muted-foreground">
+								· {sections.length}{" "}
+								{sections.length === 1 ? "section" : "sections"}
+							</span>
+							<Button
+								size="xs"
+								className="ml-1 rounded-full"
+								onClick={() => toggleEditingSections()}
+							>
+								Done
+							</Button>
+						</div>
+					</div>
+				)}
+				<div
+					className={cn("overflow-x-auto py-3 pl-1", editingSections && "pt-7")}
+				>
+					{sections.map((section, index) => (
 						<div
 							key={`tab-section-${index}`}
-							className="mb-4 flex flex-col items-start rounded-md relative group/highlight"
+							className="group/highlight relative mb-5 last:mb-1"
 						>
 							{editingSections && (
 								<>
-									{/* Section highlight on hover */}
-									<div className="absolute top-0 left-0 w-full h-full transition-colors duration-50 group-hover/highlight:bg-primary/35 opacity-50 rounded group-hover/highlight:border ease-in-out" />
+									{/* Soft highlight following the pointer */}
+									<div className="absolute -inset-2 rounded-lg border border-primary/25 bg-primary/[0.045] opacity-0 transition-opacity duration-100 group-hover/highlight:opacity-100" />
 
-									{/* Buttons on hover while in editing mode */}
-									<div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-15">
-										<div className="flex justify-center items-center gap-4">
-											<Button
-												variant="destructive"
-												onClick={() => handleRemoveSection(section)}
-												key={`delete-section-${index}`}
-												className="flex group-hover/highlight:opacity-100 opacity-25"
-											>
-												<X strokeWidth={3} />
-												<span className="ml-0.5">Remove section</span>
-											</Button>
-											<Button
-												variant="outline-fill"
-												onClick={() => handleDuplicateSection(section)}
-												key={`duplicate-section-${index}`}
-												className="flex group-hover/highlight:opacity-100 opacity-25"
-											>
-												<CopyPlus strokeWidth={3} />
-												<span className="ml-0.5">Duplicate section</span>
-											</Button>
-										</div>
+									{/* Actions pinned to the section's top-right corner */}
+									<div className="absolute -top-4 right-0 z-10 flex items-center gap-0.5 rounded-lg border bg-popover p-0.5 opacity-0 shadow-md transition-opacity duration-100 group-hover/highlight:opacity-100">
+										<Tooltip>
+											<TooltipTrigger asChild>
+												<Button
+													variant="ghost"
+													size="icon-xs"
+													aria-label="Duplicate section"
+													onClick={() => handleDuplicateSection(section)}
+												>
+													<CopyPlus />
+												</Button>
+											</TooltipTrigger>
+											<TooltipContent>Duplicate section</TooltipContent>
+										</Tooltip>
+										<Tooltip>
+											<TooltipTrigger asChild>
+												<Button
+													variant="ghost"
+													size="icon-xs"
+													aria-label="Remove section"
+													className="text-danger hover:bg-danger/10 hover:text-danger"
+													onClick={() => handleRemoveSection(section)}
+												>
+													<Trash2 />
+												</Button>
+											</TooltipTrigger>
+											<TooltipContent>Remove section</TooltipContent>
+										</Tooltip>
 									</div>
 								</>
 							)}
-							{section.data.map((string, stringIndex) => (
-								<StringRow
-									key={`row-${stringIndex}-section-${index}`}
-									string={string}
-									stringIndex={stringIndex}
-									startNoteIndex={section.startNoteIndex}
-									onIncrement={incrementNotesNumber}
-									onToggle={handleCellClick}
-									handleSwitchNotes={handleSwitchNotes}
-									noteOnePosition={noteOnePositon}
-									setNoteOnePosition={setNoteOnePosition}
-								/>
-							))}
+							<div className={cn(editingSections && "pointer-events-none")}>
+								{section.data.map((string, stringIndex) => (
+									<StringRow
+										key={`row-${stringIndex}-section-${index}`}
+										string={string}
+										stringIndex={stringIndex}
+										startNoteIndex={section.startNoteIndex}
+										onIncrement={incrementNotesNumber}
+										onToggle={handleCellClick}
+										handleSwitchNotes={handleSwitchNotes}
+										noteOnePosition={noteOnePositon}
+										setNoteOnePosition={setNoteOnePosition}
+									/>
+								))}
+							</div>
 						</div>
-					</div>
-				))}
-			</div>
-			<div className="flex gap-2 mt-4">
-				<Button
-					variant="outline"
-					size={"lg"}
-					onClick={() => handleAddSection()}
-				>
-					<Plus />
-					<span>Add section</span>
-				</Button>
+					))}
+				</div>
+				<div className="mt-3 flex justify-center">
+					<Button
+						variant="ghost"
+						size="sm"
+						className="text-muted-foreground"
+						onClick={() => handleAddSection()}
+					>
+						<Plus />
+						<span>Add section</span>
+					</Button>
+				</div>
 			</div>
 		</div>
 	);

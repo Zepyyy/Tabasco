@@ -1,15 +1,13 @@
 import {
 	Eraser,
-	FolderInput,
+	FileDown,
+	FileUp,
+	LayoutList,
 	Lock,
 	LockOpen,
-	Moon,
-	Share,
-	Sun,
 } from "lucide-react";
 import { ChangeEvent, useRef, useState } from "react";
 import { useLock } from "@/contexts/LockContext";
-import { useTheme } from "@/contexts/ThemeContext";
 import { clearTab } from "@/db/crud/ClearTab";
 import { useCurrentTab } from "@/hooks/useCurrentTab";
 import { useGuitarTab } from "@/hooks/useGuitarTab";
@@ -24,23 +22,27 @@ import {
 	AlertDialogTitle,
 } from "../ui/alert-dialog";
 import { Button } from "../ui/button";
+import { buttonVariants } from "../ui/buttonVariants";
 import { Input } from "../ui/input";
+import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
 
-export default function Gui({
+export default function Toolbar({
+	editingSections,
 	toggleEditingSections,
 }: {
+	editingSections: boolean;
 	toggleEditingSections: () => void;
 }) {
 	const { handleImport, handleExport } = useGuitarTab();
 	const { position } = useCurrentTab();
 	const fileInputRef = useRef<HTMLInputElement>(null);
 	const [isDialogOpen, setIsDialogOpen] = useState(false);
-	const { theme, toggleTheme } = useTheme();
 	const { locked, toggleLock, showText } = useLock();
 
 	const LockedTooltip = () => (
 		<span
-			className={`absolute top-12 left-1/2 -translate-x-1/2 ml-8 whitespace-nowrap rounded-md bg-foreground/70 px-2 py-1 text-xs font-semibold text-background shadow-sm transition-opacity duration-200 font-Bricolage ${
+			role="status"
+			className={`absolute top-10 left-0 whitespace-nowrap rounded-md bg-foreground px-2 py-1 text-xs font-medium text-background shadow-md transition-opacity duration-200 ${
 				showText ? "opacity-100" : "opacity-0 pointer-events-none"
 			}`}
 		>
@@ -63,7 +65,7 @@ export default function Gui({
 	};
 
 	return (
-		<div className="flex gap-2">
+		<div className="relative flex flex-1 items-center gap-1">
 			<Input
 				ref={fileInputRef}
 				type="file"
@@ -72,81 +74,87 @@ export default function Gui({
 				onChange={handleFileChange}
 			></Input>
 			<LockedTooltip />
+			<Tooltip>
+				<TooltipTrigger asChild>
+					<Button
+						variant={locked ? "default" : "outline"}
+						size="xs"
+						onClick={toggleLock}
+						className={showText ? "[&_svg]:animate-wiggle-once" : ""}
+						aria-label={locked ? "Unlock editing" : "Lock editing"}
+					>
+						{locked ? <Lock /> : <LockOpen />}
+					</Button>
+				</TooltipTrigger>
+				<TooltipContent side="bottom">
+					{locked ? "Editing locked" : "Lock editing"}
+				</TooltipContent>
+			</Tooltip>
+			<Tooltip>
+				<TooltipTrigger asChild>
+					<Button
+						variant="outline"
+						size="icon-xs"
+						onClick={() => fileInputRef.current?.click()}
+						aria-label="Import tab from a JSON file"
+					>
+						<FileUp />
+					</Button>
+				</TooltipTrigger>
+				<TooltipContent side="bottom">Import JSON</TooltipContent>
+			</Tooltip>
+			<Tooltip>
+				<TooltipTrigger asChild>
+					<Button
+						variant="outline"
+						size="icon-xs"
+						onClick={() => handleExport(position || "0")}
+						aria-label="Export tab as JSON"
+					>
+						<FileDown />
+					</Button>
+				</TooltipTrigger>
+				<TooltipContent side="bottom">Export JSON</TooltipContent>
+			</Tooltip>
+			<Tooltip>
+				<TooltipTrigger asChild>
+					<Button
+						variant="outline"
+						size="icon-xs"
+						onClick={() => setIsDialogOpen(true)}
+						aria-label="Clear all notes in this tab"
+					>
+						<Eraser />
+					</Button>
+				</TooltipTrigger>
+				<TooltipContent side="bottom">Clear notes</TooltipContent>
+			</Tooltip>
+			<div className="flex-1" />
 			<Button
-				variant="outline"
-				size="xs"
-				onClick={toggleLock}
-				className={`${locked ? "bg-primary! text-primary-foreground! border-transparent hover:bg-primary/85!" : ""} ${showText ? "[&_svg]:animate-wiggle-once" : ""}`}
-				aria-label={locked ? "Unlock editing" : "Lock editing"}
-			>
-				{locked ? <Lock /> : <LockOpen />}
-				<span className="ml-1">Lock</span>
-			</Button>
-			<Button
-				variant="outline"
-				size="xs"
-				onClick={() => fileInputRef.current?.click()}
-				aria-label="Import tab"
-			>
-				<FolderInput className="size-3.5" />
-				<span className="ml-1">Import</span>
-			</Button>
-			<Button
-				variant="outline"
-				size="xs"
-				onClick={() => handleExport(position || "0")}
-				aria-label="Export tab"
-			>
-				<Share className="size-3.5" />
-				<span className="ml-1">Export</span>
-			</Button>
-			<Button
-				variant="outline"
-				size="xs"
-				onClick={() => setIsDialogOpen(true)}
-				aria-label="Clear tab"
-			>
-				<Eraser className="size-3.5" />
-				<span className="ml-1">Clear</span>
-			</Button>
-			<Button
-				variant="outline"
-				size="xs"
-				onClick={() => toggleTheme()}
-				aria-label="Toggle theme"
-			>
-				{theme === "light" ? (
-					<Moon aria-hidden="true" className="size-3.5" />
-				) : (
-					<Sun aria-hidden="true" className="size-3.5" />
-				)}
-				<span className="ml-1">Theme</span>
-			</Button>
-			<Button
-				variant="default"
-				size="xs"
 				onClick={() => toggleEditingSections()}
-				aria-label="Edit sections"
+				aria-pressed={editingSections}
 			>
-				<Eraser className="size-3.5" />
-				<span className="ml-1">Edit sections</span>
+				<LayoutList />
+				<span>{editingSections ? "Editing sections" : "Edit sections"}</span>
 			</Button>
 			<AlertDialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
 				<AlertDialogContent>
 					<AlertDialogHeader>
-						<AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+						<AlertDialogTitle>Clear this tab?</AlertDialogTitle>
 						<AlertDialogDescription>
-							This action cannot be undone. This will permanently clear the tab.
+							This action cannot be undone. Every note will be reset to empty.
+							This cannot be undone.
 						</AlertDialogDescription>
 					</AlertDialogHeader>
 					<AlertDialogFooter>
 						<AlertDialogCancel>Cancel</AlertDialogCancel>
 						<AlertDialogAction
+							className={buttonVariants({ variant: "destructive" })}
 							onClick={async () => {
 								await clearTab(position);
 							}}
 						>
-							Continue
+							Clear tab
 						</AlertDialogAction>
 					</AlertDialogFooter>
 				</AlertDialogContent>

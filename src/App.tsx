@@ -1,11 +1,11 @@
 import { Analytics } from "@vercel/analytics/react";
 import { AlertCircleIcon, MouseLeft, MouseRight } from "lucide-react";
 import { useState } from "react";
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { AppSidebar } from "./components/Navigation/app-sidebar";
 import GuitarTabCreator from "./components/Page/guitar-tab-creator";
 import TabName from "./components/Page/TabName";
-import Gui from "./components/Settings/Gui";
+import Toolbar from "./components/Settings/Gui";
+import { Alert, AlertDescription, AlertTitle } from "./components/ui/alert";
 import { Separator } from "./components/ui/separator";
 import {
 	SidebarInset,
@@ -27,61 +27,48 @@ const AppContent = () => {
 	};
 
 	return (
-		<SidebarProvider defaultOpen={true}>
+		<SidebarProvider defaultOpen={true} className="noise">
 			<AppSidebar />
-			<SidebarInset className="min-h-screen transition ease-out pointer-events-auto! text-sm">
-				<div className="sm:hidden grid w-full items-start m-4 max-w-max">
-					<Alert variant="destructive">
-						<AlertCircleIcon />
-						<AlertTitle>Not recommended for small screens</AlertTitle>
-						<AlertDescription>
-							Please consider switching to a laptop
-						</AlertDescription>
-					</Alert>
-				</div>
-				<div className="border-b border-border bg-sidebar drag-region flex h-13 items-center px-3 sm:px-5">
-					<div className="flex shrink-0 items-center justify-end gap-2">
-						<SidebarTrigger />
-						<Separator
-							orientation="vertical"
-							className="mr-2 data-[orientation=vertical]:h-4"
+			<SidebarInset className="flex min-h-svh flex-col">
+				<header className="drag-region flex h-12 shrink-0 items-center gap-2 border-b border-border px-3">
+					<SidebarTrigger />
+					<Separator
+						orientation="vertical"
+						className="mr-1 data-[orientation=vertical]:h-4"
+					/>
+					<Toolbar
+						editingSections={editingSections}
+						toggleEditingSections={toggleEditingSections}
+					/>
+				</header>
+				<main className="flex flex-1 flex-col overflow-y-auto">
+					<div className="mx-auto flex w-full max-w-6xl flex-1 flex-col px-6 pt-7 pb-12 lg:px-10">
+						<div className="sm:hidden">
+							<Alert variant="destructive">
+								<AlertCircleIcon />
+								<AlertTitle>Not recommended for small screens</AlertTitle>
+								<AlertDescription>
+									Please consider switching to a laptop
+								</AlertDescription>
+							</Alert>
+						</div>
+						<TabName handleNameChange={handleNameChange} />
+						<p className="mt-1.5 mb-5 flex items-center gap-5 text-xs text-muted-foreground">
+							<span className="inline-flex items-center gap-1.5">
+								<MouseLeft className="size-3.5" aria-hidden />
+								sets the fret number
+							</span>
+							<span className="inline-flex items-center gap-1.5">
+								<MouseRight className="size-3.5" aria-hidden />
+								cycles open / muted / off
+							</span>
+						</p>
+						<GuitarTabCreator
+							editingSections={editingSections}
+							toggleEditingSections={toggleEditingSections}
 						/>
-						<Gui toggleEditingSections={toggleEditingSections} />
 					</div>
-				</div>
-				<div className="flex flex-col justify-start w-full h-full px-4 py-2 relative">
-					{editingSections && (
-						<>
-							{/* Background overlay for editing sections */}
-							<div
-								className={`absolute top-0 left-0 w-full h-full ${editingSections ? "bg-foreground opacity-15 pointer-events-none z-15 border border-foreground" : ""}`}
-							/>
-							<div className="absolute top-5 left-5">
-								<span className="uppercase text-xl py-4">Editing sections</span>
-							</div>
-						</>
-					)}
-					<div className="flex flex-row justify-center items-center w-full px-6 py-2 gap-12">
-						<div className="flex flex-1 w-full flex-col">
-							<TabName handleNameChange={handleNameChange} />
-						</div>
-						{/*<div className="border-none flex items-center justify-start flex-nowrap w-full h-full" />*/}
-						<div className="flex flex-col items-start justify-center min-w-fit flex-nowrap text-sm font-Bricolage gap-2">
-							<div className="flex flex-row gap-1 items-center">
-								<MouseLeft className="size-5" />
-								<p> Increment fret number </p>
-							</div>
-
-							<div className="flex flex-row gap-1 items-center">
-								<MouseRight className="size-5" />
-								<p>Switch note open/mute/off</p>
-							</div>
-						</div>
-					</div>
-					<div className="flex flex-col justify-start w-full p-4">
-						<GuitarTabCreator editingSections={editingSections} />
-					</div>
-				</div>
+				</main>
 			</SidebarInset>
 		</SidebarProvider>
 	);
