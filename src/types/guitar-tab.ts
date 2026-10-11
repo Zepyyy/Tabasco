@@ -39,6 +39,7 @@ export interface TabState {
 	name: string;
 	isLoading: boolean;
 	error: Error | null;
+	link: string | null;
 }
 
 export interface TabInfo {
@@ -47,6 +48,7 @@ export interface TabInfo {
 	tabs: string[][];
 	position: string;
 	capo: number;
+	link: string | null;
 }
 
 export interface TabOperations {

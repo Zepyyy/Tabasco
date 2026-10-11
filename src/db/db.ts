@@ -23,6 +23,10 @@ db.version(3).stores({
 	TabInfo: "++id, tabName, position, capo", // primary key "id" (for the runtime!)
 });
 
+db.version(4).stores({
+	TabInfo: "++id, tabName, position, capo, link", // primary key "id" (for the runtime!)
+});
+
 db.on("populate", function () {
 	// Init your DB with some default statuses:
 	db.TabInfo.add({
@@ -32,6 +36,7 @@ db.on("populate", function () {
 		),
 		position: "0",
 		capo: -1,
+		link: null,
 	});
 });
 

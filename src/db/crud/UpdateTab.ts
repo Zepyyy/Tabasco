@@ -111,6 +111,34 @@ export async function switchTwoNotesByPosition(
 	}
 }
 
+export async function updateTabLinkById(id: number, link: string) {
+	try {
+		const updatedCount = await db.TabInfo.where({ id: id }).modify({
+			link: link,
+		});
+		if (updatedCount === 0) {
+			console.error("No tab found with id:", id);
+			return;
+		}
+	} catch (error) {
+		throw new Error("Failed to update tab link. Error: " + error);
+	}
+}
+
+export async function updateTabLinkByPosition(position: string, link: string) {
+	try {
+		const updatedCount = await db.TabInfo.where({ position: position }).modify({
+			link: link,
+		});
+		if (updatedCount === 0) {
+			console.error("No tab found at position:", position);
+			return;
+		}
+	} catch (error) {
+		throw new Error("Failed to update tab link at position: " + position + " Error: " + error);
+	}
+}
+
 export async function updateTabPositionById(
 	newPosition: string,
 	currentId?: number,

@@ -3,6 +3,7 @@ import { AlertCircleIcon, MouseLeft, MouseRight } from "lucide-react";
 import { useState } from "react";
 import { AppSidebar } from "./components/Navigation/app-sidebar";
 import GuitarTabCreator from "./components/Page/guitar-tab-creator";
+import TabLink from "./components/Page/TabLink";
 import TabName from "./components/Page/TabName";
 import Toolbar from "./components/Settings/Gui";
 import { Alert, AlertDescription, AlertTitle } from "./components/ui/alert";
@@ -12,6 +13,7 @@ import {
 	SidebarProvider,
 	SidebarTrigger,
 } from "./components/ui/sidebar";
+import { useGuitarTab } from "./hooks/useGuitarTab";
 import { useTabOperations } from "./hooks/useTabOperations";
 import Providers from "./providers/Providers";
 
@@ -21,10 +23,12 @@ const AppContent = () => {
 		setEditingSections(!editingSections);
 	};
 
-	const { handleRename } = useTabOperations();
+	const { handleRename, handleUpdateLink } = useTabOperations();
 	const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		handleRename(e.target.value);
 	};
+
+	const { link } = useGuitarTab();
 
 	return (
 		<SidebarProvider defaultOpen={true} className="noise h-full">
@@ -62,6 +66,7 @@ const AppContent = () => {
 								<MouseRight className="size-3.5" aria-hidden />
 								cycles open / muted / off
 							</span>
+							<TabLink link={link || ""} onLinkChange={handleUpdateLink} />
 						</p>
 						<GuitarTabCreator
 							editingSections={editingSections}

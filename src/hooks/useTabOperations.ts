@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router";
 import { useLock } from "@/contexts/LockContext";
 import deleteTabById from "@/db/crud/DeleteTab";
-import updateTabNameById, { updateTabPositionById } from "@/db/crud/UpdateTab";
+import updateTabNameById, { updateTabPositionById, updateTabLinkByPosition } from "@/db/crud/UpdateTab";
 import { TabInfo } from "@/types/guitar-tab";
 import { useCurrentTab } from "./useCurrentTab";
 
@@ -64,11 +64,22 @@ export const useTabOperations = (tabs: TabInfo[] = []) => {
 		}
 	};
 
+	const handleUpdateLink = (newLink: string) => {
+		if (locked) {
+			triggerLockFeedback();
+			return;
+		}
+		if (position) {
+			updateTabLinkByPosition(position, newLink);
+		}
+	};
+
 	return {
 		tabName,
 		handleRename,
 		handleMove,
 		handleDelete,
 		handleDeleteCurrentTab,
+		handleUpdateLink,
 	};
 };
