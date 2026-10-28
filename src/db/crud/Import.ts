@@ -16,7 +16,7 @@ export async function ImportTabs(tabData: Partial<TabInfo>) {
 				Array.from({ length: STRINGS }, () =>
 					Array.from({ length: NOTES_PER_SECTION }, () => DEFAULT_NOTE),
 				),
-			capo: (tabData.capo as number) || -1,
+			capo: (tabData.capo as number) ?? -1,
 		};
 
 		const position = await addTab(importedData as Partial<TabInfo>);
