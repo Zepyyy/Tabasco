@@ -29,7 +29,7 @@ export default async function addTab({
 			tabName: tabName || "Unnamed",
 			tabs: tabs ? normalizeTab(tabs) : emptyTabs,
 			position: maxPosition.toString(), // Increment the position
-			capo: capo || -1,
+			capo: capo ?? -1,
 			link: null,
 		});
 		return maxPosition;

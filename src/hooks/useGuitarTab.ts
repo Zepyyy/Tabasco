@@ -194,7 +194,7 @@ export const useGuitarTab = (): TabState & TabOperations => {
 				if (exportedData) {
 					const tabName = exportedData.tabName || `Tab-Unnamed-${position}`;
 					const tabs = exportedData.tabs || [];
-					const capo = exportedData.capo || -1;
+					const capo = exportedData.capo ?? -1;
 					const jsonData = JSON.stringify(
 						{
 							tabName,

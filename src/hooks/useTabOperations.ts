@@ -36,22 +36,10 @@ export const useTabOperations = (tabs: TabInfo[] = []) => {
 
 	const handleDelete = async (id?: number, position?: string) => {
 		if (position && id) {
+			// deleteTabById already renumbers the remaining tabs, so no second pass here.
 			const newPosition = await deleteTabById(id);
 
-			tabs.forEach((tab: TabInfo) => {
-				if (
-					tab.position !== undefined &&
-					position !== undefined &&
-					Number.parseInt(tab.position) >= Number.parseInt(position)
-				) {
-					updateTabPositionById(
-						(Number.parseInt(tab.position) - 1).toString(),
-						tab.id,
-					);
-				}
-			});
-
-			if (newPosition) {
+			if (newPosition !== null) {
 				navigate(`/sheet/${newPosition}`);
 			}
 			return;

@@ -1,18 +1,18 @@
 # Issues Summary (React Learning Notes)
 
-This list focuses on correctness and good React practices. File paths point to the current codebase.
+Status as of 2026-10-28, checked against the running app. Each entry lists what was found and where it stands.
 
-## High Impact
-- `src/hooks/useGuitarTab.ts`: `handleRemoveSection` checks `tab.length !== NOTES_PER_SECTION`, but `tab.length` is number of strings (6). This allows section deletion even when only one section exists. Use `tab[0]?.length` to guard against removing the last section.
-- `src/hooks/useCapo.ts`: The capo value `0` (valid: “no capo”) is treated as falsy. Two spots break `0`:
-  - `const capo = currentTab?.capo || ""` turns `0` into `""`.
-  - `if (position && capo && ...)` skips saving when `capo` is `0`.
-  Use `??` and avoid truthy checks so `0` is preserved (e.g., `const capo = currentTab?.capo ?? -1` and `if (position && capo >= -1 && capo <= MAX_FRET)`).
-- `src/components/guitar-tab-creator.tsx` + `src/hooks/useGuitarTab.ts`: `onMouseUpCapture` always calls `handleSwitchNotes`, which throws when the same cell is clicked (`Invalid data format for import`). This can surface on normal clicks. Early-return when positions match; fix error message.
+## Open
+- Low: React dev warning "Function components cannot be given refs" when the delete dialog opens (`AlertDialogOverlay` in `src/components/ui/alert-dialog.tsx`). The dialog works, only the dev console is noisy. Likely cause (inferred): the shadcn-style components pass `ref` as a plain prop, which React 19 supports, but the app is on React 18.3, where a function component needs `React.forwardRef`.
 
-## Medium Impact
-- `src/hooks/useTabOperations.ts`: `deleteTabById` already renumbers positions, but `handleDelete` renumbers again. This is redundant and may cause extra writes or race conditions. Also `if (newPosition)` skips navigation when the new position is `"0"`.
-- `src/components/TabsDropdownMenu.tsx`: renaming stays in edit mode because `setEditingTab(null)` is never called after rename. Close edit state after `onRename`.
+## Fixed
+- Capo 0 was saved as -1 on import, add, and export (`src/db/crud/Import.ts`, `src/db/crud/AddTab.ts`, `src/hooks/useGuitarTab.ts`). `0` is a valid capo value ("no capo" is -1), but the code used `||`. Now uses `??`. Verified: importing a JSON with `"capo": 0` stores `0`, and a new tab still gets `-1`.
+- Delete tab renumbered positions twice (`src/hooks/useTabOperations.ts`). `deleteTabById` already renumbers, so the second pass wrote to the deleted row and logged `No tab found with id`. The second pass is removed. Verified: deleting at position 1 and at position 0 leaves positions 0, 1, 2 with no console error.
 
-## Low Impact / Polish
-- `src/components/TabsDropdownMenu.tsx`: `tabs.sort(...)` mutates the array from `useLiveQuery`. Prefer `tabs.slice().sort(...)` to avoid in-place mutation.
+## Resolved or stale (checked, no change needed)
+- `handleRemoveSection` could delete the last section. It now clears the last section instead of removing it (`src/hooks/useGuitarTab.ts`).
+- `useCapo.ts` dropped capo 0. The file no longer exists and no capo UI is present. The live case was the import/add/export one above.
+- `handleSwitchNotes` threw on a same-cell click. It now returns early when the two cells match, and the error message is gone. A same-cell click produces no error.
+- Delete navigation skipped position `"0"`. `"0"` is a truthy string, and deleting the active tab navigates to `/sheet/0`. The check is now `!== null` to make that explicit.
+- `TabsDropdownMenu` rename stayed in edit mode. The file no longer exists. Rename in `src/components/Page/TabName.tsx` exits edit mode on Enter.
+- `tabs.sort` mutated live-query data. The file no longer exists, and the only `.sort` is on a local array in `src/db/crud/DeleteTab.ts`.
